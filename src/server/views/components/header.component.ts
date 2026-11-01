@@ -29,8 +29,8 @@ export function renderHeader(opts: HeaderOptions = {}): string {
           </span>
         </a>
 
-        <!-- Desktop Navigation (lg:flex) -->
-        <nav class="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Primary Navigation">
+        <!-- Desktop Navigation (xl:flex) -->
+        <nav class="hidden xl:flex items-center gap-1 xl:gap-2" aria-label="Primary Navigation">
           <a href="/" class="nav-item ${activeNav === 'home' ? 'active' : ''}">Home</a>
           <a href="/products" class="nav-item ${activeNav === 'products' ? 'active' : ''}">Catalogue</a>
           <a href="/custom-order" class="nav-item ${activeNav === 'custom-order' ? 'active' : ''}">Custom Orders</a>
@@ -41,11 +41,11 @@ export function renderHeader(opts: HeaderOptions = {}): string {
         </nav>
 
         <!-- Right Header Actions -->
-        <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="flex items-center gap-2 sm:gap-2.5">
           <!-- WhatsApp Quote Bag Trigger -->
           <button id="quote-drawer-open-btn"
                   type="button"
-                  class="btn-quote-bag relative inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-[#CBD5E1] hover:border-[#2563EB] text-[#0B0F19] hover:text-[#2563EB] text-xs font-bold transition-all shadow-sm active:scale-95"
+                  class="btn-quote-bag relative inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-[#CBD5E1] hover:border-[#2563EB] text-[#0B0F19] hover:text-[#2563EB] text-xs font-bold transition-all shadow-sm active:scale-95 whitespace-nowrap"
                   aria-label="Open WhatsApp Quote Bag">
             <svg class="w-4 h-4 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
@@ -58,7 +58,7 @@ export function renderHeader(opts: HeaderOptions = {}): string {
              target="_blank"
              rel="noopener noreferrer"
              data-tracking-cta="whatsapp_header"
-             class="btn-header-wa inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#059669] hover:bg-[#047857] text-white text-xs sm:text-sm font-semibold transition-all shadow-sm active:scale-95"
+             class="btn-header-wa inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#059669] hover:bg-[#047857] text-white text-xs sm:text-sm font-semibold transition-all shadow-sm active:scale-95 whitespace-nowrap"
              aria-label="Direct WhatsApp Consultation with Artisan">
             <svg class="w-4 h-4 shrink-0 fill-current" viewBox="0 0 24 24">
               <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
@@ -68,7 +68,7 @@ export function renderHeader(opts: HeaderOptions = {}): string {
 
           <!-- Mobile Hamburger Toggle -->
           <button id="mobile-menu-btn"
-                  class="lg:hidden inline-flex items-center justify-center p-2 rounded-lg border border-[#CBD5E1] text-[#0B0F19] hover:bg-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
+                  class="xl:hidden inline-flex items-center justify-center p-2 rounded-lg border border-[#CBD5E1] text-[#0B0F19] hover:bg-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
                   type="button"
                   aria-expanded="false"
                   aria-controls="mobile-nav-drawer"

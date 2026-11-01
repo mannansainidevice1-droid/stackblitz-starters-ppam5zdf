@@ -47,7 +47,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
                 required
                 autocomplete="username"
                 class="form-input"
-                placeholder="admin"
+                placeholder="admin or bhairavi_admin"
               />
             </div>
 
@@ -608,6 +608,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
           if (res.ok) {
             var json = await res.json();
             var products = json.data || [];
+            window.__adminProducts = products;
             document.getElementById('tab-prod-count').textContent = products.length;
 
             if (products.length === 0) {
@@ -615,7 +616,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
               return;
             }
 
-            tbody.innerHTML = products.map(function(p) {
+            tbody.innerHTML = products.map(function(p, idx) {
               var stockBadge = '';
               if (p.is_made_to_order) {
                 stockBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-[#EFF6FF] text-[#2563EB]">Made to Order</span>';
@@ -631,7 +632,6 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
                 ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700">Published</span>'
                 : '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">Draft</span>';
 
-              var escapedP = JSON.stringify(p).replace(/"/g, '&quot;');
               var imgUrl = (p.gallery_images && p.gallery_images[0]?.public_url) || '/placeholder.svg';
 
               return '<tr class="hover:bg-[#FAF9F5] transition-colors">' +
@@ -651,10 +651,10 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
                 '<td class="py-3 px-3 text-right">' +
                   '<div class="flex items-center justify-end gap-1.5">' +
                     '<a href="/products/' + p.slug + '" target="_blank" class="btn btn-ghost btn-sm">View</a>' +
-                    '<button onclick="openProductModal(' + escapedP + ')" class="btn btn-secondary btn-sm">Edit</button>' +
-                    '<button onclick="openStockModal(\\'' + p.id + '\\', ' + p.inventory_count + ', ' + (p.is_made_to_order ? 1 : 0) + ')" class="btn btn-secondary btn-sm">Stock</button>' +
+                    '<button onclick="openProductModalByIndex(' + idx + ')" class="btn btn-secondary btn-sm">Edit</button>' +
+                    '<button onclick="openStockModalByIndex(' + idx + ')" class="btn btn-secondary btn-sm">Stock</button>' +
                     '<button onclick="archiveProduct(\\'' + p.id + '\\')" class="btn btn-ghost btn-sm text-amber-600 hover:bg-amber-50">Archive</button>' +
-                    '<button onclick="deleteProduct(\\'' + p.id + '\\', \\'' + p.name.replace(/'/g, "\\\\'") + '\\')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Delete</button>' +
+                    '<button onclick="deleteProductByIndex(' + idx + ')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Delete</button>' +
                   '</div>' +
                 '</td>' +
               '</tr>';
@@ -663,6 +663,21 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
         } catch(e) {
           tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-red-600">Failed to load catalogue.</td></tr>';
         }
+      }
+
+      function openProductModalByIndex(idx) {
+        var p = window.__adminProducts && window.__adminProducts[idx];
+        openProductModal(p);
+      }
+
+      function openStockModalByIndex(idx) {
+        var p = window.__adminProducts && window.__adminProducts[idx];
+        if (p) openStockModal(p.id, p.inventory_count, p.is_made_to_order ? 1 : 0);
+      }
+
+      function deleteProductByIndex(idx) {
+        var p = window.__adminProducts && window.__adminProducts[idx];
+        if (p) deleteProduct(p.id, p.name);
       }
 
       async function openProductModal(prod) {
@@ -820,6 +835,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
           if (res.ok) {
             var json = await res.json();
             var enquiries = json.data || [];
+            window.__adminEnquiries = enquiries;
             document.getElementById('tab-enq-count').textContent = enquiries.length;
 
             if (enquiries.length === 0) {
@@ -827,7 +843,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
               return;
             }
 
-            tbody.innerHTML = enquiries.map(function(e) {
+            tbody.innerHTML = enquiries.map(function(e, idx) {
               var catLabel = PROJECT_LABELS[e.project_type] || e.project_type || 'Custom Piece';
               var cleanPhoneDigits = (e.contact_phone || '').replace(/[^0-9]/g, '');
               
@@ -884,7 +900,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
                   '</span>' +
                 '</td>' +
                 '<td class="py-3 px-3 text-right">' +
-                  '<button onclick="openEnquiryModal(\\'' + e.id + '\\')" class="btn btn-secondary btn-sm">View Full Brief</button>' +
+                  '<button onclick="openEnquiryModalByIndex(' + idx + ')" class="btn btn-secondary btn-sm">View Full Brief</button>' +
                 '</td>' +
               '</tr>';
             }).join('');
@@ -892,6 +908,11 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
         } catch(e) {
           tbody.innerHTML = '<tr><td colspan="7" class="py-6 text-center text-red-600">Failed to load custom order inquiries.</td></tr>';
         }
+      }
+
+      function openEnquiryModalByIndex(idx) {
+        var e = window.__adminEnquiries && window.__adminEnquiries[idx];
+        if (e) openEnquiryModal(e.id);
       }
 
       async function openEnquiryModal(id) {

@@ -388,9 +388,16 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
             // Append into design description
             var descArea = document.getElementById('design_description');
             if (descArea) {
-              var specNote = 'Target Dimensions: ' + est.h + ' cm height.\nMaterial: ' + est.matLabel + '.\nDesired Finishing: ' + est.finLabel + '.\nEstimated Target Budget: ₹' + est.lowPrice.toLocaleString('en-IN') + ' - ₹' + est.highPrice.toLocaleString('en-IN') + '.\n';
+              var nl = String.fromCharCode(10);
+              var specLines = [
+                'Target Dimensions: ' + est.h + ' cm height.',
+                'Material: ' + est.matLabel + '.',
+                'Desired Finishing: ' + est.finLabel + '.',
+                'Estimated Target Budget: ₹' + est.lowPrice.toLocaleString('en-IN') + ' - ₹' + est.highPrice.toLocaleString('en-IN') + '.'
+              ];
+              var specNote = specLines.join(nl);
               if (descArea.value.indexOf('Target Dimensions:') === -1) {
-                descArea.value = specNote + '\n' + descArea.value;
+                descArea.value = specNote + nl + nl + descArea.value;
               }
               descArea.focus();
             }
@@ -431,13 +438,15 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
             return;
           }
 
-          if (/^[6789]\\d{9}$/.test(phone)) {
-            phone = '+91' + phone;
-          } else if (/^91[6789]\\d{9}$/.test(phone)) {
-            phone = '+' + phone;
-          }
-          if (!/^\\+91[6789]\\d{9}$/.test(phone)) {
-            fail('Please enter a valid 10-digit Indian phone number.');
+          var cleanPhoneDigits = phone.replace(/\D/g, '');
+          if (cleanPhoneDigits.length === 10 && /^[6789]/.test(cleanPhoneDigits)) {
+            phone = '+91' + cleanPhoneDigits;
+          } else if (cleanPhoneDigits.length === 12 && cleanPhoneDigits.startsWith('91') && /^[6789]/.test(cleanPhoneDigits.slice(2))) {
+            phone = '+' + cleanPhoneDigits;
+          } else if (cleanPhoneDigits.length === 11 && cleanPhoneDigits.startsWith('0') && /^[6789]/.test(cleanPhoneDigits.slice(1))) {
+            phone = '+91' + cleanPhoneDigits.slice(1);
+          } else {
+            fail('Please enter a valid 10-digit Indian mobile number.');
             return;
           }
 
@@ -446,20 +455,20 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
             return;
           }
 
-          if (Date.now() - renderedAt < 2500) {
-            fail('Submission completed too quickly. Please try again.');
-            return;
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Transmitting to Ludhiana Atelier...';
+          }
+
+          var elapsed = Date.now() - renderedAt;
+          if (elapsed < 2600) {
+            await new Promise(function(resolve) { setTimeout(resolve, 2600 - elapsed); });
           }
 
           var formData = new FormData(form);
           formData.set('contact_phone', phone);
           var pType = document.getElementById('project_type').value || 'custom_figurine';
           formData.set('project_type', pType);
-
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Transmitting to Ludhiana Atelier...';
-          }
 
           try {
             var res = await fetch('/api/enquiries', {

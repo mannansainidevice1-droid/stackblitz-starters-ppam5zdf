@@ -328,25 +328,36 @@ export function renderBaseLayout(opts: LayoutOptions): string {
 
       // 4. WhatsApp Consolidated Quote Transmitter
       if (qSendBtn) {
-        qSendBtn.addEventListener('click', () => {
-          const bag = getQuoteBag();
+        qSendBtn.addEventListener('click', function() {
+          var bag = getQuoteBag();
           if (bag.length === 0) return;
 
-          let message = 'Hello BHAIRAVI Creations!\n\nI would like to request a consolidated quotation for the following 3D-printed creations:\n\n';
-          let totalPaise = 0;
+          var lines = [
+            'Hello BHAIRAVI Creations!',
+            '',
+            'I would like to request a consolidated quotation for the following 3D-printed creations:',
+            ''
+          ];
+          var totalPaise = 0;
 
-          bag.forEach((item, idx) => {
-            const itemPaise = (item.pricePaise || 0) * (item.qty || 1);
+          bag.forEach(function(item, idx) {
+            var itemPaise = (item.pricePaise || 0) * (item.qty || 1);
             totalPaise += itemPaise;
-            message += (idx + 1) + '. ' + item.name + ' (x' + (item.qty || 1) + ') - ₹' + ((item.pricePaise || 0) / 100).toLocaleString('en-IN') + ' each\n';
-            if (item.variant) message += '   Finish/Option: ' + item.variant + '\n';
+            var formattedPrice = '₹' + ((item.pricePaise || 0) / 100).toLocaleString('en-IN');
+            lines.push((idx + 1) + '. ' + item.name + ' (x' + (item.qty || 1) + ') - ' + formattedPrice + ' each');
+            if (item.variant) {
+              lines.push('   Finish/Option: ' + item.variant);
+            }
           });
 
-          message += '\nTotal Estimated: ₹' + (totalPaise / 100).toLocaleString('en-IN') + '\n';
-          message += 'Studio Location: Ludhiana, Punjab (PIN 141001)\n\n';
-          message += 'Could you please confirm current production lead time and express dispatch availability?';
+          lines.push('');
+          lines.push('Total Estimated: ₹' + (totalPaise / 100).toLocaleString('en-IN'));
+          lines.push('Studio Location: Ludhiana, Punjab (PIN 141001)');
+          lines.push('');
+          lines.push('Could you please confirm current production lead time and express dispatch availability?');
 
-          const waUrl = 'https://wa.me/917347278010?text=' + encodeURIComponent(message);
+          var message = lines.join(String.fromCharCode(10));
+          var waUrl = 'https://wa.me/917347278010?text=' + encodeURIComponent(message);
           window.open(waUrl, '_blank', 'noopener,noreferrer');
 
           if (window.__bhr_send_event) {

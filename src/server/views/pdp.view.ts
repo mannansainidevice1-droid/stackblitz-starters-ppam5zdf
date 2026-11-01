@@ -24,7 +24,11 @@ export function renderProductDetailPage(props: PdpPageProps): string {
   };
   const rawPrintImage = images.find(
     (img) => img.public_url && (img.public_url.includes('raw_print') || (img.alt_text && img.alt_text.toLowerCase().includes('raw print')))
-  );
+  ) || {
+    public_url: `/uploads/products/${product.slug}_raw_print.webp`,
+    alt_text: `${product.name} (0.12mm Additive Core)`
+  };
+  const galleryList = images.length > 1 ? images : [primaryImage, rawPrintImage];
 
   const dims = product.dimensions_cm || {};
   const dimsFormatted =
@@ -129,31 +133,25 @@ export function renderProductDetailPage(props: PdpPageProps): string {
         </div>
 
         <!-- Thumbnail Gallery Strip -->
-        ${
-          images.length > 1
-            ? `
-          <div class="flex items-center justify-center gap-3 mt-6 overflow-x-auto pb-2" role="tablist" aria-label="Product thumbnails">
-            ${images
-              .map(
-                (img, idx) => `
-              <button
-                type="button"
-                role="tab"
-                class="gallery-thumb-btn w-16 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
-                  idx === 0 ? 'border-[#2563EB] ring-2 ring-[#2563EB]/30' : 'border-[#CBD5E1] hover:border-[#2563EB]'
-                }"
-                data-image-url="${escapeHtml(img.public_url)}"
-                data-alt-text="${escapeHtml(img.alt_text || product.name)}"
-                aria-selected="${idx === 0 ? 'true' : 'false'}">
-                <img src="${escapeHtml(img.public_url)}" alt="${escapeHtml(img.alt_text || product.name)}" class="w-full h-full object-cover" onerror="this.src='/placeholder.svg'" />
-              </button>
-            `
-              )
-              .join('')}
-          </div>
-        `
-            : ''
-        }
+        <div class="flex items-center justify-center gap-3 mt-6 overflow-x-auto pb-2" role="tablist" aria-label="Product thumbnails">
+          ${galleryList
+            .map(
+              (img, idx) => `
+            <button
+              type="button"
+              role="tab"
+              class="gallery-thumb-btn w-16 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
+                idx === 0 ? 'border-[#2563EB] ring-2 ring-[#2563EB]/30' : 'border-[#CBD5E1] hover:border-[#2563EB]'
+              }"
+              data-image-url="${escapeHtml(img.public_url)}"
+              data-alt-text="${escapeHtml(img.alt_text || product.name)}"
+              aria-selected="${idx === 0 ? 'true' : 'false'}">
+              <img src="${escapeHtml(img.public_url)}" alt="${escapeHtml(img.alt_text || product.name)}" class="w-full h-full object-cover" onerror="this.src='/placeholder.svg'" />
+            </button>
+          `
+            )
+            .join('')}
+        </div>
       </div>
 
       <!-- 2. Bento Structured Content Grid -->
