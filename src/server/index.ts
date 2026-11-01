@@ -8,7 +8,7 @@ import { createServer } from './app.js';
 import { getDatabase, closeDatabase } from './db/connection.js';
 
 const PORT = Number(process.env.PORT) || 4001;
-const HOST = process.env.HOST || '127.0.0.1';
+const HOST = process.env.HOST || '0.0.0.0';
 
 const db = getDatabase();
 const server = createServer(PORT, db);

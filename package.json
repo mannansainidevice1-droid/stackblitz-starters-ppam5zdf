@@ -5,6 +5,8 @@
   "type": "module",
   "main": "src/server/index.ts",
   "scripts": {
+    "start": "tsx src/server/index.ts",
+    "dev": "tsx src/server/index.ts",
     "test": "vitest run src/tests/integration/db.test.ts src/tests/integration/admin_api.test.ts",
     "test:integration": "vitest run src/tests/integration/db.test.ts src/tests/integration/admin_api.test.ts",
     "test:admin": "vitest run src/tests/integration/admin_api.test.ts",

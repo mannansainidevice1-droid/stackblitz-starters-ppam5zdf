@@ -80,7 +80,7 @@ export function sendHtml(res: ServerResponse, statusCode: number, html: string):
     'Content-Type': 'text/html; charset=utf-8',
     'Content-Length': payload.length,
     'X-Content-Type-Options': 'nosniff',
-    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.amazon.com https://*.amazon.in https://*.ssl-images-amazon.com; connect-src 'self';"
+    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https://*.amazon.com https://*.amazon.in https://*.ssl-images-amazon.com; connect-src 'self';"
   });
   res.end(payload);
 }
