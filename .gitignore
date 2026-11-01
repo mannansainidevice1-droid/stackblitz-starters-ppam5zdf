@@ -1,1 +1,13 @@
-node_modules
+node_modules/
+.env
+data/*.db-wal
+data/*.db-shm
+data/test_*.db*
+.agents/
+b/
+*.log
+.DS_Store
+storage/uploads/enquiries/*
+!storage/uploads/enquiries/.gitkeep
+storage/uploads/products/*
+!storage/uploads/products/.gitkeep
