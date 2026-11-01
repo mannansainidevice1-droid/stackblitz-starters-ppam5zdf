@@ -41,7 +41,19 @@ export function renderHeader(opts: HeaderOptions = {}): string {
         </nav>
 
         <!-- Right Header Actions -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <!-- WhatsApp Quote Bag Trigger -->
+          <button id="quote-drawer-open-btn"
+                  type="button"
+                  class="btn-quote-bag relative inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-[#CBD5E1] hover:border-[#2563EB] text-[#0B0F19] hover:text-[#2563EB] text-xs font-bold transition-all shadow-sm active:scale-95"
+                  aria-label="Open WhatsApp Quote Bag">
+            <svg class="w-4 h-4 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            <span class="hidden sm:inline">Quote Bag</span>
+            <span id="quote-badge-count" class="px-1.5 py-0.2 rounded-full text-[10px] font-black bg-[#2563EB] text-white">0</span>
+          </button>
+
           <a href="https://wa.me/${STUDIO_DETAILS.whatsapp_number}"
              target="_blank"
              rel="noopener noreferrer"
@@ -51,7 +63,7 @@ export function renderHeader(opts: HeaderOptions = {}): string {
             <svg class="w-4 h-4 shrink-0 fill-current" viewBox="0 0 24 24">
               <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
             </svg>
-            <span class="hidden sm:inline">Artisan Chat</span>
+            <span class="hidden md:inline">Artisan Chat</span>
           </a>
 
           <!-- Mobile Hamburger Toggle -->

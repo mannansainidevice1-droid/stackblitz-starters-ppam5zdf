@@ -120,29 +120,72 @@ export function renderHomePage(props: HomePageProps = {}): string {
           centered: true
         })}
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Interactive 4-Stage Stepper Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="craft-stepper">
           ${BRAND_DRAFT_COPY.craft_stages
             .map(
-              (stage) => `
-            <div class="bento-card relative flex flex-col justify-between group hover:border-[#2563EB]">
+              (stage, idx) => `
+            <div class="craft-stage-card bento-card relative flex flex-col justify-between cursor-pointer transition-all duration-300 ${idx === 0 ? 'border-[#2563EB] ring-2 ring-[#2563EB]/20 bg-white' : 'hover:border-[#CBD5E1] bg-white'}"
+                 data-stage-index="${idx}"
+                 onclick="window.selectCraftStage && window.selectCraftStage(${idx})">
               <div>
-                <div class="w-10 h-10 rounded-xl bg-[#EFF6FF] text-[#2563EB] font-display font-extrabold text-base flex items-center justify-center mb-6 group-hover:bg-[#2563EB] group-hover:text-white transition-colors">
+                <div class="w-10 h-10 rounded-xl ${idx === 0 ? 'bg-[#2563EB] text-white' : 'bg-[#EFF6FF] text-[#2563EB]'} font-display font-extrabold text-base flex items-center justify-center mb-5 transition-colors stage-badge">
                   0${stage.step}
                 </div>
-                <h3 class="font-display text-lg font-bold text-[#0B0F19] mb-3">
+                <h3 class="font-display text-lg font-bold text-[#0B0F19] mb-2.5">
                   ${escapeHtml(stage.title)}
                 </h3>
-                <p class="text-sm text-[#475569] leading-relaxed">
+                <p class="text-xs text-[#475569] leading-relaxed">
                   ${escapeHtml(stage.desc)}
                 </p>
               </div>
-              <div class="mt-6 pt-4 border-t border-[#F1F5F9] text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">
-                Stage 0${stage.step} • Ludhiana Atelier
+              <div class="mt-6 pt-4 border-t border-[#F1F5F9] flex items-center justify-between text-[11px] font-bold text-[#2563EB]">
+                <span>Stage 0${stage.step}</span>
+                <span>Inspect Stage &rarr;</span>
               </div>
             </div>
           `
             )
             .join('')}
+        </div>
+
+        <!-- Dynamic Craft Stage Deep-Dive Panel -->
+        <div id="craft-stage-detail" class="mt-8 p-6 sm:p-8 rounded-2xl bg-white border border-[#E2E8F0] shadow-sm">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            <div class="md:col-span-2 space-y-3">
+              <span id="detail-stage-pill" class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#EFF6FF] text-[#2563EB]">
+                Stage 01 • Digital Phase
+              </span>
+              <h3 id="detail-stage-title" class="font-display text-2xl font-black text-[#0B0F19]">
+                ${escapeHtml(BRAND_DRAFT_COPY.craft_stages[0].title)}
+              </h3>
+              <p id="detail-stage-desc" class="text-sm text-[#475569] leading-relaxed">
+                ${escapeHtml(BRAND_DRAFT_COPY.craft_stages[0].desc)}
+              </p>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-4 border-t border-[#F1F5F9] text-xs">
+                <div>
+                  <span class="text-[#94A3B8] font-bold text-[10px] uppercase block">Primary Tooling</span>
+                  <strong id="detail-stage-tool" class="text-[#0B0F19]">Parametric CAD &amp; Blender</strong>
+                </div>
+                <div>
+                  <span class="text-[#94A3B8] font-bold text-[10px] uppercase block">Atelier Standard</span>
+                  <strong id="detail-stage-standard" class="text-[#0B0F19]">Manifold Watertight Mesh</strong>
+                </div>
+                <div>
+                  <span class="text-[#94A3B8] font-bold text-[10px] uppercase block">Inspection Gate</span>
+                  <strong id="detail-stage-gate" class="text-[#0B0F19]">Structural Honeycomb Check</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visual Stage Badge Preview -->
+            <div class="p-6 rounded-2xl bg-[#FAF9F5] border border-[#CBD5E1] text-center space-y-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-[#64748B]">Atelier Workmanship</span>
+              <div class="font-display text-3xl font-black text-[#0B0F19]">100%</div>
+              <p class="text-xs text-[#64748B]">Individually sculpted and hand-finished in Ludhiana, Punjab.</p>
+              <a href="/custom-order" class="btn btn-primary btn-sm w-full mt-3">Start Custom Project &rarr;</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -274,11 +317,92 @@ export function renderHomePage(props: HomePageProps = {}): string {
     </section>
   `;
 
+  const extraScripts = `
+    <script>
+      (function() {
+        var stages = [
+          {
+            pill: 'Stage 01 • Digital Phase',
+            title: 'Digital Sculpting & Parametric Design',
+            desc: 'Every creation originates as bespoke CAD geometry or high-definition digital sculpture, optimized for structural integrity and mathematical harmony.',
+            tool: 'Parametric CAD & Blender',
+            standard: 'Manifold Watertight Mesh',
+            gate: 'Structural Honeycomb Check'
+          },
+          {
+            pill: 'Stage 02 • Additive Core',
+            title: '0.12mm Ultra-Fine Additive Layering',
+            desc: 'Printed on calibrated high-precision machines using biodegradable PLA / PLA Pro. Microscopic 0.12mm layer slicing ensures subtle organic curves without stair-stepping.',
+            tool: '0.4mm Hardened Steel Nozzle (215°C)',
+            standard: '0.12mm (120μm) Layer Height',
+            gate: 'Layer Adhesion & Dial Caliper Verification'
+          },
+          {
+            pill: 'Stage 03 • Hand Preparation',
+            title: 'Progressive Triple Wet-Sanding',
+            desc: 'Mechanical raw prints undergo hours of careful hand preparation: progressively wet-sanded across 400, 600, and 800 grits to erase extrusion seams and achieve smooth stone texture.',
+            tool: 'Silicon Carbide Wet Sandpaper (400-800)',
+            standard: 'Tactile Silk-Matte Surface',
+            gate: '5000K Oblique Light Seam Inspection'
+          },
+          {
+            pill: 'Stage 04 • Artisanal Mastery',
+            title: 'Artisanal Patina, Gilding & Sealant',
+            desc: 'Multi-layer acrylic washes, genuine copper dry-brushing, antique bronze patinas, and gold leafing are applied by hand, finished with a UV-resistant matte protective seal.',
+            tool: 'Cold-Cast Patinas & Acrylic Washes',
+            standard: 'Hand-Gilded Museum Quality',
+            gate: 'UV & Touch-Safe Matte Sealant'
+          }
+        ];
+
+        window.selectCraftStage = function(idx) {
+          var stage = stages[idx];
+          if (!stage) return;
+
+          var cards = document.querySelectorAll('.craft-stage-card');
+          cards.forEach(function(card, cIdx) {
+            var badge = card.querySelector('.stage-badge');
+            if (cIdx === idx) {
+              card.classList.add('border-[#2563EB]', 'ring-2', 'ring-[#2563EB]/20');
+              card.classList.remove('hover:border-[#CBD5E1]');
+              if (badge) {
+                badge.classList.add('bg-[#2563EB]', 'text-white');
+                badge.classList.remove('bg-[#EFF6FF]', 'text-[#2563EB]');
+              }
+            } else {
+              card.classList.remove('border-[#2563EB]', 'ring-2', 'ring-[#2563EB]/20');
+              card.classList.add('hover:border-[#CBD5E1]');
+              if (badge) {
+                badge.classList.remove('bg-[#2563EB]', 'text-white');
+                badge.classList.add('bg-[#EFF6FF]', 'text-[#2563EB]');
+              }
+            }
+          });
+
+          var pill = document.getElementById('detail-stage-pill');
+          var title = document.getElementById('detail-stage-title');
+          var desc = document.getElementById('detail-stage-desc');
+          var tool = document.getElementById('detail-stage-tool');
+          var std = document.getElementById('detail-stage-standard');
+          var gate = document.getElementById('detail-stage-gate');
+
+          if (pill) pill.textContent = stage.pill;
+          if (title) title.textContent = stage.title;
+          if (desc) desc.textContent = stage.desc;
+          if (tool) tool.textContent = stage.tool;
+          if (std) std.textContent = stage.standard;
+          if (gate) gate.textContent = stage.gate;
+        };
+      })();
+    </script>
+  `;
+
   return renderBaseLayout({
     title: 'Handcrafted 3D Printing Studio Ludhiana',
     description: heroSubheadline,
     canonicalPath: '/',
     activeNav: 'home',
-    content
+    content,
+    extraScripts
   });
 }

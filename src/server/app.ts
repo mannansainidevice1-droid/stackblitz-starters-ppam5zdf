@@ -32,6 +32,7 @@ import {
   getUploadRootDirectory,
   MAX_PRODUCT_IMAGE_SIZE_BYTES
 } from './services/upload.service.js';
+import { generateArtisanalSvg } from './services/artisanal_svg.service.js';
 import { SessionUser } from './auth/types.js';
 import { renderHomePage } from './views/home.view.js';
 import { renderCatalogPage } from './views/catalog.view.js';
@@ -150,45 +151,6 @@ function parseMultipartFormData(
   }
 
   return { fields, files };
-}
-
-/**
- * Dynamic SVG placeholder generator for missing images.
- */
-function generateArtisanalSvg(filename: string): string {
-  const baseName = filename.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim();
-  const title = baseName.length > 0
-    ? baseName.charAt(0).toUpperCase() + baseName.slice(1)
-    : 'Artisanal Piece';
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FAF9F6"/>
-      <stop offset="100%" stop-color="#F5F5F4"/>
-    </linearGradient>
-    <linearGradient id="terracotta" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#C2410C"/>
-      <stop offset="100%" stop-color="#9A3412"/>
-    </linearGradient>
-  </defs>
-  <rect width="800" height="800" fill="url(#bg)"/>
-  <rect x="24" y="24" width="752" height="752" rx="16" fill="none" stroke="#E7E5E4" stroke-width="2"/>
-  
-  <!-- Geometric 3D Form Icon -->
-  <g transform="translate(400, 360)">
-    <polygon points="0,-110 95,-55 95,55 0,110 -95,55 -95,-55" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="2"/>
-    <polygon points="0,-110 95,-55 0,0 -95,-55" fill="#F5F5F4" stroke="#D6D3D1" stroke-width="2"/>
-    <polygon points="0,0 95,-55 95,55 0,110" fill="#E7E5E4" stroke="#D6D3D1" stroke-width="2"/>
-    <polygon points="-95,-55 0,0 0,110 -95,55" fill="#D6D3D1" stroke="#A8A29E" stroke-width="2"/>
-    <circle cx="0" cy="0" r="14" fill="url(#terracotta)"/>
-  </g>
-
-  <!-- Typography -->
-  <text x="400" y="540" font-family="'Playfair Display', Georgia, serif" font-size="26" font-weight="700" fill="#1C1917" text-anchor="middle">${title}</text>
-  <text x="400" y="575" font-family="system-ui, sans-serif" font-size="13" font-weight="600" letter-spacing="2.5" fill="#C2410C" text-anchor="middle">BHAIRAVI CREATIONS • LUDHIANA</text>
-  <text x="400" y="605" font-family="system-ui, sans-serif" font-size="12" fill="#78716C" text-anchor="middle">0.12mm Additive Precision • Hand-Finished Artisanal Piece</text>
-</svg>`;
 }
 
 export const MAX_REQUEST_BODY_BYTES = 20 * 1024 * 1024; // 20MB stream ceiling

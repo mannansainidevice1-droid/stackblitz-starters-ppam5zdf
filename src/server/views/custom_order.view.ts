@@ -34,6 +34,77 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
         </p>
       </div>
 
+      <!-- Interactive Custom Order Visual Cost & Time Estimator -->
+      <div class="bento-card p-6 sm:p-8 bg-white border border-[#E2E8F0] rounded-2xl shadow-sm mb-8">
+        <div class="flex items-center justify-between pb-4 border-b border-[#F1F5F9] mb-5">
+          <div>
+            <h2 class="font-display text-lg sm:text-xl font-bold text-[#0B0F19]">Interactive Commission Estimator</h2>
+            <p class="text-xs text-[#64748B] mt-0.5">Explore estimated print time and budget according to scale and finishing complexity.</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]">
+            Live Calculator
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          <!-- Controls Column -->
+          <div class="md:col-span-2 space-y-5">
+            <!-- Height Slider -->
+            <div>
+              <div class="flex items-center justify-between text-xs font-semibold text-[#0B0F19] mb-1.5">
+                <label for="est-height-slider">Model Height / Scale</label>
+                <span class="font-mono font-bold text-[#2563EB]" id="est-height-val">18 cm (7.1 in)</span>
+              </div>
+              <input type="range" id="est-height-slider" min="5" max="40" value="18" step="1"
+                     class="w-full h-2 bg-[#E2E8F0] rounded-lg appearance-none cursor-pointer accent-[#2563EB]" />
+              <div class="flex justify-between text-[10px] text-[#94A3B8] mt-1">
+                <span>5 cm (Miniature)</span>
+                <span>18 cm (Tabletop)</span>
+                <span>40 cm (Grand Sculptural)</span>
+              </div>
+            </div>
+
+            <!-- Material & Finishing Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="est-material-select" class="form-label text-xs">Material Formulation</label>
+                <select id="est-material-select" class="form-select text-xs cursor-pointer">
+                  <option value="pla_standard" selected>High-Density PLA / PLA Pro</option>
+                  <option value="wood_fill">Wood-Composite Pine Fiber (+₹500)</option>
+                  <option value="carbon_fiber">Carbon-Fiber Core (+₹400)</option>
+                  <option value="sla_resin">8K Ultra-Precision Resin (+₹700)</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="est-finish-select" class="form-label text-xs">Artisanal Finishing Tier</label>
+                <select id="est-finish-select" class="form-select text-xs cursor-pointer">
+                  <option value="artisan_patina" selected>Master Artisan Patina (Gilded / Bronzed)</option>
+                  <option value="sanded_primed">Triple Wet-Sanded &amp; Primed Only</option>
+                  <option value="raw_print">Raw 3D Print (Unfinished 0.12mm)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Output Card -->
+          <div class="p-5 rounded-xl bg-[#FAF9F5] border border-[#CBD5E1] text-center space-y-3">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#64748B]">Estimated Budget Range</span>
+            <div id="est-price-range" class="font-display text-2xl font-black text-[#0B0F19]">
+              ₹2,400 - ₹3,100
+            </div>
+            <div class="text-[11px] text-[#64748B] space-y-1.5 pt-2 border-t border-[#E2E8F0]">
+              <div class="flex justify-between"><span>Print Duration:</span><strong id="est-print-time" class="text-[#0B0F19]">~16-20 hrs</strong></div>
+              <div class="flex justify-between"><span>Layer Detail:</span><strong class="text-[#0B0F19]">0.12mm (120μm)</strong></div>
+              <div class="flex justify-between"><span>Estimated Weight:</span><strong id="est-weight" class="text-[#0B0F19]">~380 grams</strong></div>
+            </div>
+            <button type="button" id="est-apply-btn" class="btn btn-secondary btn-sm w-full mt-2 text-xs">
+              Apply to Inquiry Form &darr;
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Main Bento Form Card -->
       <div id="enquiry-form-container" class="bento-card p-6 sm:p-10 bg-white border border-[#E2E8F0] rounded-2xl shadow-sm">
         
@@ -243,6 +314,90 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
         var form = document.getElementById('custom-order-form');
         var container = document.getElementById('enquiry-form-container');
         if (!form || !container) return;
+
+        // Interactive Live Visual Estimator Calculation
+        var heightSlider = document.getElementById('est-height-slider');
+        var heightVal = document.getElementById('est-height-val');
+        var materialSelect = document.getElementById('est-material-select');
+        var finishSelect = document.getElementById('est-finish-select');
+        var priceRangeEl = document.getElementById('est-price-range');
+        var printTimeEl = document.getElementById('est-print-time');
+        var weightEl = document.getElementById('est-weight');
+        var applyBtn = document.getElementById('est-apply-btn');
+
+        function recalculateEstimate() {
+          if (!heightSlider || !priceRangeEl) return;
+          var h = parseInt(heightSlider.value, 10);
+          var inVal = (h / 2.54).toFixed(1);
+          if (heightVal) heightVal.textContent = h + ' cm (' + inVal + ' in)';
+
+          var mat = materialSelect ? materialSelect.value : 'pla_standard';
+          var fin = finishSelect ? finishSelect.value : 'artisan_patina';
+
+          var scale = Math.pow(h / 18, 2.1);
+          var baseHours = Math.round(16 * Math.pow(h / 18, 1.8));
+          var baseWeightGrams = Math.round(380 * scale);
+
+          var matCost = 0;
+          var matLabel = 'High-Density PLA / PLA Pro';
+          if (mat === 'wood_fill') { matCost = 500; matLabel = 'Wood-Composite Pine Fiber'; }
+          else if (mat === 'carbon_fiber') { matCost = 400; matLabel = 'Carbon-Fiber Core'; }
+          else if (mat === 'sla_resin') { matCost = 700; matLabel = '8K Ultra-Precision Resin'; }
+
+          var finMult = 1.25;
+          var finLabel = 'Master Artisan Hand-Patina';
+          if (fin === 'sanded_primed') { finMult = 0.9; finLabel = 'Sanded & Primed (Paint-Ready)'; }
+          else if (fin === 'raw_print') { finMult = 0.65; finLabel = 'Raw Unfinished 3D Print'; }
+
+          var centerPrice = Math.round((1800 * scale + matCost) * finMult);
+          var lowPrice = Math.round(centerPrice * 0.88 / 50) * 50;
+          var highPrice = Math.round(centerPrice * 1.15 / 50) * 50;
+
+          priceRangeEl.textContent = '₹' + lowPrice.toLocaleString('en-IN') + ' - ₹' + highPrice.toLocaleString('en-IN');
+          if (printTimeEl) printTimeEl.textContent = '~' + Math.max(2, baseHours - 2) + '-' + (baseHours + 4) + ' hrs';
+          if (weightEl) weightEl.textContent = '~' + Math.max(30, baseWeightGrams) + ' grams';
+
+          return {
+            h: h,
+            lowPrice: lowPrice,
+            highPrice: highPrice,
+            matLabel: matLabel,
+            finLabel: finLabel
+          };
+        }
+
+        if (heightSlider) heightSlider.addEventListener('input', recalculateEstimate);
+        if (materialSelect) materialSelect.addEventListener('change', recalculateEstimate);
+        if (finishSelect) finishSelect.addEventListener('change', recalculateEstimate);
+
+        if (applyBtn) {
+          applyBtn.addEventListener('click', function() {
+            var est = recalculateEstimate();
+            if (!est) return;
+
+            // Auto-select budget dropdown
+            var budgetSelect = document.getElementById('budget_range_inr');
+            if (budgetSelect) {
+              if (est.highPrice < 2500) budgetSelect.value = 'Under ₹2,500';
+              else if (est.highPrice <= 5000) budgetSelect.value = '₹2,500 - ₹5,000';
+              else if (est.highPrice <= 7500) budgetSelect.value = '₹3,500 - ₹7,500';
+              else if (est.highPrice <= 10000) budgetSelect.value = '₹5,000 - ₹10,000';
+              else budgetSelect.value = '₹10,000+';
+            }
+
+            // Append into design description
+            var descArea = document.getElementById('design_description');
+            if (descArea) {
+              var specNote = 'Target Dimensions: ' + est.h + ' cm height.\nMaterial: ' + est.matLabel + '.\nDesired Finishing: ' + est.finLabel + '.\nEstimated Target Budget: ₹' + est.lowPrice.toLocaleString('en-IN') + ' - ₹' + est.highPrice.toLocaleString('en-IN') + '.\n';
+              if (descArea.value.indexOf('Target Dimensions:') === -1) {
+                descArea.value = specNote + '\n' + descArea.value;
+              }
+              descArea.focus();
+            }
+          });
+        }
+
+        recalculateEstimate();
 
         var hasStarted = false;
         form.addEventListener('focusin', function() {

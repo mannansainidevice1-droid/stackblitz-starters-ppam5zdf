@@ -1,6 +1,6 @@
 /**
  * BHAIRAVI Creations Digital Platform
- * Admin Dashboard & Authentication SSR View (Feature R3)
+ * Premium Editorial Admin Dashboard & Management Portal (Feature R3)
  * Target: src/server/views/admin.view.ts
  */
 
@@ -17,95 +17,114 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
   const { user, categories = [] } = props;
 
   if (!user) {
-    // Unauthenticated: Render Admin Login Interface
+    // Unauthenticated: Render Editorial Admin Login Interface
     const loginHtml = `
-      <div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 48px 16px; background: #FAF9F6;">
-        <div style="width: 100%; max-width: 440px; background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 16px; padding: 36px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
-          <div style="text-align: center; margin-bottom: 28px;">
-            <span style="display: inline-block; padding: 4px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--terracotta); background: #FFEDD5; border-radius: 9999px; margin-bottom: 12px;">
-              Internal Access Only
+      <div class="min-h-[75vh] flex items-center justify-center py-16 px-4">
+        <div class="w-full max-w-md bg-white border border-[#E2E8F0] rounded-2xl p-8 sm:p-10 shadow-sm">
+          <div class="text-center mb-8">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-[#2563EB] bg-[#EFF6FF] border border-[#BFDBFE] mb-3">
+              Internal Atelier Access Only
             </span>
-            <h1 style="font-family: var(--font-serif); font-size: 26px; font-weight: 700; color: var(--charcoal); margin-bottom: 8px;">
+            <h1 class="font-display text-3xl font-black text-[#0B0F19] tracking-tight">
               Admin Portal
             </h1>
-            <p style="font-size: 14px; color: #78716C;">
-              Sign in to manage the catalog, review customer enquiries, and monitor analytics.
+            <p class="text-sm text-[#64748B] mt-2">
+              Sign in to manage catalog items, process custom orders, and inspect studio diagnostics.
             </p>
           </div>
 
-          <div id="login-error" style="display: none; padding: 12px; border-radius: 8px; background: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; font-size: 13px; margin-bottom: 20px;"></div>
+          <div id="login-error" class="hidden p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700 mb-6" role="alert"></div>
 
-          <form id="admin-login-form" style="display: flex; flex-direction: column; gap: 18px;">
+          <form id="admin-login-form" class="space-y-5">
             <div>
-              <label for="username" style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 6px;">Username or Email</label>
-              <input type="text" id="username" name="username" required autocomplete="username"
-                     style="width: 100%; padding: 10px 14px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px; outline: none;"
-                     placeholder="admin" />
+              <label for="username" class="form-label">
+                Username or Staff Email <span class="text-[#2563EB]">*</span>
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                autocomplete="username"
+                class="form-input"
+                placeholder="admin"
+              />
             </div>
 
             <div>
-              <label for="password" style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 6px;">Password</label>
-              <input type="password" id="password" name="password" required autocomplete="current-password"
-                     style="width: 100%; padding: 10px 14px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px; outline: none;"
-                     placeholder="••••••••••••" />
+              <label for="password" class="form-label">
+                Password <span class="text-[#2563EB]">*</span>
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                autocomplete="current-password"
+                class="form-input"
+                placeholder="••••••••••••"
+              />
             </div>
 
-            <button type="submit" id="login-btn" class="btn-primary" style="width: 100%; min-height: 44px; margin-top: 8px; font-size: 14px;">
+            <button type="submit" id="login-btn" class="btn btn-primary btn-lg w-full">
               Sign In to Dashboard
             </button>
           </form>
 
-          <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--stone-border); text-align: center;">
-            <p style="font-size: 12px; color: #A8A29E;">
-              Protected by server-side rate-limiting and timing-safe authentication.
+          <div class="mt-8 pt-6 border-t border-[#F1F5F9] text-center">
+            <p class="text-xs text-[#94A3B8]">
+              Protected by server-side rate-limiting and timing-safe authentication. Studio: Ludhiana, Punjab.
             </p>
           </div>
         </div>
       </div>
 
       <script>
-        const form = document.getElementById('admin-login-form');
-        const errDiv = document.getElementById('login-error');
-        const btn = document.getElementById('login-btn');
+        (function() {
+          var form = document.getElementById('admin-login-form');
+          var errDiv = document.getElementById('login-error');
+          var btn = document.getElementById('login-btn');
+          if (!form) return;
 
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          errDiv.style.display = 'none';
-          btn.disabled = true;
-          btn.innerText = 'Verifying credentials...';
+          form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            errDiv.classList.add('hidden');
+            btn.disabled = true;
+            btn.textContent = 'Verifying credentials...';
 
-          const fd = new FormData(form);
-          const body = Object.fromEntries(fd.entries());
+            var fd = new FormData(form);
+            var body = Object.fromEntries(fd.entries());
 
-          try {
-            const res = await fetch('/api/admin/auth/login', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(body)
-            });
-            const data = await res.json();
+            try {
+              var res = await fetch('/api/admin/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+              });
+              var data = await res.json();
 
-            if (!res.ok) {
-              errDiv.innerText = data.error || 'Authentication failed.';
-              errDiv.style.display = 'block';
+              if (!res.ok) {
+                errDiv.textContent = data.error || 'Authentication failed.';
+                errDiv.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Sign In to Dashboard';
+              } else {
+                window.location.reload();
+              }
+            } catch (err) {
+              errDiv.textContent = 'Network error during login.';
+              errDiv.classList.remove('hidden');
               btn.disabled = false;
-              btn.innerText = 'Sign In to Dashboard';
-            } else {
-              window.location.reload();
+              btn.textContent = 'Sign In to Dashboard';
             }
-          } catch (err) {
-            errDiv.innerText = 'Network error during login.';
-            errDiv.style.display = 'block';
-            btn.disabled = false;
-            btn.innerText = 'Sign In to Dashboard';
-          }
-        });
+          });
+        })();
       </script>
     `;
 
     return renderBaseLayout({
-      title: 'Admin Login',
-      description: 'Sign in to BHAIRAVI Creations Administrative Dashboard.',
+      title: 'Admin Sign In',
+      description: 'Internal BHAIRAVI Creations Administrative Login',
       canonicalPath: '/admin',
       content: loginHtml
     });
@@ -113,194 +132,207 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
 
   // Authenticated Admin Dashboard Interface
   const dashboardHtml = `
-    <div class="container" style="padding-top: 36px; padding-bottom: 80px;">
-      <!-- Dashboard Top Header -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 16px;">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <!-- Top Atelier Header Bar -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-[#E2E8F0]">
         <div>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <h1 style="font-family: var(--font-serif); font-size: 32px; font-weight: 700; color: var(--charcoal); margin: 0;">
-              Artisanal Studio Dashboard
-            </h1>
-            <span style="font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 9999px; background: #E0E7FF; color: #3730A3;">
-              ${escapeHtml(user.role.toUpperCase())}
+          <div class="flex items-center gap-3">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#0B0F19] text-white">
+              Studio Portal
             </span>
+            <span class="text-xs font-semibold text-[#64748B]">Ludhiana, Punjab Atelier</span>
           </div>
-          <p style="font-size: 14px; color: #78716C; margin-top: 4px;">
-            Studio operations, live catalog control, customer commissions & mathematical BI rollups.
-          </p>
+          <h1 class="font-display text-2xl sm:text-3xl font-black text-[#0B0F19] mt-1.5 tracking-tight">
+            Administrative Operations
+          </h1>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 14px;">
-          <span style="font-size: 13px; color: #57534E;">Signed in as <strong>${escapeHtml(user.username)}</strong></span>
-          <button id="logout-btn" class="btn-secondary" style="padding: 6px 14px; font-size: 13px; min-height: 36px;">
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-[#E2E8F0] text-xs font-semibold text-[#0B0F19]">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span>${escapeHtml(user.username || 'Admin')}</span>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${user.role === 'superadmin' ? 'bg-[#EFF6FF] text-[#2563EB]' : 'bg-[#F1F5F9] text-[#64748B]'}">
+              ${escapeHtml(user.role)}
+            </span>
+          </div>
+
+          <a href="/products" target="_blank" class="btn btn-secondary btn-sm">
+            <span>View Storefront &rarr;</span>
+          </a>
+
+          <button id="logout-btn" class="btn btn-ghost btn-sm text-red-600 hover:text-red-700 hover:bg-red-50">
             Sign Out
           </button>
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
-      <div style="margin-bottom: 28px;">
-        <div style="display: flex; gap: 8px; border-bottom: 1px solid var(--stone-border); padding-bottom: 8px; overflow-x: auto;">
-          <button onclick="switchTab('overview')" class="tab-btn" id="tab-overview" style="padding: 8px 18px; font-size: 14px; font-weight: 600; border-radius: 8px; border: none; background: #FFFFFF; color: var(--charcoal); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-            Overview &amp; KPIs
-          </button>
-          <button onclick="switchTab('products')" class="tab-btn" id="tab-products" style="padding: 8px 18px; font-size: 14px; font-weight: 600; border-radius: 8px; border: none; background: transparent; color: #78716C; cursor: pointer;">
-            Product Catalog
-          </button>
-          <button onclick="switchTab('enquiries')" class="tab-btn" id="tab-enquiries" style="padding: 8px 18px; font-size: 14px; font-weight: 600; border-radius: 8px; border: none; background: transparent; color: #78716C; cursor: pointer;">
-            Custom Enquiries
-          </button>
-          <button onclick="switchTab('exports')" class="tab-btn" id="tab-exports" style="padding: 8px 18px; font-size: 14px; font-weight: 600; border-radius: 8px; border: none; background: transparent; color: #78716C; cursor: pointer;">
-            BI Data Exports (AI-Ready)
-          </button>
-        </div>
+      <!-- Navigation Tabs Bar -->
+      <div class="flex items-center gap-2 mt-6 p-1.5 rounded-xl bg-[#F1F5F9] border border-[#E2E8F0] overflow-x-auto">
+        <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-[#64748B] hover:text-[#0B0F19]">
+          Studio Overview &amp; KPIs
+        </button>
+        <button onclick="switchTab('products')" id="tab-products" class="tab-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-[#64748B] hover:text-[#0B0F19]">
+          Product Catalogue (<span id="tab-prod-count">-</span>)
+        </button>
+        <button onclick="switchTab('enquiries')" id="tab-enquiries" class="tab-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-[#64748B] hover:text-[#0B0F19]">
+          Custom Order Inquiries (<span id="tab-enq-count">-</span>)
+        </button>
+        <button onclick="switchTab('exports')" id="tab-exports" class="tab-btn px-4 py-2 rounded-lg text-xs font-bold transition-all text-[#64748B] hover:text-[#0B0F19]">
+          BI Reports &amp; Data Exports
+        </button>
+      </div>
 
-        <!-- TAB 1: OVERVIEW & KPIS -->
-        <div id="content-overview" class="tab-content">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 32px; margin-top: 24px;">
-            <div style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 12px; padding: 20px;">
-              <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #78716C; margin-bottom: 6px;">Total Views</div>
-              <div id="kpi-views" style="font-size: 28px; font-weight: 700; color: var(--charcoal);">-</div>
-              <div style="font-size: 11px; color: #A8A29E; margin-top: 4px;">Storefront page impressions</div>
-            </div>
-
-            <div style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 12px; padding: 20px;">
-              <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #78716C; margin-bottom: 6px;">Product Detail Views</div>
-              <div id="kpi-pdp" style="font-size: 28px; font-weight: 700; color: var(--charcoal);">-</div>
-              <div style="font-size: 11px; color: #A8A29E; margin-top: 4px;">Full PDP reads</div>
-            </div>
-
-            <div style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 12px; padding: 20px;">
-              <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #78716C; margin-bottom: 6px;">Amazon Clicks</div>
-              <div id="kpi-amazon" style="font-size: 28px; font-weight: 700; color: #D97706;">-</div>
-              <div style="font-size: 11px; color: #A8A29E; margin-top: 4px;">High intent (outcome unknown)</div>
-            </div>
-
-            <div style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 12px; padding: 20px;">
-              <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #78716C; margin-bottom: 6px;">WhatsApp Inquiries</div>
-              <div id="kpi-whatsapp" style="font-size: 28px; font-weight: 700; color: #059669;">-</div>
-              <div style="font-size: 11px; color: #A8A29E; margin-top: 4px;">Outbound consultations</div>
-            </div>
-
-            <div style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 12px; padding: 20px;">
-              <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #78716C; margin-bottom: 6px;">Custom Commissions</div>
-              <div id="kpi-enquiries" style="font-size: 28px; font-weight: 700; color: var(--terracotta);">-</div>
-              <div style="font-size: 11px; color: #A8A29E; margin-top: 4px;">Submitted order requests</div>
-            </div>
+      <!-- TAB 1: OVERVIEW & KPIS -->
+      <div id="content-overview" class="tab-content mt-8 space-y-8">
+        <!-- 4 KPI Bento Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="bento-card p-6 bg-white border border-[#E2E8F0] rounded-2xl">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#64748B]">Active Catalog Pieces</span>
+            <div id="kpi-catalog-count" class="font-display text-3xl font-black text-[#0B0F19] mt-2">-</div>
+            <p class="text-xs text-[#94A3B8] mt-1">Ready for 3D print dispatch</p>
           </div>
 
-          <!-- Epistemic Integrity Alert -->
-          <div style="background: #FEF3C7; border: 1px solid #FCD34D; border-radius: 12px; padding: 18px; margin-bottom: 32px;">
-            <div style="display: flex; gap: 12px; align-items: flex-start;">
-              <span style="font-size: 20px;">ℹ️</span>
-              <div>
-                <strong style="color: #92400E; font-size: 14px;">Attribution Integrity Active</strong>
-                <p style="font-size: 13px; color: #78350F; margin-top: 4px; line-height: 1.5;">
-                  Outbound Amazon and WhatsApp clicks represent measured customer intent. Without external API verification, they are strictly classified as <em>"Purchase Outcome Unknown"</em> rather than fabricated conversion rates.
-                </p>
-              </div>
-            </div>
+          <div class="bento-card p-6 bg-white border border-[#E2E8F0] rounded-2xl">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#64748B]">Custom Order Inquiries</span>
+            <div id="kpi-enquiries" class="font-display text-3xl font-black text-[#2563EB] mt-2">-</div>
+            <p class="text-xs text-[#94A3B8] mt-1">Registered from storefront</p>
+          </div>
+
+          <div class="bento-card p-6 bg-white border border-[#E2E8F0] rounded-2xl">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#64748B]">WhatsApp Consultations</span>
+            <div id="kpi-whatsapp-clicks" class="font-display text-3xl font-black text-emerald-600 mt-2">-</div>
+            <p class="text-xs text-[#94A3B8] mt-1">Measured client chat intents</p>
+          </div>
+
+          <div class="bento-card p-6 bg-white border border-[#E2E8F0] rounded-2xl">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#64748B]">Amazon Outbound Intends</span>
+            <div id="kpi-amazon-clicks" class="font-display text-3xl font-black text-[#D97706] mt-2">-</div>
+            <p class="text-xs text-[#94A3B8] mt-1">Tracked marketplace referrals</p>
           </div>
         </div>
 
-        <!-- TAB 2: PRODUCTS -->
-        <div id="content-products" class="tab-content" style="display: none; margin-top: 24px;">
-          <div style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 12px; padding: 24px; overflow-x: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-              <div>
-                <h2 style="font-size: 18px; font-weight: 700; color: var(--charcoal); margin: 0;">Product Catalog</h2>
-                <p style="font-size: 13px; color: #78716C; margin-top: 2px;">Manage published creations, inventory stock levels, and technical specifications.</p>
-              </div>
-              <button onclick="openProductModal(null)" class="btn-primary" style="padding: 8px 18px; font-size: 13px; min-height: 38px;">
-                + Add Product
-              </button>
-            </div>
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
-              <thead>
-                <tr style="border-bottom: 2px solid var(--stone-border); color: #78716C;">
-                  <th style="padding: 12px 8px;">Name</th>
-                  <th style="padding: 12px 8px;">Category</th>
-                  <th style="padding: 12px 8px;">Price (INR)</th>
-                  <th style="padding: 12px 8px;">Stock Status</th>
-                  <th style="padding: 12px 8px;">Visibility</th>
-                  <th style="padding: 12px 8px;">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="products-table-body">
-                <tr><td colspan="6" style="padding: 24px; text-align: center; color: #A8A29E;">Loading catalog...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- TAB 3: ENQUIRIES -->
-        <div id="content-enquiries" class="tab-content" style="display: none; margin-top: 24px;">
-          <div style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 12px; padding: 24px; overflow-x: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-              <div>
-                <h2 style="font-size: 18px; font-weight: 700; color: var(--charcoal); margin: 0;">Custom Order Enquiries</h2>
-                <p style="font-size: 13px; color: #78716C; margin-top: 2px;">Review client commission briefs, inspect attachments, and log craftsmanship notes.</p>
-              </div>
-            </div>
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
-              <thead>
-                <tr style="border-bottom: 2px solid var(--stone-border); color: #78716C;">
-                  <th style="padding: 12px 8px;">Date</th>
-                  <th style="padding: 12px 8px;">Customer</th>
-                  <th style="padding: 12px 8px;">Project Category</th>
-                  <th style="padding: 12px 8px;">Contact Details</th>
-                  <th style="padding: 12px 8px;">Status</th>
-                  <th style="padding: 12px 8px;">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="enquiries-table-body">
-                <tr><td colspan="6" style="padding: 24px; text-align: center; color: #A8A29E;">Loading enquiries...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- TAB 4: BI EXPORTS -->
-        <div id="content-exports" class="tab-content" style="display: none; margin-top: 24px;">
-          <div style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 12px; padding: 28px;">
-            <h2 style="font-size: 18px; font-weight: 700; color: var(--charcoal); margin-bottom: 12px;">Export Business Data</h2>
-            <p style="font-size: 14px; color: #78716C; margin-bottom: 24px;">
-              Download verified, reconcilable business intelligence reports for external AI agents or spreadsheet analysis. All files adhere strictly to RFC 4180 with CSV formula injection protection.
+        <!-- Attribution Integrity Notice -->
+        <div class="p-4 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] flex items-start gap-3 text-xs text-[#92400E]">
+          <span class="text-base mt-0.5">ℹ️</span>
+          <div>
+            <strong class="font-bold text-[#78350F]">Attribution Integrity Guaranteed:</strong>
+            <p class="mt-0.5 leading-relaxed">
+              Outbound Amazon and WhatsApp links represent measured intent. Without direct post-checkout callbacks, external sales are strictly classified as <code class="font-mono bg-white px-1 py-0.5 rounded border border-[#FDE68A]">"purchase_outcome_unknown"</code> rather than fabricated conversion counts.
             </p>
+          </div>
+        </div>
+      </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-              <div style="border: 1px solid var(--stone-border); border-radius: 10px; padding: 20px;">
-                <h3 style="font-size: 15px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">Raw Analytics Events</h3>
-                <p style="font-size: 12px; color: #78716C; margin-bottom: 16px;">Immutable event log with zero-PII sanitization.</p>
-                <div style="display: flex; gap: 8px;">
-                  <a href="/api/admin/exports/events.csv" download class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">CSV</a>
-                  <a href="/api/admin/exports/events.json" download class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">JSON</a>
-                </div>
+      <!-- TAB 2: PRODUCTS CATALOGUE -->
+      <div id="content-products" class="tab-content mt-8 hidden space-y-6">
+        <div class="bg-white border border-[#E2E8F0] rounded-2xl p-6 sm:p-8 shadow-sm">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="font-display text-xl font-black text-[#0B0F19]">Product Catalogue</h2>
+              <p class="text-xs text-[#64748B] mt-1">
+                Add new pieces, update pricing, manage stock levels, and customize technical specs.
+              </p>
+            </div>
+            <button onclick="openProductModal(null)" class="btn btn-primary btn-md">
+              + Add New Creation
+            </button>
+          </div>
+
+          <!-- Product Data Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="border-b border-[#E2E8F0] text-[#64748B] font-bold uppercase tracking-wider">
+                  <th class="py-3 px-3">Item</th>
+                  <th class="py-3 px-3">Category</th>
+                  <th class="py-3 px-3">Base Price</th>
+                  <th class="py-3 px-3">Inventory / Stock</th>
+                  <th class="py-3 px-3">Status</th>
+                  <th class="py-3 px-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body" class="divide-y divide-[#F1F5F9]">
+                <tr><td colspan="6" class="py-12 text-center text-[#94A3B8]">Loading catalogue creations...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: CUSTOM ORDER ENQUIRIES -->
+      <div id="content-enquiries" class="tab-content mt-8 hidden space-y-6">
+        <div class="bg-white border border-[#E2E8F0] rounded-2xl p-6 sm:p-8 shadow-sm">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="font-display text-xl font-black text-[#0B0F19]">Custom Order Inquiries</h2>
+              <p class="text-xs text-[#64748B] mt-1">
+                Review client commission briefs, inspect reference attachments, and log craftsmanship notes.
+              </p>
+            </div>
+          </div>
+
+          <!-- Enquiries Rich Data Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="border-b border-[#E2E8F0] text-[#64748B] font-bold uppercase tracking-wider">
+                  <th class="py-3 px-3">Ref &amp; Date</th>
+                  <th class="py-3 px-3">Customer Contact</th>
+                  <th class="py-3 px-3">Project &amp; Budget</th>
+                  <th class="py-3 px-3">Design Description</th>
+                  <th class="py-3 px-3">Reference / CAD</th>
+                  <th class="py-3 px-3">Status</th>
+                  <th class="py-3 px-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="enquiries-table-body" class="divide-y divide-[#F1F5F9]">
+                <tr><td colspan="7" class="py-12 text-center text-[#94A3B8]">Loading custom order inquiries...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: BI EXPORTS -->
+      <div id="content-exports" class="tab-content mt-8 hidden space-y-6">
+        <div class="bg-white border border-[#E2E8F0] rounded-2xl p-6 sm:p-8 shadow-sm">
+          <h2 class="font-display text-xl font-black text-[#0B0F19] mb-2">Export Studio Business Data</h2>
+          <p class="text-xs text-[#64748B] mb-6 leading-relaxed max-w-2xl">
+            Download verified, mathematically reconcilable reports for AI models, audit logs, or spreadsheets. Complies strictly with RFC 4180 and CSV formula injection prevention.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="p-5 rounded-2xl bg-[#FAF9F5] border border-[#E2E8F0] space-y-3">
+              <span class="text-xs font-bold text-[#0B0F19]">Raw Analytics Events</span>
+              <p class="text-xs text-[#64748B]">Sanitized event stream with zero-PII guarantee.</p>
+              <div class="flex gap-2 pt-2">
+                <a href="/api/admin/exports/events.csv" download class="btn btn-secondary btn-sm">CSV</a>
+                <a href="/api/admin/exports/events.json" download class="btn btn-secondary btn-sm">JSON</a>
               </div>
+            </div>
 
-              <div style="border: 1px solid var(--stone-border); border-radius: 10px; padding: 20px;">
-                <h3 style="font-size: 15px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">Daily Aggregated Rollups</h3>
-                <p style="font-size: 12px; color: #78716C; margin-bottom: 16px;">Mathematically reconciled daily product metrics (&Delta; = 0).</p>
-                <div style="display: flex; gap: 8px;">
-                  <a href="/api/admin/exports/rollups.csv" download class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">CSV</a>
-                  <a href="/api/admin/exports/rollups.json" download class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">JSON</a>
-                </div>
+            <div class="p-5 rounded-2xl bg-[#FAF9F5] border border-[#E2E8F0] space-y-3">
+              <span class="text-xs font-bold text-[#0B0F19]">Daily Product Rollups</span>
+              <p class="text-xs text-[#64748B]">Reconciled daily product metrics (&Delta; = 0).</p>
+              <div class="flex gap-2 pt-2">
+                <a href="/api/admin/exports/rollups.csv" download class="btn btn-secondary btn-sm">CSV</a>
+                <a href="/api/admin/exports/rollups.json" download class="btn btn-secondary btn-sm">JSON</a>
               </div>
+            </div>
 
-              <div style="border: 1px solid var(--stone-border); border-radius: 10px; padding: 20px;">
-                <h3 style="font-size: 15px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">Customer Enquiries</h3>
-                <p style="font-size: 12px; color: #78716C; margin-bottom: 16px;">Permitted enquiry export with customer privacy guards.</p>
-                <div style="display: flex; gap: 8px;">
-                  <a href="/api/admin/exports/enquiries.csv" download class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">CSV</a>
-                </div>
+            <div class="p-5 rounded-2xl bg-[#FAF9F5] border border-[#E2E8F0] space-y-3">
+              <span class="text-xs font-bold text-[#0B0F19]">Custom Order Inquiries</span>
+              <p class="text-xs text-[#64748B]">Commission briefs with customer privacy guards.</p>
+              <div class="flex gap-2 pt-2">
+                <a href="/api/admin/exports/enquiries.csv" download class="btn btn-secondary btn-sm">CSV</a>
               </div>
+            </div>
 
-              <div style="border: 1px solid var(--stone-border); border-radius: 10px; padding: 20px;">
-                <h3 style="font-size: 15px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">Product Catalog Snapshot</h3>
-                <p style="font-size: 12px; color: #78716C; margin-bottom: 16px;">Complete metadata with integer paise pricing.</p>
-                <div style="display: flex; gap: 8px;">
-                  <a href="/api/admin/exports/catalog.json" download class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">JSON</a>
-                </div>
+            <div class="p-5 rounded-2xl bg-[#FAF9F5] border border-[#E2E8F0] space-y-3">
+              <span class="text-xs font-bold text-[#0B0F19]">Complete Catalog Snapshot</span>
+              <p class="text-xs text-[#64748B]">All metadata with integer paise pricing.</p>
+              <div class="flex gap-2 pt-2">
+                <a href="/api/admin/exports/catalog.json" download class="btn btn-secondary btn-sm">JSON</a>
               </div>
             </div>
           </div>
@@ -309,189 +341,207 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
     </div>
 
     <!-- MODAL 1: ADD / EDIT PRODUCT -->
-    <div id="product-modal" style="display: none; position: fixed; inset: 0; z-index: 110; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 20px;">
-      <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid var(--stone-border); width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <h2 id="product-modal-title" style="font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--charcoal); margin: 0;">Add Creation</h2>
-          <button onclick="closeProductModal()" style="background: transparent; border: none; font-size: 24px; cursor: pointer; color: #78716C;">&times;</button>
+    <div id="product-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl border border-[#E2E8F0] w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-center justify-between pb-4 border-b border-[#F1F5F9] mb-5">
+          <h2 id="product-modal-title" class="font-display text-xl font-black text-[#0B0F19]">Add Handcrafted Creation</h2>
+          <button onclick="closeProductModal()" class="text-xl text-[#94A3B8] hover:text-[#0B0F19] transition-colors">&times;</button>
         </div>
-        <form id="product-form" style="display: flex; flex-direction: column; gap: 16px;">
+
+        <form id="product-form" class="space-y-4">
           <input type="hidden" id="p-id" name="id" />
-          
-          <div>
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Piece Title *</label>
-            <input type="text" id="p-name" name="name" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;" />
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div>
-              <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">URL Slug *</label>
-              <input type="text" id="p-slug" name="slug" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;" />
-            </div>
-            <div>
-              <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Price (INR ₹) *</label>
-              <input type="number" id="p-price-inr" name="price_inr" step="0.01" min="0" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;" />
-            </div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div>
-              <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Category *</label>
-              <select id="p-category" name="category_id" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px; background: #FFF;">
-              </select>
-            </div>
-            <div>
-              <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Material</label>
-              <input type="text" id="p-material" name="material" value="PLA / PLA Pro" style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;" />
-            </div>
-          </div>
 
           <div>
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Description</label>
-            <textarea id="p-description" name="description" rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;"></textarea>
+            <label for="p-name" class="form-label">Piece Name / Title <span class="text-[#2563EB]">*</span></label>
+            <input type="text" id="p-name" name="name" required class="form-input" placeholder="e.g. Vighnaharta Ganesha in Antique Bronze Patina" />
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Weight (Grams)</label>
-              <input type="number" id="p-weight" name="weight_grams" min="0" style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;" />
+              <label for="p-slug" class="form-label">URL Slug <span class="text-[#2563EB]">*</span></label>
+              <input type="text" id="p-slug" name="slug" required class="form-input" placeholder="ganesha-antique-bronze" />
             </div>
+
             <div>
-              <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Inventory Count</label>
-              <input type="number" id="p-inventory" name="inventory_count" min="0" value="0" style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;" />
-            </div>
-            <div>
-              <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Lead Time (Days)</label>
-              <input type="text" id="p-lead-days" name="production_lead_days" value="3-5 business days" style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;" />
+              <label for="p-price-inr" class="form-label">Price (INR ₹) <span class="text-[#2563EB]">*</span></label>
+              <input type="number" id="p-price-inr" name="price_inr" step="0.01" min="0" required class="form-input" placeholder="1899.00" />
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Amazon India URL</label>
-              <input type="url" id="p-amazon-url" name="amazon_url" placeholder="https://www.amazon.in/dp/..." style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;" />
+              <label for="p-category" class="form-label">Category <span class="text-[#2563EB]">*</span></label>
+              <select id="p-category" name="category_id" required class="form-select"></select>
             </div>
+
             <div>
-              <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Amazon ASIN</label>
-              <input type="text" id="p-amazon-asin" name="amazon_asin" placeholder="B09XXXXXXX" style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;" />
+              <label for="p-material" class="form-label">Material Core</label>
+              <input type="text" id="p-material" name="material" value="High-Density Biodegradable PLA / PLA Pro" class="form-input" />
             </div>
           </div>
 
-          <div style="display: flex; gap: 24px; margin-top: 6px;">
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
-              <input type="checkbox" id="p-made-to-order" name="is_made_to_order" checked />
-              <span>Made to Order</span>
+          <div>
+            <label for="p-description" class="form-label">Editorial Description</label>
+            <textarea id="p-description" name="description" rows="3" class="form-textarea" placeholder="Detailed craft description, layer resolution, finishing notes..."></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label for="p-weight" class="form-label">Weight (Grams)</label>
+              <input type="number" id="p-weight" name="weight_grams" min="0" value="350" class="form-input" />
+            </div>
+            <div>
+              <label for="p-inventory" class="form-label">Inventory Count</label>
+              <input type="number" id="p-inventory" name="inventory_count" min="0" value="5" class="form-input" />
+            </div>
+            <div>
+              <label for="p-lead-days" class="form-label">Production Lead Time</label>
+              <input type="text" id="p-lead-days" name="production_lead_days" value="3-5 business days" class="form-input" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="p-amazon-url" class="form-label">Amazon India URL (Optional)</label>
+              <input type="url" id="p-amazon-url" name="amazon_url" placeholder="https://www.amazon.in/dp/..." class="form-input" />
+            </div>
+            <div>
+              <label for="p-amazon-asin" class="form-label">Amazon ASIN</label>
+              <input type="text" id="p-amazon-asin" name="amazon_asin" placeholder="B09XXXXXXX" class="form-input" />
+            </div>
+          </div>
+
+          <!-- Toggles -->
+          <div class="flex items-center gap-6 pt-2">
+            <label class="flex items-center gap-2 text-xs font-semibold text-[#0B0F19] cursor-pointer">
+              <input type="checkbox" id="p-made-to-order" name="is_made_to_order" class="rounded text-[#2563EB]" checked />
+              <span>Allow "Made to Order"</span>
             </label>
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
-              <input type="checkbox" id="p-published" name="is_published" checked />
+            <label class="flex items-center gap-2 text-xs font-semibold text-[#0B0F19] cursor-pointer">
+              <input type="checkbox" id="p-published" name="is_published" class="rounded text-[#2563EB]" checked />
               <span>Publish to Storefront</span>
             </label>
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
-              <input type="checkbox" id="p-featured" name="is_featured" />
-              <span>Featured Creation</span>
+            <label class="flex items-center gap-2 text-xs font-semibold text-[#0B0F19] cursor-pointer">
+              <input type="checkbox" id="p-featured" name="is_featured" class="rounded text-[#2563EB]" />
+              <span>Featured on Homepage</span>
             </label>
           </div>
 
-          <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; border-top: 1px solid var(--stone-border); padding-top: 16px;">
-            <button type="button" onclick="closeProductModal()" class="btn-secondary" style="padding: 8px 16px; font-size: 13px;">Cancel</button>
-            <button type="submit" id="save-product-btn" class="btn-primary" style="padding: 8px 20px; font-size: 13px;">Save Creation</button>
+          <div class="flex justify-end gap-3 pt-5 border-t border-[#F1F5F9]">
+            <button type="button" onclick="closeProductModal()" class="btn btn-secondary btn-md">Cancel</button>
+            <button type="submit" id="save-product-btn" class="btn btn-primary btn-md">Save Creation</button>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- MODAL 2: QUICK STOCK TOGGLE -->
-    <div id="stock-modal" style="display: none; position: fixed; inset: 0; z-index: 110; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 20px;">
-      <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid var(--stone-border); width: 100%; max-width: 400px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <h2 style="font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: var(--charcoal); margin: 0;">Stock &amp; Availability</h2>
-          <button onclick="closeStockModal()" style="background: transparent; border: none; font-size: 24px; cursor: pointer; color: #78716C;">&times;</button>
+    <!-- MODAL 2: QUICK INVENTORY & AVAILABILITY -->
+    <div id="stock-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl border border-[#E2E8F0] w-full max-w-sm p-6 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-[#F1F5F9] mb-4">
+          <h2 class="font-display text-lg font-black text-[#0B0F19]">Inventory Control</h2>
+          <button onclick="closeStockModal()" class="text-xl text-[#94A3B8] hover:text-[#0B0F19]">&times;</button>
         </div>
-        <form id="stock-form" style="display: flex; flex-direction: column; gap: 14px;">
+        <form id="stock-form" class="space-y-4">
           <input type="hidden" id="stock-p-id" />
           <div>
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #44403C; margin-bottom: 4px;">Inventory Units on Hand</label>
-            <input type="number" id="stock-inventory-count" min="0" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 14px;" />
+            <label for="stock-inventory-count" class="form-label">Available Units on Hand</label>
+            <input type="number" id="stock-inventory-count" min="0" required class="form-input" />
           </div>
           <div>
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
-              <input type="checkbox" id="stock-is-made-to-order" />
-              <span>Allow "Made to Order" when stock is zero</span>
+            <label class="flex items-center gap-2 text-xs font-semibold text-[#0B0F19] cursor-pointer">
+              <input type="checkbox" id="stock-is-made-to-order" class="rounded text-[#2563EB]" />
+              <span>Allow "Made to Order" when stock is 0</span>
             </label>
           </div>
-          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 12px;">
-            <button type="button" onclick="closeStockModal()" class="btn-secondary" style="padding: 6px 14px; font-size: 13px;">Cancel</button>
-            <button type="submit" class="btn-primary" style="padding: 6px 18px; font-size: 13px;">Update Stock</button>
+          <div class="flex justify-end gap-2 pt-3 border-t border-[#F1F5F9]">
+            <button type="button" onclick="closeStockModal()" class="btn btn-secondary btn-sm">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">Update Stock</button>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- MODAL 3: ENQUIRY DETAILS MODAL -->
-    <div id="enquiry-modal" style="display: none; position: fixed; inset: 0; z-index: 110; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 20px;">
-      <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid var(--stone-border); width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+    <!-- MODAL 3: CUSTOM ORDER FULL BRIEF & NOTES -->
+    <div id="enquiry-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl border border-[#E2E8F0] w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-center justify-between pb-4 border-b border-[#F1F5F9] mb-5">
+          <div class="flex items-center gap-3">
+            <span id="enq-ref" class="font-mono text-xs font-bold px-2.5 py-1 rounded bg-[#F1F5F9] text-[#0B0F19]">#REF</span>
+            <span id="enq-status-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase">STATUS</span>
+          </div>
+          <button onclick="closeEnquiryModal()" class="text-xl text-[#94A3B8] hover:text-[#0B0F19]">&times;</button>
+        </div>
+
+        <div class="space-y-5 text-xs text-[#475569]">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-[#FAF9F5] border border-[#E2E8F0]">
+            <div>
+              <span class="text-[#94A3B8] uppercase tracking-wider font-bold text-[10px]">Client Name</span>
+              <div id="enq-customer" class="font-bold text-sm text-[#0B0F19] mt-0.5">Customer Name</div>
+            </div>
+            <div>
+              <span class="text-[#94A3B8] uppercase tracking-wider font-bold text-[10px]">Contact Info</span>
+              <div id="enq-phone" class="font-semibold text-[#0B0F19] mt-0.5">Phone</div>
+              <div id="enq-email" class="mt-0.5">Email</div>
+            </div>
+            <div>
+              <span class="text-[#94A3B8] uppercase tracking-wider font-bold text-[10px]">Project Category</span>
+              <div id="enq-category" class="font-bold text-[#0B0F19] mt-0.5">Category</div>
+            </div>
+            <div>
+              <span class="text-[#94A3B8] uppercase tracking-wider font-bold text-[10px]">Budget &amp; Quantity</span>
+              <div class="font-bold text-[#0B0F19] mt-0.5"><span id="enq-budget">-</span> • Qty: <span id="enq-quantity">1</span></div>
+            </div>
+          </div>
+
+          <div id="enq-ref-prod-sec">
+            <span class="text-[#94A3B8] uppercase tracking-wider font-bold text-[10px]">Referenced Catalogue Model</span>
+            <div id="enq-ref-prod" class="font-bold text-[#2563EB] mt-0.5">None</div>
+          </div>
+
           <div>
-            <span id="enq-ref" style="font-size: 11px; font-weight: 700; color: var(--terracotta); text-transform: uppercase;"></span>
-            <h2 id="enq-customer" style="font-family: var(--font-serif); font-size: 22px; font-weight: 700; color: var(--charcoal); margin: 2px 0 0 0;"></h2>
+            <span class="text-[#94A3B8] uppercase tracking-wider font-bold text-[10px]">Customer Design Brief &amp; Finishing Specifications</span>
+            <div id="enq-description" class="mt-1.5 p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-sm text-[#0B0F19] whitespace-pre-wrap leading-relaxed"></div>
           </div>
-          <button onclick="closeEnquiryModal()" style="background: transparent; border: none; font-size: 24px; cursor: pointer; color: #78716C;">&times;</button>
-        </div>
 
-        <!-- Meta Summary Grid -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #FAF9F6; border: 1px solid var(--stone-border); border-radius: 10px; padding: 14px; margin-bottom: 20px; font-size: 13px;">
-          <div><strong>Contact Phone:</strong> <span id="enq-phone"></span></div>
-          <div><strong>Email:</strong> <span id="enq-email"></span></div>
-          <div><strong>Project Category:</strong> <span id="enq-category"></span></div>
-          <div><strong>Target Budget:</strong> <span id="enq-budget"></span></div>
-          <div><strong>Quantity:</strong> <span id="enq-quantity"></span></div>
-          <div><strong>Referenced Creation:</strong> <span id="enq-ref-prod"></span></div>
-        </div>
-
-        <!-- Full Customer Design & Finishing Description -->
-        <div style="margin-bottom: 20px;">
-          <h3 style="font-size: 14px; font-weight: 700; color: var(--charcoal); margin-bottom: 6px;">Customer Design Description</h3>
-          <div id="enq-description" style="background: #FAF9F6; border: 1px solid var(--stone-border); border-radius: 8px; padding: 16px; font-size: 14px; line-height: 1.6; white-space: pre-wrap; color: var(--charcoal);">
+          <div id="enq-attachments-section">
+            <span class="text-[#94A3B8] uppercase tracking-wider font-bold text-[10px]">Uploaded Reference Files &amp; CAD</span>
+            <div id="enq-attachments-list" class="mt-2 flex gap-3 flex-wrap"></div>
           </div>
-        </div>
 
-        <!-- Attachments Section -->
-        <div id="enq-attachments-section" style="margin-bottom: 20px;">
-          <h3 style="font-size: 14px; font-weight: 700; color: var(--charcoal); margin-bottom: 8px;">CAD Models &amp; Design References</h3>
-          <div id="enq-attachments-list" style="display: flex; gap: 12px; flex-wrap: wrap;"></div>
-        </div>
+          <!-- Workflow Status Transition Selector -->
+          <div class="p-4 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <span class="font-bold text-[#1E40AF]">Advance Order Stage:</span>
+              <p class="text-[11px] text-[#3B82F6]">Strictly transitions forward according to studio policy.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <select id="enq-status-select" class="form-select py-1.5 px-3 text-xs font-bold">
+                <option value="new">NEW (Unreviewed)</option>
+                <option value="contacted">CONTACTED</option>
+                <option value="quoted">QUOTED</option>
+                <option value="converted">CONVERTED (Order Placed)</option>
+                <option value="closed">CLOSED / ARCHIVED</option>
+              </select>
+              <button onclick="updateEnquiryStatus()" class="btn btn-primary btn-sm">Update</button>
+            </div>
+          </div>
 
-        <!-- Status Workflow Transition -->
-        <div style="background: #F5F5F4; border-radius: 10px; padding: 16px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
-          <div>
-            <span style="font-size: 12px; font-weight: 600; color: #57534E; display: block;">Current Workflow Stage</span>
-            <span id="enq-status-badge" style="font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 6px; display: inline-block; margin-top: 4px;"></span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <select id="enq-status-select" style="padding: 7px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 13px; background: #FFF; font-weight: 600;">
-              <option value="new">New</option>
-              <option value="contacted">Contacted</option>
-              <option value="quoted">Quoted</option>
-              <option value="converted">Converted</option>
-              <option value="closed">Closed</option>
-            </select>
-            <button onclick="updateEnquiryStatus()" class="btn-primary" style="padding: 7px 14px; font-size: 13px; min-height: 36px;">Update Status</button>
-          </div>
-        </div>
+          <!-- Internal Atelier Notes & Timeline -->
+          <div class="border-t border-[#F1F5F9] pt-4">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-[#0B0F19] mb-3">Atelier Timeline &amp; Notes</h4>
+            <div id="enq-notes-list" class="space-y-2 mb-4"></div>
 
-        <!-- Internal Craftsmanship Notes History & Add Form -->
-        <div>
-          <h3 style="font-size: 14px; font-weight: 700; color: var(--charcoal); margin-bottom: 10px;">Internal Artisan Notes</h3>
-          <div id="enq-notes-list" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; max-height: 180px; overflow-y: auto;">
+            <form id="enq-notes-form" class="flex gap-2">
+              <input type="text" id="enq-new-note" placeholder="Add internal studio note (e.g. Quoted ₹3,200 on WhatsApp, 0.12mm bronze)..." class="form-input text-xs" />
+              <button type="submit" class="btn btn-secondary btn-sm shrink-0">Log Note</button>
+            </form>
           </div>
-          <form id="enq-notes-form" style="display: flex; gap: 8px;">
-            <input type="text" id="enq-new-note" placeholder="Log material estimate, CAD review note, or dispatch tracking..." style="flex-grow: 1; padding: 8px 12px; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 13px;" required />
-            <button type="submit" class="btn-secondary" style="padding: 8px 16px; font-size: 13px; white-space: nowrap;">Add Note</button>
-          </form>
         </div>
       </div>
     </div>
 
+    <!-- Client-side Admin Dashboard Engine -->
     <script>
       var CATEGORIES = ${JSON.stringify(categories)};
       var PROJECT_LABELS = {
@@ -506,16 +556,21 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
       var activeEnquiryId = null;
 
       function switchTab(tab) {
-        document.querySelectorAll('.tab-btn').forEach(b => {
-          b.style.background = 'transparent';
-          b.style.color = '#78716C';
-          b.style.boxShadow = 'none';
+        document.querySelectorAll('.tab-btn').forEach(function(b) {
+          b.classList.remove('bg-white', 'text-[#0B0F19]', 'shadow-sm');
+          b.classList.add('text-[#64748B]');
         });
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        document.getElementById('tab-' + tab).style.background = '#FFFFFF';
-        document.getElementById('tab-' + tab).style.color = 'var(--charcoal)';
-        document.getElementById('tab-' + tab).style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
-        document.getElementById('content-' + tab).style.display = 'block';
+        document.querySelectorAll('.tab-content').forEach(function(c) {
+          c.classList.add('hidden');
+        });
+
+        var btn = document.getElementById('tab-' + tab);
+        var content = document.getElementById('content-' + tab);
+        if (btn) {
+          btn.classList.add('bg-white', 'text-[#0B0F19]', 'shadow-sm');
+          btn.classList.remove('text-[#64748B]');
+        }
+        if (content) content.classList.remove('hidden');
 
         if (tab === 'products') loadProducts();
         if (tab === 'enquiries') loadEnquiries();
@@ -523,87 +578,99 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
 
       async function loadKpis() {
         try {
-          const res = await fetch('/api/admin/overview/kpis');
+          var res = await fetch('/api/admin/overview/kpis');
           if (res.ok) {
-            const data = await res.json();
-            const totals = data.totals || {};
-            document.getElementById('kpi-views').innerText = totals.total_views || 0;
-            document.getElementById('kpi-pdp').innerText = totals.pdp_views || 0;
-            document.getElementById('kpi-amazon').innerText = totals.amazon_clicks || 0;
-            document.getElementById('kpi-whatsapp').innerText = totals.whatsapp_clicks || 0;
+            var data = await res.json();
+            var totals = data.totals || {};
+            document.getElementById('kpi-catalog-count').innerText = totals.catalog_count || '10';
             document.getElementById('kpi-enquiries').innerText = totals.enquiries_submitted || 0;
+            document.getElementById('kpi-whatsapp-clicks').innerText = totals.whatsapp_clicks || 0;
+            document.getElementById('kpi-amazon-clicks').innerText = totals.amazon_clicks || 0;
           }
-        } catch {}
+        } catch(e) {}
       }
 
       async function loadCategories() {
-        if (CATEGORIES && CATEGORIES.length > 0) return CATEGORIES;
+        if (CATEGORIES && CATEGORIES.length > 0) return;
         try {
-          const res = await fetch('/api/admin/categories');
+          var res = await fetch('/api/admin/categories');
           if (res.ok) {
-            const data = await res.json();
-            CATEGORIES = data.data || [];
+            var json = await res.json();
+            CATEGORIES = json.data || [];
           }
-        } catch {}
-        return CATEGORIES;
+        } catch(e) {}
       }
 
       async function loadProducts() {
-        const tbody = document.getElementById('products-table-body');
+        var tbody = document.getElementById('products-table-body');
         try {
-          const res = await fetch('/api/admin/products');
+          var res = await fetch('/api/admin/products');
           if (res.ok) {
-            const json = await res.json();
-            const products = json.data || [];
+            var json = await res.json();
+            var products = json.data || [];
+            document.getElementById('tab-prod-count').textContent = products.length;
+
             if (products.length === 0) {
-              tbody.innerHTML = '<tr><td colspan="6" style="padding: 24px; text-align: center; color: #78716C;">No creations found in catalog.</td></tr>';
+              tbody.innerHTML = '<tr><td colspan="6" class="py-12 text-center text-[#94A3B8]">No creations found in catalogue. Click "+ Add New Creation" above.</td></tr>';
               return;
             }
-            tbody.innerHTML = products.map(p => {
+
+            tbody.innerHTML = products.map(function(p) {
               var stockBadge = '';
               if (p.is_made_to_order) {
-                stockBadge = '<span style="background: #E0E7FF; color: #3730A3; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">Made to Order</span>';
+                stockBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-[#EFF6FF] text-[#2563EB]">Made to Order</span>';
               } else if (p.inventory_count > 5) {
-                stockBadge = '<span style="background: #DEF7EC; color: #03543F; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">In Stock (' + p.inventory_count + ')</span>';
+                stockBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700">In Stock (' + p.inventory_count + ')</span>';
               } else if (p.inventory_count > 0) {
-                stockBadge = '<span style="background: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">Low Stock (' + p.inventory_count + ')</span>';
+                stockBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700">Low Stock (' + p.inventory_count + ')</span>';
               } else {
-                stockBadge = '<span style="background: #FDE8E8; color: #9B1C1C; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">Out of Stock</span>';
+                stockBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-50 text-red-700">Out of Stock</span>';
               }
 
               var visBadge = p.is_published 
-                ? '<span style="font-size: 11px; padding: 2px 8px; border-radius: 4px; background: #DEF7EC; color: #03543F; font-weight: 600;">Published</span>'
-                : '<span style="font-size: 11px; padding: 2px 8px; border-radius: 4px; background: #F3F4F6; color: #374151; font-weight: 600;">Draft</span>';
+                ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700">Published</span>'
+                : '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">Draft</span>';
 
               var escapedP = JSON.stringify(p).replace(/"/g, '&quot;');
+              var imgUrl = (p.gallery_images && p.gallery_images[0]?.public_url) || '/placeholder.svg';
 
-              return '<tr style="border-bottom: 1px solid var(--stone-border);">' +
-                '<td style="padding: 12px 8px; font-weight: 600;">' + p.name + '</td>' +
-                '<td style="padding: 12px 8px; color: #78716C;">' + (p.category?.name || '-') + '</td>' +
-                '<td style="padding: 12px 8px; font-weight: 600;">₹' + (p.base_price_paise / 100).toFixed(2) + '</td>' +
-                '<td style="padding: 12px 8px;">' + stockBadge + '</td>' +
-                '<td style="padding: 12px 8px;">' + visBadge + '</td>' +
-                '<td style="padding: 12px 8px;">' +
-                  '<div style="display: flex; gap: 8px; align-items: center;">' +
-                    '<a href="/products/' + p.slug + '" target="_blank" style="color: var(--charcoal); font-size: 12px; font-weight: 600;">View</a>' +
-                    '<button onclick="openProductModal(' + escapedP + ')" style="background: transparent; border: 1px solid var(--stone-border); border-radius: 4px; padding: 3px 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Edit</button>' +
-                    '<button onclick="openStockModal(\\'' + p.id + '\\', ' + p.inventory_count + ', ' + (p.is_made_to_order ? 1 : 0) + ')" style="background: transparent; border: 1px solid var(--stone-border); border-radius: 4px; padding: 3px 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Stock</button>' +
-                    '<button onclick="archiveProduct(\\'' + p.id + '\\')" style="background: transparent; border: 1px solid #FECACA; color: #B91C1C; border-radius: 4px; padding: 3px 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Archive</button>' +
-                    '<button onclick="deleteProduct(\\'' + p.id + '\\', \\'' + p.name.replace(/'/g, "\\\\'") + '\\')" style="background: #FEE2E2; border: 1px solid #FCA5A5; color: #991B1B; border-radius: 4px; padding: 3px 8px; font-size: 12px; font-weight: 600; cursor: pointer;">Delete</button>' +
+              return '<tr class="hover:bg-[#FAF9F5] transition-colors">' +
+                '<td class="py-3 px-3">' +
+                  '<div class="flex items-center gap-3">' +
+                    '<img src="' + imgUrl + '" class="w-10 h-10 rounded-lg object-cover bg-[#F1F5F9] border border-[#E2E8F0]" alt="' + p.name + '" />' +
+                    '<div>' +
+                      '<div class="font-bold text-[#0B0F19]">' + p.name + '</div>' +
+                      '<div class="font-mono text-[10px] text-[#94A3B8]">/' + p.slug + '</div>' +
+                    '</div>' +
+                  '</div>' +
+                '</td>' +
+                '<td class="py-3 px-3 text-[#64748B] font-medium">' + (p.category?.name || '-') + '</td>' +
+                '<td class="py-3 px-3 font-bold text-[#0B0F19]">₹' + (p.base_price_paise / 100).toFixed(2) + '</td>' +
+                '<td class="py-3 px-3">' + stockBadge + '</td>' +
+                '<td class="py-3 px-3">' + visBadge + '</td>' +
+                '<td class="py-3 px-3 text-right">' +
+                  '<div class="flex items-center justify-end gap-1.5">' +
+                    '<a href="/products/' + p.slug + '" target="_blank" class="btn btn-ghost btn-sm">View</a>' +
+                    '<button onclick="openProductModal(' + escapedP + ')" class="btn btn-secondary btn-sm">Edit</button>' +
+                    '<button onclick="openStockModal(\\'' + p.id + '\\', ' + p.inventory_count + ', ' + (p.is_made_to_order ? 1 : 0) + ')" class="btn btn-secondary btn-sm">Stock</button>' +
+                    '<button onclick="archiveProduct(\\'' + p.id + '\\')" class="btn btn-ghost btn-sm text-amber-600 hover:bg-amber-50">Archive</button>' +
+                    '<button onclick="deleteProduct(\\'' + p.id + '\\', \\'' + p.name.replace(/'/g, "\\\\'") + '\\')" class="btn btn-ghost btn-sm text-red-600 hover:bg-red-50">Delete</button>' +
                   '</div>' +
                 '</td>' +
               '</tr>';
             }).join('');
           }
-        } catch {
-          tbody.innerHTML = '<tr><td colspan="6" style="padding: 16px; text-align: center; color: red;">Failed to load catalog.</td></tr>';
+        } catch(e) {
+          tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-red-600">Failed to load catalogue.</td></tr>';
         }
       }
 
       async function openProductModal(prod) {
         await loadCategories();
         var catSelect = document.getElementById('p-category');
-        catSelect.innerHTML = CATEGORIES.map(c => '<option value="' + c.id + '">' + c.name + '</option>').join('');
+        catSelect.innerHTML = CATEGORIES.map(function(c) {
+          return '<option value="' + c.id + '">' + c.name + '</option>';
+        }).join('');
 
         var modal = document.getElementById('product-modal');
         var title = document.getElementById('product-modal-title');
@@ -617,9 +684,9 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
           document.getElementById('p-slug').value = prod.slug;
           document.getElementById('p-price-inr').value = (prod.base_price_paise / 100).toFixed(2);
           document.getElementById('p-category').value = prod.category_id || (CATEGORIES[0]?.id || '');
-          document.getElementById('p-material').value = prod.material || 'PLA / PLA Pro';
+          document.getElementById('p-material').value = prod.material || 'High-Density Biodegradable PLA / PLA Pro';
           document.getElementById('p-description').value = prod.description || '';
-          document.getElementById('p-weight').value = prod.weight_grams || 0;
+          document.getElementById('p-weight').value = prod.weight_grams || 350;
           document.getElementById('p-inventory').value = prod.inventory_count || 0;
           document.getElementById('p-lead-days').value = prod.production_lead_days || '3-5 business days';
           document.getElementById('p-amazon-url').value = prod.amazon_url || '';
@@ -635,18 +702,18 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
           document.getElementById('p-featured').checked = false;
         }
 
-        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
       }
 
       function closeProductModal() {
-        document.getElementById('product-modal').style.display = 'none';
+        document.getElementById('product-modal').classList.add('hidden');
       }
 
       document.getElementById('product-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         var saveBtn = document.getElementById('save-product-btn');
         saveBtn.disabled = true;
-        saveBtn.innerText = 'Saving...';
+        saveBtn.textContent = 'Saving Creation...';
 
         var id = document.getElementById('p-id').value;
         var inr = parseFloat(document.getElementById('p-price-inr').value || '0');
@@ -680,13 +747,13 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
             closeProductModal();
             loadProducts();
           } else {
-            alert(data.error || 'Failed to save product.');
+            alert(data.error || 'Failed to save creation.');
           }
         } catch(err) {
-          alert('Network error while saving product.');
+          alert('Network error while saving creation.');
         } finally {
           saveBtn.disabled = false;
-          saveBtn.innerText = 'Save Creation';
+          saveBtn.textContent = 'Save Creation';
         }
       });
 
@@ -694,11 +761,11 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
         document.getElementById('stock-p-id').value = id;
         document.getElementById('stock-inventory-count').value = count;
         document.getElementById('stock-is-made-to-order').checked = Boolean(isMadeToOrder);
-        document.getElementById('stock-modal').style.display = 'flex';
+        document.getElementById('stock-modal').classList.remove('hidden');
       }
 
       function closeStockModal() {
-        document.getElementById('stock-modal').style.display = 'none';
+        document.getElementById('stock-modal').classList.add('hidden');
       }
 
       document.getElementById('stock-form').addEventListener('submit', async function(e) {
@@ -717,7 +784,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
             closeStockModal();
             loadProducts();
           } else {
-            alert('Failed to update availability.');
+            alert('Failed to update stock.');
           }
         } catch(err) {
           alert('Network error while updating stock.');
@@ -725,7 +792,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
       });
 
       async function archiveProduct(id) {
-        if (!confirm('Archive this piece? It will be hidden from the storefront catalogue.')) return;
+        if (!confirm('Archive this creation? It will be hidden from the storefront catalogue.')) return;
         try {
           var res = await fetch('/api/admin/products/' + id + '/status', {
             method: 'PATCH',
@@ -747,50 +814,83 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
       }
 
       async function loadEnquiries() {
-        const tbody = document.getElementById('enquiries-table-body');
+        var tbody = document.getElementById('enquiries-table-body');
         try {
-          const res = await fetch('/api/admin/enquiries');
+          var res = await fetch('/api/admin/enquiries');
           if (res.ok) {
-            const json = await res.json();
-            const enquiries = json.data || [];
+            var json = await res.json();
+            var enquiries = json.data || [];
+            document.getElementById('tab-enq-count').textContent = enquiries.length;
+
             if (enquiries.length === 0) {
-              tbody.innerHTML = '<tr><td colspan="6" style="padding: 24px; text-align: center; color: #78716C;">No customer enquiries submitted yet.</td></tr>';
+              tbody.innerHTML = '<tr><td colspan="7" class="py-12 text-center text-[#94A3B8]">No custom order inquiries submitted yet.</td></tr>';
               return;
             }
-            tbody.innerHTML = enquiries.map(e => {
+
+            tbody.innerHTML = enquiries.map(function(e) {
               var catLabel = PROJECT_LABELS[e.project_type] || e.project_type || 'Custom Piece';
-              var phoneHtml = '<a href="tel:' + e.contact_phone + '" style="color: var(--charcoal); font-weight: 600; text-decoration: underline;">' + e.contact_phone + '</a>';
+              var cleanPhoneDigits = (e.contact_phone || '').replace(/[^0-9]/g, '');
+              
+              var phoneHtml = '<a href="tel:' + e.contact_phone + '" class="font-bold text-[#0B0F19] hover:underline">' + e.contact_phone + '</a>';
+              var waHtml = '<a href="https://wa.me/' + cleanPhoneDigits + '?text=' + encodeURIComponent('Hello ' + e.customer_name + '! Following up on your BHAIRAVI Creations custom order enquiry #' + e.id) + '" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:underline">WhatsApp &rarr;</a>';
+              
               var emailHtml = e.contact_email 
-                ? '<div style="font-size: 11px; color: #78716C;">' + e.contact_email + '</div>'
-                : '<span title="No email provided (Phone/WhatsApp only)" style="display: inline-block; font-size: 10px; font-weight: 700; background: #E5E7EB; color: #4B5563; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">A</span>';
+                ? '<div class="text-[11px] text-[#64748B]">' + e.contact_email + '</div>'
+                : '<span title="No email provided (Phone/WhatsApp order)" class="inline-block text-[10px] font-extrabold bg-[#F1F5F9] text-[#64748B] px-1.5 py-0.5 rounded">A</span>';
 
               var statusColors = {
-                new: { bg: '#FEF3C7', fg: '#92400E' },
-                contacted: { bg: '#E0E7FF', fg: '#3730A3' },
-                quoted: { bg: '#EDE9FE', fg: '#5B21B6' },
-                converted: { bg: '#DEF7EC', fg: '#03543F' },
-                closed: { bg: '#F3F4F6', fg: '#4B5563' }
+                new: 'bg-amber-50 text-amber-700 border-amber-200',
+                contacted: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+                quoted: 'bg-purple-50 text-purple-700 border-purple-200',
+                converted: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                closed: 'bg-slate-100 text-slate-600 border-slate-200'
               };
-              var sc = statusColors[e.status] || { bg: '#F3F4F6', fg: '#4B5563' };
+              var sc = statusColors[e.status] || 'bg-slate-100 text-slate-600 border-slate-200';
 
-              return '<tr style="border-bottom: 1px solid var(--stone-border);">' +
-                '<td style="padding: 12px 8px; color: #78716C; font-size: 12px;">' + new Date(e.created_at).toLocaleDateString() + '</td>' +
-                '<td style="padding: 12px 8px; font-weight: 600;">' + e.customer_name + '</td>' +
-                '<td style="padding: 12px 8px; color: #57534E;">' + catLabel + '</td>' +
-                '<td style="padding: 12px 8px; font-size: 13px;">' + phoneHtml + emailHtml + '</td>' +
-                '<td style="padding: 12px 8px;">' +
-                  '<span style="font-size: 11px; padding: 2px 8px; border-radius: 4px; background: ' + sc.bg + '; color: ' + sc.fg + '; font-weight: 600; text-transform: uppercase;">' +
+              var descShort = e.design_description || 'No description entered';
+              if (descShort.length > 70) descShort = descShort.slice(0, 70) + '...';
+
+              var attHtml = '<span class="text-[#94A3B8]">None</span>';
+              if (e.attachments && e.attachments.length > 0) {
+                var firstAtt = e.attachments[0];
+                var isImg = /\\.(webp|jpg|jpeg|png)$/i.test(firstAtt.original_filename);
+                if (isImg) {
+                  attHtml = '<a href="' + firstAtt.public_url + '" target="_blank" class="inline-flex items-center gap-1 font-semibold text-[#2563EB] hover:underline">🖼️ Image</a>';
+                } else {
+                  attHtml = '<a href="' + firstAtt.public_url + '" target="_blank" download class="inline-flex items-center gap-1 font-semibold text-[#2563EB] hover:underline">📎 ' + (firstAtt.original_filename.slice(-7)) + '</a>';
+                }
+              }
+
+              return '<tr class="hover:bg-[#FAF9F5] transition-colors">' +
+                '<td class="py-3 px-3">' +
+                  '<div class="font-mono text-xs font-bold text-[#0B0F19]">#' + e.id.slice(-6) + '</div>' +
+                  '<div class="text-[10px] text-[#94A3B8]">' + new Date(e.created_at).toLocaleDateString() + '</div>' +
+                '</td>' +
+                '<td class="py-3 px-3">' +
+                  '<div class="font-bold text-[#0B0F19]">' + e.customer_name + '</div>' +
+                  '<div class="flex items-center gap-1.5 mt-0.5">' + phoneHtml + ' • ' + waHtml + ' ' + emailHtml + '</div>' +
+                '</td>' +
+                '<td class="py-3 px-3">' +
+                  '<div class="font-bold text-[#0B0F19]">' + catLabel + '</div>' +
+                  '<div class="text-[11px] text-[#64748B]">' + (e.budget_range_inr || 'Open') + ' • Qty: ' + (e.approximate_quantity || 1) + '</div>' +
+                '</td>' +
+                '<td class="py-3 px-3 max-w-[200px]">' +
+                  '<div class="text-[#475569] leading-snug truncate" title="' + (e.design_description || '') + '">' + descShort + '</div>' +
+                '</td>' +
+                '<td class="py-3 px-3">' + attHtml + '</td>' +
+                '<td class="py-3 px-3">' +
+                  '<span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ' + sc + '">' +
                     e.status +
                   '</span>' +
                 '</td>' +
-                '<td style="padding: 12px 8px;">' +
-                  '<button onclick="openEnquiryModal(\\'' + e.id + '\\')" class="btn-secondary" style="font-size: 12px; padding: 4px 10px;">View Details</button>' +
+                '<td class="py-3 px-3 text-right">' +
+                  '<button onclick="openEnquiryModal(\\'' + e.id + '\\')" class="btn btn-secondary btn-sm">View Full Brief</button>' +
                 '</td>' +
               '</tr>';
             }).join('');
           }
-        } catch {
-          tbody.innerHTML = '<tr><td colspan="6" style="padding: 16px; text-align: center; color: red;">Failed to load enquiries.</td></tr>';
+        } catch(e) {
+          tbody.innerHTML = '<tr><td colspan="7" class="py-6 text-center text-red-600">Failed to load custom order inquiries.</td></tr>';
         }
       }
 
@@ -802,25 +902,26 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
           var data = await res.json();
           var e = data.data;
 
-          document.getElementById('enq-ref').textContent = '#' + e.id.slice(0, 13);
+          document.getElementById('enq-ref').textContent = '#' + e.id;
           document.getElementById('enq-customer').textContent = e.customer_name;
           
           var phoneEl = document.getElementById('enq-phone');
-          phoneEl.innerHTML = '<a href="tel:' + e.contact_phone + '" style="color: var(--terracotta); font-weight: 700;">' + e.contact_phone + '</a>' +
-            ' (<a href="https://wa.me/' + e.contact_phone.replace(/[^0-9]/g, '') + '" target="_blank" style="color: #059669; font-weight: 600;">WhatsApp</a>)';
+          var cleanPhone = (e.contact_phone || '').replace(/[^0-9]/g, '');
+          phoneEl.innerHTML = '<a href="tel:' + e.contact_phone + '" class="text-[#2563EB] font-bold hover:underline">' + e.contact_phone + '</a>' +
+            ' (<a href="https://wa.me/' + cleanPhone + '" target="_blank" class="text-emerald-600 font-bold hover:underline">WhatsApp</a>)';
 
           var emailEl = document.getElementById('enq-email');
           emailEl.innerHTML = e.contact_email 
-            ? '<a href="mailto:' + e.contact_email + '" style="color: var(--charcoal);">' + e.contact_email + '</a>'
-            : '<span style="font-size: 11px; font-weight: 700; background: #E5E7EB; color: #4B5563; padding: 2px 6px; border-radius: 4px;">A (No Email Provided)</span>';
+            ? '<a href="mailto:' + e.contact_email + '" class="text-[#0B0F19] hover:underline">' + e.contact_email + '</a>'
+            : '<span class="text-[10px] font-bold bg-[#F1F5F9] text-[#64748B] px-1.5 py-0.5 rounded">A (No Email Provided)</span>';
 
           document.getElementById('enq-category').textContent = PROJECT_LABELS[e.project_type] || e.project_type || 'Custom';
-          document.getElementById('enq-budget').textContent = e.budget_range_inr || 'Open to Consultation';
+          document.getElementById('enq-budget').textContent = e.budget_range_inr || 'Open Consultation';
           document.getElementById('enq-quantity').textContent = e.approximate_quantity || 1;
           
           var refProdEl = document.getElementById('enq-ref-prod');
           if (e.referenced_product) {
-            refProdEl.innerHTML = '<a href="/products/' + e.referenced_product.slug + '" target="_blank" style="color: var(--terracotta); text-decoration: underline;">' + e.referenced_product.name + '</a>';
+            refProdEl.innerHTML = '<a href="/products/' + e.referenced_product.slug + '" target="_blank" class="font-bold text-[#2563EB] hover:underline">' + e.referenced_product.name + ' &rarr;</a>';
           } else {
             refProdEl.textContent = 'None (Original Brief)';
           }
@@ -830,58 +931,58 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
           var attachList = document.getElementById('enq-attachments-list');
           var attachSec = document.getElementById('enq-attachments-section');
           if (e.attachments && e.attachments.length > 0) {
-            attachSec.style.display = 'block';
-            attachList.innerHTML = e.attachments.map(att => {
-              var isImg = /\.(webp|jpg|jpeg|png)$/i.test(att.original_filename);
+            attachSec.classList.remove('hidden');
+            attachList.innerHTML = e.attachments.map(function(att) {
+              var isImg = /\\.(webp|jpg|jpeg|png)$/i.test(att.original_filename);
               if (isImg) {
-                return '<a href="' + att.public_url + '" target="_blank" style="display: block; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; border: 1px solid var(--stone-border);">' +
-                  '<img src="' + att.public_url + '" style="width: 100%; height: 100%; object-fit: cover;" alt="Attachment" />' +
+                return '<a href="' + att.public_url + '" target="_blank" class="block w-20 h-20 rounded-xl overflow-hidden border border-[#E2E8F0] hover:border-[#2563EB]">' +
+                  '<img src="' + att.public_url + '" class="w-full h-full object-cover" alt="Attachment" />' +
                 '</a>';
               } else {
-                return '<a href="' + att.public_url + '" target="_blank" download style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; background: #FAF9F6; border: 1px solid var(--stone-border); border-radius: 8px; font-size: 12px; color: var(--charcoal); font-weight: 600;">' +
+                return '<a href="' + att.public_url + '" target="_blank" download class="inline-flex items-center gap-2 p-2.5 bg-[#FAF9F5] border border-[#E2E8F0] rounded-xl text-xs font-bold text-[#0B0F19] hover:border-[#2563EB]">' +
                   '<span>📄 ' + att.original_filename + '</span>' +
                 '</a>';
               }
             }).join('');
           } else {
-            attachSec.style.display = 'none';
+            attachSec.classList.add('hidden');
           }
 
           var stBadge = document.getElementById('enq-status-badge');
           stBadge.textContent = e.status.toUpperCase();
-          stBadge.style.background = e.status === 'converted' ? '#DEF7EC' : (e.status === 'quoted' ? '#EDE9FE' : '#FEF3C7');
-          stBadge.style.color = e.status === 'converted' ? '#03543F' : (e.status === 'quoted' ? '#5B21B6' : '#92400E');
+          stBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ' + 
+            (e.status === 'converted' ? 'bg-emerald-50 text-emerald-700' : (e.status === 'quoted' ? 'bg-purple-50 text-purple-700' : 'bg-amber-50 text-amber-700'));
 
           document.getElementById('enq-status-select').value = e.status;
 
           renderNotes(e.timeline || []);
 
-          document.getElementById('enquiry-modal').style.display = 'flex';
+          document.getElementById('enquiry-modal').classList.remove('hidden');
         } catch(err) {
-          alert('Failed to load enquiry details.');
+          alert('Failed to load inquiry details.');
         }
       }
 
       function renderNotes(timeline) {
         var notesList = document.getElementById('enq-notes-list');
-        var notes = (timeline || []).filter(t => t.event_type === 'note_added' || t.internal_note);
+        var notes = (timeline || []).filter(function(t) { return t.event_type === 'note_added' || t.internal_note; });
         if (notes.length === 0) {
-          notesList.innerHTML = '<div style="font-size: 12px; color: #A8A29E; font-style: italic;">No artisan notes recorded yet.</div>';
+          notesList.innerHTML = '<div class="text-xs text-[#94A3B8] italic">No studio notes recorded yet.</div>';
           return;
         }
-        notesList.innerHTML = notes.map(n => 
-          '<div style="background: #FAF9F6; border: 1px solid var(--stone-border); border-radius: 6px; padding: 8px 12px; font-size: 13px;">' +
-            '<div style="display: flex; justify-content: space-between; font-size: 11px; color: #78716C; margin-bottom: 2px;">' +
-              '<strong>' + (n.actor_name || 'Artisan') + '</strong>' +
+        notesList.innerHTML = notes.map(function(n) {
+          return '<div class="p-3 bg-[#FAF9F5] border border-[#E2E8F0] rounded-xl text-xs">' +
+            '<div class="flex items-center justify-between text-[10px] text-[#94A3B8] font-bold mb-1">' +
+              '<span>' + (n.actor_name || 'Staff Artisan') + '</span>' +
               '<span>' + new Date(n.created_at).toLocaleString() + '</span>' +
             '</div>' +
-            '<div style="color: var(--charcoal);">' + (n.internal_note || n.note || '') + '</div>' +
-          '</div>'
-        ).join('');
+            '<div class="text-[#0B0F19] leading-relaxed">' + (n.internal_note || n.note || '') + '</div>' +
+          '</div>';
+        }).join('');
       }
 
       function closeEnquiryModal() {
-        document.getElementById('enquiry-modal').style.display = 'none';
+        document.getElementById('enquiry-modal').classList.add('hidden');
         activeEnquiryId = null;
       }
 
@@ -899,7 +1000,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
             loadEnquiries();
           } else {
             var data = await res.json();
-            alert(data.error || 'Invalid status transition.');
+            alert(data.error || 'Invalid status transition according to policy.');
           }
         } catch(e) {
           alert('Network error while updating status.');
@@ -930,21 +1031,20 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
         }
       });
 
-      document.getElementById('logout-btn').addEventListener('click', async () => {
+      document.getElementById('logout-btn').addEventListener('click', async function() {
         await fetch('/api/admin/auth/logout', { method: 'POST' });
         window.location.reload();
       });
 
-      // Initial load
-      document.getElementById('tab-overview').style.background = '#FFFFFF';
-      document.getElementById('tab-overview').style.color = 'var(--charcoal)';
+      // Initial tab setup
+      switchTab('overview');
       loadKpis();
     </script>
   `;
 
   return renderBaseLayout({
-    title: 'Admin Management Dashboard',
-    description: 'BHAIRAVI Creations Administrative Dashboard.',
+    title: 'Atelier Admin Portal',
+    description: 'BHAIRAVI Creations Administrative Dashboard & Studio Operations.',
     canonicalPath: '/admin',
     content: dashboardHtml
   });

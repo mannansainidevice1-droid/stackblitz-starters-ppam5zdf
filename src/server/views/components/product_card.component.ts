@@ -84,14 +84,24 @@ export function renderProductCard(product: ProductCardProps): string {
           </span>
         </div>
 
-        <a href="/products/${escapeHtml(product.slug)}"
-           class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0B0F19] hover:bg-[#2563EB] text-white text-xs font-bold transition-all active:scale-95 shadow-sm"
-           aria-label="View specifications for ${escapeHtml(product.name)}">
-          <span>Explore</span>
-          <svg class="w-3.5 h-3.5 fill-none stroke-current" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-          </svg>
-        </a>
+        <div class="flex items-center gap-2">
+          <button type="button"
+                  onclick="event.preventDefault(); window.addToQuoteBag && window.addToQuoteBag({ id: '${escapeHtml(product.id)}', name: '${escapeHtml(product.name).replace(/'/g, "\\'")}', slug: '${escapeHtml(product.slug)}', pricePaise: ${price}, imageUrl: '${escapeHtml(imageUrl)}' })"
+                  class="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg bg-[#FAF9F5] border border-[#CBD5E1] hover:border-[#2563EB] hover:text-[#2563EB] text-[#0B0F19] text-xs font-bold transition-all active:scale-95 shadow-sm"
+                  title="Add to WhatsApp Quote Bag">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span class="hidden sm:inline">Quote</span>
+          </button>
+
+          <a href="/products/${escapeHtml(product.slug)}"
+             class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0B0F19] hover:bg-[#2563EB] text-white text-xs font-bold transition-all active:scale-95 shadow-sm"
+             aria-label="View specifications for ${escapeHtml(product.name)}">
+            <span>Explore</span>
+            <svg class="w-3.5 h-3.5 fill-none stroke-current" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </article>

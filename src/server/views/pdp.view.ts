@@ -238,7 +238,16 @@ export function renderProductDetailPage(props: PdpPageProps): string {
             Order ready units fulfilled through Amazon Prime or consult directly with our Ludhiana artisans on WhatsApp.
           </p>
 
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-lg mx-auto">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-xl mx-auto">
+            <button type="button"
+                    id="pdp-add-quote-btn"
+                    class="w-full sm:w-auto flex-1 btn btn-secondary btn-lg shadow-sm">
+              <svg class="w-4 h-4 text-[#2563EB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+              </svg>
+              <span>+ Add to Quote Bag</span>
+            </button>
+
             ${
               amazonUrl
                 ? `
@@ -269,7 +278,7 @@ export function renderProductDetailPage(props: PdpPageProps): string {
               <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
               </svg>
-              <span>Consult on WhatsApp</span>
+              <span>Chat on WhatsApp</span>
             </a>
           </div>
 
@@ -416,6 +425,31 @@ export function renderProductDetailPage(props: PdpPageProps): string {
             btn.setAttribute('aria-pressed', 'true');
           });
         });
+
+        // Add to Quote Bag Button
+        var addQuoteBtn = document.getElementById('pdp-add-quote-btn');
+        if (addQuoteBtn) {
+          addQuoteBtn.addEventListener('click', function() {
+            var activeVariantBtn = document.querySelector('.variant-btn[aria-pressed="true"]');
+            var variantName = activeVariantBtn ? activeVariantBtn.getAttribute('data-variant-name') : null;
+            var modifier = activeVariantBtn ? Number(activeVariantBtn.getAttribute('data-price-modifier') || 0) : 0;
+            var currentPaise = basePrice + modifier;
+            var pId = container.getAttribute('data-product-id') || '';
+            var pSlug = container.getAttribute('data-product-slug') || '';
+            var pName = container.getAttribute('data-product-name') || '';
+
+            if (window.addToQuoteBag) {
+              window.addToQuoteBag({
+                id: pId,
+                name: pName,
+                slug: pSlug,
+                pricePaise: currentPaise,
+                imageUrl: finishedUrl || '/placeholder.svg',
+                variant: variantName
+              });
+            }
+          });
+        }
 
         // Lightbox
         var lightbox = document.getElementById('pdp-lightbox');
