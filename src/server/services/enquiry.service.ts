@@ -47,7 +47,7 @@ export class EnquiryService {
    * Generates a direct WhatsApp click-to-chat bridge URL.
    */
   public generateWhatsAppUrl(enquiryId: string, customerName: string, projectType: string): string {
-    const cleanPhone = (process.env.WHATSAPP_BUSINESS_NUMBER || '919876543210').replace(/\D/g, '');
+    const cleanPhone = (process.env.WHATSAPP_BUSINESS_NUMBER || '917347278010').replace(/\D/g, '');
     const message = `Hello BHAIRAVI Creations!\n\nI submitted Custom Order Enquiry #${enquiryId} for: ${projectType}.\nName: ${customerName}.\nLooking forward to discussing materials and finishing options.`;
     return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
   }
@@ -77,7 +77,7 @@ export class EnquiryService {
         success: true,
         enquiry_id: syntheticId,
         status_label: 'new',
-        whatsapp_url: `https://wa.me/${(process.env.WHATSAPP_BUSINESS_NUMBER || '919876543210').replace(/\D/g, '')}`,
+        whatsapp_url: `https://wa.me/${(process.env.WHATSAPP_BUSINESS_NUMBER || '917347278010').replace(/\D/g, '')}`,
         message: 'Thank you! Your custom order enquiry has been received.'
       };
     }

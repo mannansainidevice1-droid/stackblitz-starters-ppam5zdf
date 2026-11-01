@@ -39,7 +39,7 @@ export function buildAmazonUrl(product: ProductCommerceData, campaignRef: string
 }
 
 export function buildProductWhatsAppUrl(product: ProductCommerceData, selectedVariantName?: string): string {
-  const cleanPhone = '919876543210';
+  const cleanPhone = '917347278010';
   const priceFormatted = formatINR(product.base_price_paise);
   const variantText = selectedVariantName ? `\nVariant: *${selectedVariantName}*` : '';
   const pageUrl =

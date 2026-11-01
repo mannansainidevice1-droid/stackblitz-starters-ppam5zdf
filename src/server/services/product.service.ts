@@ -393,7 +393,7 @@ export class ProductService {
 
     // Commerce Action URLs
     const waConfig = typeof product.whatsapp_config === 'string' ? JSON.parse(product.whatsapp_config) : product.whatsapp_config;
-    const cleanPhone = (process.env.WHATSAPP_BUSINESS_NUMBER || '919876543210').replace(/\D/g, '');
+    const cleanPhone = (process.env.WHATSAPP_BUSINESS_NUMBER || '917347278010').replace(/\D/g, '');
     const prefillMsg = waConfig?.prefill_template || `Hello BHAIRAVI Creations! I am inquiring about the ${product.name} (${formatPaiseToInr(product.base_price_paise)}).`;
     const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(prefillMsg)}`;
 

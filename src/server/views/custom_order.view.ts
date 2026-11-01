@@ -1,6 +1,6 @@
 /**
  * BHAIRAVI Creations Digital Platform
- * Custom Order Enquiry Page SSR View (Features F45, F46, F47)
+ * Premium Editorial Custom Order Enquiry Page SSR View (Features F45, F46, F47)
  * Target: src/server/views/custom_order.view.ts
  */
 
@@ -20,30 +20,30 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
   const renderedAt = Date.now();
 
   const content = `
-    <div class="container" style="padding-top: 48px; padding-bottom: 80px; max-width: 800px;">
-      <!-- Page Header -->
-      <div style="text-align: center; margin-bottom: 40px;">
-        <span style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--terracotta);">
-          Artisanal 3D Custom Orders
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-3xl">
+      <!-- Editorial Page Header -->
+      <div class="text-center mb-10">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#2563EB] mb-2">
+          Atelier Commissions • Ludhiana, Punjab
         </span>
-        <h1 style="font-family: var(--font-serif); font-size: 36px; font-weight: 700; color: var(--charcoal); margin-top: 6px;">
+        <h1 class="font-display text-4xl sm:text-5xl font-black text-[#0B0F19] tracking-tight leading-tight">
           Custom Order Enquiry
         </h1>
-        <p style="font-size: 15px; color: #57534E; margin-top: 8px; line-height: 1.6;">
-          Commission a unique 3D-printed and hand-finished piece. From classical sculptures and architectural models to custom lithophanes and corporate gifting—our Ludhiana artisans bring your vision to life.
+        <p class="mt-3 text-base text-[#475569] leading-relaxed max-w-xl mx-auto">
+          Commission a bespoke 3D-printed and hand-finished piece. From sacred idols and architectural heritage models to corporate gifting—our artisans transform your vision into reality.
         </p>
       </div>
 
-      <!-- Main Form Container -->
-      <div id="enquiry-form-container" style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 16px; padding: 36px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+      <!-- Main Bento Form Card -->
+      <div id="enquiry-form-container" class="bento-card p-6 sm:p-10 bg-white border border-[#E2E8F0] rounded-2xl shadow-sm">
         
         <!-- Error Alert Container -->
-        <div id="form-error-alert" class="hidden" style="display: none; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 24px;" role="alert"></div>
+        <div id="form-error-alert" class="hidden p-4 rounded-xl mb-6 bg-red-50 border border-red-200 text-sm font-medium text-red-700" role="alert"></div>
 
         <form id="custom-order-form" method="POST" action="/api/enquiries" enctype="multipart/form-data" novalidate>
           
           <!-- Anti-Spam Honeypots & Render Timestamp -->
-          <div style="display: none; position: absolute; left: -9999px;" aria-hidden="true">
+          <div class="hidden" aria-hidden="true">
             <label for="bhr_check_field">Leave this empty:</label>
             <input type="text" id="bhr_check_field" name="bhr_check_field" tabindex="-1" autocomplete="off" />
             <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off" />
@@ -59,21 +59,21 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
           ${
             referencedProduct
               ? `
-            <div style="background: #FAF9F6; border: 1px solid var(--stone-border); border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between;">
-              <span style="font-size: 13px; color: #57534E;">
-                Referencing catalogue model: <strong>${escapeHtml(referencedProduct.name)}</strong>
+            <div class="p-3.5 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] mb-6 flex items-center justify-between text-xs">
+              <span class="text-[#1E40AF]">
+                Referencing catalogue model: <strong class="text-[#0B0F19]">${escapeHtml(referencedProduct.name)}</strong>
               </span>
-              <a href="/products/${referencedProduct.slug}" style="font-size: 12px; color: var(--terracotta); font-weight: 600;">View Model &rarr;</a>
+              <a href="/products/${referencedProduct.slug}" class="font-bold text-[#2563EB] hover:underline">View Model &rarr;</a>
             </div>
           `
               : ''
           }
 
           <!-- 1. Customer Name & Contact Phone Row -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 20px;">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             <div>
-              <label for="customer_name" style="display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">
-                Your Name <span style="color: var(--terracotta);">*</span>
+              <label for="customer_name" class="form-label">
+                Your Full Name <span class="text-[#2563EB]">*</span>
               </label>
               <input
                 type="text"
@@ -83,13 +83,13 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
                 minlength="2"
                 maxlength="100"
                 placeholder="e.g. Ananya Deshmukh"
-                style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1px solid var(--stone-border); border-radius: 8px; background: #FAF9F6; color: var(--charcoal);"
+                class="form-input"
               />
             </div>
 
             <div>
-              <label for="contact_phone" style="display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">
-                WhatsApp / Mobile Number <span style="color: var(--terracotta);">*</span>
+              <label for="contact_phone" class="form-label">
+                WhatsApp / Mobile Number <span class="text-[#2563EB]">*</span>
               </label>
               <input
                 type="tel"
@@ -97,53 +97,53 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
                 name="contact_phone"
                 required
                 placeholder="+91 98765 43210"
-                style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1px solid var(--stone-border); border-radius: 8px; background: #FAF9F6; color: var(--charcoal);"
+                class="form-input"
               />
-              <span style="font-size: 11px; color: #78716C; margin-top: 4px; display: block;">10-digit Indian mobile number</span>
+              <span class="form-help">10-digit Indian mobile number</span>
             </div>
           </div>
 
           <!-- 2. Contact Email & Preferred Contact Channel Row -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 20px;">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             <div>
-              <label for="contact_email" style="display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">
-                Email Address <span style="color: #78716C; font-weight: normal;">(Optional)</span>
+              <label for="contact_email" class="form-label">
+                Email Address <span class="text-[#94A3B8] font-normal">(Optional)</span>
               </label>
               <input
                 type="email"
                 id="contact_email"
                 name="contact_email"
                 placeholder="ananya@example.in"
-                style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1px solid var(--stone-border); border-radius: 8px; background: #FAF9F6; color: var(--charcoal);"
+                class="form-input"
               />
             </div>
 
             <div>
-              <label for="preferred_contact_method" style="display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">
-                Preferred Contact Channel
+              <label for="preferred_contact_method" class="form-label">
+                Preferred Channel
               </label>
               <select
                 id="preferred_contact_method"
                 name="preferred_contact_method"
-                style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1px solid var(--stone-border); border-radius: 8px; background: #FAF9F6; color: var(--charcoal); cursor: pointer;">
+                class="form-select cursor-pointer">
                 <option value="whatsapp" selected>WhatsApp (Fastest feasibility & photos)</option>
-                <option value="phone">Phone Call</option>
+                <option value="phone">Direct Phone Call</option>
                 <option value="email">Email</option>
               </select>
             </div>
           </div>
 
           <!-- 3. Project Type, Quantity & Budget Row -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-5">
             <div>
-              <label for="project_type" style="display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">
-                Project Category <span style="color: var(--terracotta);">*</span>
+              <label for="project_type" class="form-label">
+                Project Category <span class="text-[#2563EB]">*</span>
               </label>
               <select
                 id="project_type"
                 name="project_type"
                 required
-                style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1px solid var(--stone-border); border-radius: 8px; background: #FAF9F6; color: var(--charcoal); cursor: pointer;">
+                class="form-select cursor-pointer">
                 <option value="custom_figurine" selected>Custom Deity / Figurine</option>
                 <option value="architectural_model">Architectural Heritage Model</option>
                 <option value="lithophane">Custom Lithophane / Lamp</option>
@@ -154,8 +154,8 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
             </div>
 
             <div>
-              <label for="approximate_quantity" style="display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">
-                Quantity <span style="color: var(--terracotta);">*</span>
+              <label for="approximate_quantity" class="form-label">
+                Quantity <span class="text-[#2563EB]">*</span>
               </label>
               <input
                 type="number"
@@ -165,18 +165,18 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
                 max="10000"
                 value="1"
                 required
-                style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1px solid var(--stone-border); border-radius: 8px; background: #FAF9F6; color: var(--charcoal);"
+                class="form-input"
               />
             </div>
 
             <div>
-              <label for="budget_range_inr" style="display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">
+              <label for="budget_range_inr" class="form-label">
                 Target Budget (INR)
               </label>
               <select
                 id="budget_range_inr"
                 name="budget_range_inr"
-                style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1px solid var(--stone-border); border-radius: 8px; background: #FAF9F6; color: var(--charcoal); cursor: pointer;">
+                class="form-select cursor-pointer">
                 <option value="Under ₹2,500">Under ₹2,500</option>
                 <option value="₹2,500 - ₹5,000" selected>₹2,500 - ₹5,000</option>
                 <option value="₹3,500 - ₹7,500">₹3,500 - ₹7,500</option>
@@ -187,9 +187,9 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
           </div>
 
           <!-- 4. Design Description -->
-          <div style="margin-bottom: 24px;">
-            <label for="design_description" style="display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">
-              Design & Finishing Description <span style="color: var(--terracotta);">*</span>
+          <div class="mb-6">
+            <label for="design_description" class="form-label">
+              Design & Finishing Description <span class="text-[#2563EB]">*</span>
             </label>
             <textarea
               id="design_description"
@@ -198,24 +198,25 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
               required
               minlength="10"
               maxlength="5000"
-              placeholder="Please describe dimensions, finish (bronze, terracotta wash, hand-painted acrylics), reference links, or specific display plinth requirements..."
-              style="width: 100%; padding: 12px 14px; font-size: 14px; border: 1px solid var(--stone-border); border-radius: 8px; background: #FAF9F6; color: var(--charcoal); line-height: 1.5;"></textarea>
-            <span style="font-size: 11px; color: #78716C; margin-top: 4px; display: block;">Minimum 10 characters required for accurate studio evaluation.</span>
+              placeholder="Describe dimensions, finishes (bronze patina, terracotta wash, artist acrylics), reference links, or specific display plinth requirements..."
+              class="form-textarea leading-relaxed"></textarea>
+            <span class="form-help">Minimum 10 characters required for accurate studio evaluation.</span>
           </div>
 
-          <!-- 5. Client Safe Upload Drop Zone (Feature F46) -->
-          <div style="margin-bottom: 28px;">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px;">
-              Reference Photos or 3D STL CAD Files <span style="color: #78716C; font-weight: normal;">(Optional)</span>
+          <!-- 5. Client Safe Upload Drop Zone -->
+          <div class="mb-8">
+            <label class="form-label">
+              Reference Photos or 3D STL CAD Files <span class="text-[#94A3B8] font-normal">(Optional)</span>
             </label>
-            <div id="enquiry-upload-zone">
-              <!-- Upload zone will be hydrated by client script -->
-              <div class="upload-dropzone" style="border: 2px dashed var(--stone-border); border-radius: 8px; padding: 24px; text-align: center; background: #FAF9F6;">
-                <p style="font-size: 14px; color: #57534E;">
-                  Drag & drop reference files or STL models here (up to 10MB)
-                </p>
-                <input type="file" id="bhr_file_input" name="attachment" accept=".jpg,.jpeg,.png,.webp,.pdf,.stl" style="margin-top: 12px; font-size: 13px;" />
-              </div>
+            <div id="enquiry-upload-zone" class="p-6 border-2 border-dashed border-[#CBD5E1] hover:border-[#2563EB] rounded-2xl text-center bg-[#FAF9F5] transition-colors">
+              <svg class="w-8 h-8 text-[#94A3B8] mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+              </svg>
+              <p class="text-sm font-medium text-[#475569] mb-1">
+                Drag & drop reference images or 3D STL files here (up to 10MB)
+              </p>
+              <p class="text-xs text-[#94A3B8] mb-3">Supported formats: JPG, PNG, WEBP, PDF, STL</p>
+              <input type="file" id="bhr_file_input" name="attachment" accept=".jpg,.jpeg,.png,.webp,.pdf,.stl" class="text-xs text-[#64748B] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#0B0F19] file:text-white hover:file:bg-[#2563EB] file:cursor-pointer cursor-pointer" />
             </div>
           </div>
 
@@ -224,12 +225,11 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
             <button
               id="enquiry-submit-btn"
               type="submit"
-              class="btn-primary"
-              style="width: 100%; min-height: 48px; font-size: 16px;">
+              class="btn btn-cobalt btn-lg w-full shadow-sm">
               Submit Custom Order Enquiry
             </button>
-            <p style="font-size: 12px; color: #78716C; text-align: center; margin-top: 12px;">
-              Fixed upfront quote provided within 24 hours. No obligation to proceed until you approve the quote.
+            <p class="text-xs text-[#64748B] text-center mt-3">
+              Fixed upfront quotation delivered within 24 hours. Zero obligation until quote confirmation.
             </p>
           </div>
         </form>
@@ -264,15 +264,15 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
           function fail(msg) {
             if (errAlert) {
               errAlert.textContent = msg;
-              errAlert.style.display = 'block';
+              errAlert.classList.remove('hidden');
             } else {
               alert(msg);
             }
           }
-          if (errAlert) errAlert.style.display = 'none';
+          if (errAlert) errAlert.classList.add('hidden');
 
           if (name.length < 2) {
-            fail('Please enter your name (minimum 2 characters).');
+            fail('Please enter your full name (minimum 2 characters).');
             return;
           }
 
@@ -292,7 +292,7 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
           }
 
           if (Date.now() - renderedAt < 2500) {
-            fail('Submission completed too quickly.');
+            fail('Submission completed too quickly. Please try again.');
             return;
           }
 
@@ -303,7 +303,7 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
 
           if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Transmitting to Artisans...';
+            submitBtn.textContent = 'Transmitting to Ludhiana Atelier...';
           }
 
           try {
@@ -318,45 +318,38 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
 
             var refId = data.enquiry_id || ('BC-ENQ-' + new Date().toISOString().slice(0,7).replace('-','') + '-' + Math.floor(1000 + Math.random()*9000));
             var cleanPhone = '${STUDIO_DETAILS.whatsapp_number}';
-            var msg = "Hello BHAIRAVI Creations!\\n\\nI submitted Custom Order Enquiry #" + refId + " for: " + pType + ".\\nName: " + name + ".\\nLooking forward to discussing materials and finishing options.";
-            var waUrl = "https://wa.me/" + cleanPhone + "?text=" + encodeURIComponent(msg);
+            var waText = encodeURIComponent('Hello BHAIRAVI Creations! I just submitted custom order enquiry #' + refId + ' (' + name + '). Looking forward to the quote!');
+            var waChatUrl = 'https://wa.me/' + cleanPhone + '?text=' + waText;
+
+            container.innerHTML = [
+              '<div class="text-center py-8">',
+                '<div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200">',
+                  '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>',
+                '</div>',
+                '<h2 class="font-display text-2xl font-black text-[#0B0F19] mb-2">Enquiry Received at Ludhiana Atelier</h2>',
+                '<p class="text-sm text-[#475569] max-w-md mx-auto mb-6">',
+                  'Thank you, ' + name + '. Your commission enquiry has been registered under reference: <strong class="text-[#0B0F19] font-mono">' + refId + '</strong>.',
+                '</p>',
+                '<div class="p-5 rounded-2xl bg-[#FAF9F5] border border-[#E2E8F0] max-w-md mx-auto text-left mb-6 text-xs text-[#475569] space-y-2">',
+                  '<div><strong>Response Window:</strong> Within 24 business hours</div>',
+                  '<div><strong>Atelier Location:</strong> Ludhiana, Punjab (PIN 141001)</div>',
+                  '<div><strong>Direct Support:</strong> +91 73472 78010</div>',
+                '</div>',
+                '<a href="' + waChatUrl + '" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">',
+                  '<span>Confirm on WhatsApp (' + refId + ')</span>',
+                '</a>',
+              '</div>'
+            ].join('');
 
             if (window.__bhr_send_event) {
-              window.__bhr_send_event('enquiry_form_submit', {
-                metadata: { enquiry_ref: refId, project_type: pType }
-              });
+              window.__bhr_send_event('custom_order_submit', { enquiry_id: refId, project_type: pType });
             }
-
-            container.innerHTML = 
-              '<div class="confirmation-card" style="text-align: center; padding: 32px 16px;">' +
-                '<div style="width: 56px; height: 56px; border-radius: 50%; background: #ECFDF5; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; color: #059669; font-size: 28px;">✓</div>' +
-                '<h2 style="font-family: var(--font-serif); font-size: 26px; font-weight: 700; color: #1C1917; margin-bottom: 8px;">Enquiry Received with Gratitude</h2>' +
-                '<p style="font-size: 14px; color: #78716C; margin-bottom: 24px;">Our founding artisans will review your CAD/design details and reply within 24 hours.</p>' +
-                '<div style="background: #FAF9F6; border: 1px solid var(--stone-border); border-radius: 8px; padding: 16px; margin-bottom: 24px; text-align: left; max-width: 440px; margin-left: auto; margin-right: auto; font-size: 13px;">' +
-                  '<div><strong>Reference Code:</strong> ' + refId + '</div>' +
-                  '<div><strong>Customer Name:</strong> ' + name + '</div>' +
-                  '<div><strong>Project Type:</strong> ' + pType + '</div>' +
-                '</div>' +
-                '<a id="bhr_wa_bridge_cta" href="' + waUrl + '" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" style="display: inline-flex; width: 100%; max-width: 440px; min-height: 48px; font-size: 15px;">' +
-                  'Continue on WhatsApp for Instant Consultation' +
-                '</a>' +
-                '<p style="font-size: 11px; color: #78716C; margin-top: 10px;">Clicking above opens WhatsApp with your project reference prefilled. You remain in complete control of sending the message.</p>' +
-              '</div>';
-
-            var waBtn = document.getElementById('bhr_wa_bridge_cta');
-            if (waBtn) {
-              waBtn.addEventListener('click', function() {
-                if (window.__bhr_send_event) {
-                  window.__bhr_send_event('whatsapp_outbound_click', { metadata: { enquiry_ref: refId } });
-                }
-              });
-            }
-          } catch(err) {
-            fail(err.message || 'An unexpected error occurred.');
+          } catch (err) {
             if (submitBtn) {
               submitBtn.disabled = false;
               submitBtn.textContent = 'Submit Custom Order Enquiry';
             }
+            fail(err.message || 'An error occurred while transmitting your enquiry.');
           }
         });
       })();
@@ -364,7 +357,7 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
   `;
 
   return renderBaseLayout({
-    title: 'Custom Order Enquiry',
+    title: 'Custom Order Commission Enquiry',
     description: 'Commission a custom 3D-printed and hand-finished sculpture or architectural model from our Ludhiana studio.',
     canonicalPath: '/custom-order',
     activeNav: 'custom-order',

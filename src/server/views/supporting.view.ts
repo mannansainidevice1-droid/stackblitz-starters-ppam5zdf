@@ -1,6 +1,6 @@
 /**
  * BHAIRAVI Creations Digital Platform
- * 7 Supporting Pages SSR Views (Feature F48)
+ * Premium Editorial Supporting & Legal Pages SSR Views (Feature F48)
  * Routes: /about, /contact, /faq, /shipping, /returns, /privacy, /terms
  * Target: src/server/views/supporting.view.ts
  */
@@ -8,24 +8,26 @@
 import { STUDIO_DETAILS } from '../../shared/constants.js';
 import { renderBaseLayout } from './layout.view.js';
 
-function renderCardShell(title: string, subtitle: string, bodyContent: string): string {
+function renderPageContainer(tag: string, title: string, subtitle: string, bodyContent: string): string {
   return `
-    <div class="container" style="padding-top: 48px; padding-bottom: 80px; max-width: 860px;">
-      <div style="margin-bottom: 36px; text-align: center;">
-        <span style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--terracotta);">
-          BHAIRAVI Creations Studio
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 max-w-4xl">
+      <!-- Editorial Page Header -->
+      <header class="text-center mb-10 max-w-2xl mx-auto">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#2563EB] mb-2">
+          ${tag}
         </span>
-        <h1 style="font-family: var(--font-serif); font-size: 34px; font-weight: 700; color: var(--charcoal); margin-top: 6px;">
+        <h1 class="font-display text-4xl sm:text-5xl font-black text-[#0B0F19] tracking-tight leading-tight">
           ${title}
         </h1>
-        <p style="font-size: 15px; color: #78716C; margin-top: 8px;">
+        <p class="mt-3 text-base text-[#475569] leading-relaxed">
           ${subtitle}
         </p>
-      </div>
+      </header>
 
-      <div style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 16px; padding: 40px; line-height: 1.7; color: #44403C; font-size: 15px;">
+      <!-- Bento Content Shell -->
+      <article class="bento-card p-8 sm:p-12 bg-white border border-[#E2E8F0] rounded-2xl shadow-sm text-sm sm:text-base text-[#334155] leading-relaxed space-y-6">
         ${bodyContent}
-      </div>
+      </article>
     </div>
   `;
 }
@@ -33,22 +35,34 @@ function renderCardShell(title: string, subtitle: string, bodyContent: string): 
 // 1. /about
 export function renderAboutPage(): string {
   const body = `
-    <h2 style="font-family: var(--font-serif); font-size: 22px; color: var(--charcoal); margin-bottom: 14px;">Bridging Additive Precision with Generational Artistry</h2>
-    <p style="margin-bottom: 16px;">
-      Founded in Ludhiana, Punjab, <strong>BHAIRAVI Creations</strong> is a family-run 3D-printing and handcrafted-products studio. We believe the future of decorative art lives at the intersection of modern additive manufacturing and patient human craft.
+    <h2 class="font-display text-2xl font-bold text-[#0B0F19] mb-4">
+      Bridging Mathematical Additive Precision with Generational Artistry
+    </h2>
+    <p>
+      Founded and operating in Ludhiana, Punjab, <strong>BHAIRAVI Creations</strong> is a family-run 3D-printing and handcrafted-products studio. We believe the future of decorative art lives at the intersection of modern additive manufacturing and patient human craft.
     </p>
-    <p style="margin-bottom: 16px;">
-      While 3D printing delivers micro-step accuracy (0.12mm layer heights) that allows for geometric precision impossible with traditional casting molds, a raw 3D print is only half the creation. Every sculpture, planter, and architectural replica leaving our workbench undergoes progressive wet sanding to eliminate micro layer lines, followed by multi-coat artist acrylics, authentic hand-patination, and UV protective sealing applied individually by hand.
+    <p>
+      While 3D printing delivers micro-step accuracy (0.12mm layer heights) that allows for geometric precision impossible with traditional casting molds, a raw 3D print is only half the creation. Every sculpture, sacred deity idol, and architectural replica leaving our workbench undergoes progressive wet sanding to eliminate micro layer lines, followed by multi-coat artist acrylics, authentic hand-patination, and UV protective sealing applied individually by hand.
     </p>
     
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">High-Grade PLA & PLA Pro Materials</h3>
-    <p style="margin-bottom: 16px;">
-      We prioritize high-grade, durable PLA and PLA Pro for our decorative creations. They are non-toxic, safe for family homes, and produce zero harmful fumes.
-    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 my-8 pt-6 border-t border-[#F1F5F9]">
+      <div class="p-5 rounded-xl bg-[#FAF9F5] border border-[#E2E8F0]">
+        <h3 class="font-display text-base font-bold text-[#0B0F19] mb-2">High-Grade PLA & PLA Pro</h3>
+        <p class="text-xs text-[#64748B] leading-relaxed">
+          Non-toxic, safe for residential spaces, and producing zero harmful fumes. Dimensionally stable for intricate sacred art.
+        </p>
+      </div>
+      <div class="p-5 rounded-xl bg-[#FAF9F5] border border-[#E2E8F0]">
+        <h3 class="font-display text-base font-bold text-[#0B0F19] mb-2">Zero Drop-Shipping Honesty</h3>
+        <p class="text-xs text-[#64748B] leading-relaxed">
+          We never drop-ship mass-manufactured imports or present generic AI mockups as real products. Every piece is made in our Ludhiana atelier.
+        </p>
+      </div>
+    </div>
 
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">Zero Drop-Shipping. Pure Craft Honesty.</h3>
+    <h3 class="font-display text-xl font-bold text-[#0B0F19] mt-6 mb-2">Direct Founder Engagement</h3>
     <p>
-      We do not drop-ship mass-manufactured imports or present generic AI mockups as real products. Every piece featured on this digital platform was sculpted, printed, sanded, and painted inside our studio in Ludhiana, Punjab.
+      When you commission a custom 3D sculpture or inquire about our catalogue pieces, you are speaking directly with our founding artisans in Ludhiana—not an anonymous call center or automated chat bot.
     </p>
   `;
 
@@ -57,81 +71,114 @@ export function renderAboutPage(): string {
     description: 'Learn about BHAIRAVI Creations, a family-run 3D printing and handcrafted art studio founded in Ludhiana, Punjab, India.',
     canonicalPath: '/about',
     activeNav: 'about',
-    content: renderCardShell('About BHAIRAVI Creations', 'Family heritage, 3D printing precision, and hand-painted artisanal finishing.', body)
+    content: renderPageContainer('Our Story & Craft', 'About BHAIRAVI Creations', 'Family heritage, 3D printing precision, and hand-painted artisanal finishing in Ludhiana.', body)
   });
 }
 
 // 2. /contact
 export function renderContactPage(): string {
   const body = `
-    <h2 style="font-family: var(--font-serif); font-size: 24px; color: var(--charcoal); margin-bottom: 12px;">Get in Touch with Our Studio</h2>
-    <p style="margin-bottom: 24px; color: #57534E;">
+    <h2 class="font-display text-2xl font-bold text-[#0B0F19] mb-2">Get in Touch with Our Studio</h2>
+    <p class="text-[#64748B] mb-8">
       Have a question about our catalogue pieces or want to discuss a custom 3D printing project? Reach out directly to our artisans in Ludhiana.
     </p>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 32px;">
-      <div style="background: #FAF9F6; border: 1px solid var(--stone-border); border-radius: 12px; padding: 20px;">
-        <div style="font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #059669; margin-bottom: 6px;">WhatsApp Artisan Desk</div>
-        <p style="font-size: 14px; color: #57534E; margin-bottom: 12px;">Quick responses for custom inquiries, progress updates, and sizing advice.</p>
-        <a href="https://wa.me/${STUDIO_DETAILS.whatsapp_number}" target="_blank" rel="noopener noreferrer" style="color: #059669; font-weight: 700; text-decoration: underline; font-size: 15px;">
-          +91 73472 78010 &rarr;
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <!-- WhatsApp Desk -->
+      <div class="p-5 rounded-xl bg-[#FAF9F5] border border-[#E2E8F0] flex flex-col justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-[#059669] block mb-1">WhatsApp Desk</span>
+          <h3 class="font-display text-base font-bold text-[#0B0F19] mb-2">Artisan Consultation</h3>
+          <p class="text-xs text-[#64748B] mb-4">Fast feasibility checks, photos of pieces in progress, and size recommendations.</p>
+        </div>
+        <a href="https://wa.me/${STUDIO_DETAILS.whatsapp_number}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-sm w-full">
+          Chat on WhatsApp &rarr;
         </a>
       </div>
 
-      <div style="background: #FAF9F6; border: 1px solid var(--stone-border); border-radius: 12px; padding: 20px;">
-        <div style="font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--terracotta); margin-bottom: 6px;">Email Inquiries</div>
-        <p style="font-size: 14px; color: #57534E; margin-bottom: 12px;">For detailed design briefs, 3D STL CAD files, and corporate gifting.</p>
-        <a href="mailto:${STUDIO_DETAILS.contact_email}" style="color: var(--terracotta); font-weight: 700; text-decoration: underline; font-size: 15px;">
-          ${STUDIO_DETAILS.contact_email} &rarr;
+      <!-- Email Desk -->
+      <div class="p-5 rounded-xl bg-[#FAF9F5] border border-[#E2E8F0] flex flex-col justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-[#2563EB] block mb-1">Email Inquiries</span>
+          <h3 class="font-display text-base font-bold text-[#0B0F19] mb-2">Direct Mail</h3>
+          <p class="text-xs text-[#64748B] mb-4">For CAD design files, corporate gifting proposals, and formal tenders.</p>
+        </div>
+        <a href="mailto:${STUDIO_DETAILS.contact_email}" class="btn btn-secondary btn-sm w-full">
+          Send Email &rarr;
         </a>
       </div>
 
-      <div style="background: #FAF9F6; border: 1px solid var(--stone-border); border-radius: 12px; padding: 20px;">
-        <div style="font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--charcoal); margin-bottom: 6px;">Studio Location</div>
-        <p style="font-size: 14px; color: #57534E; margin-bottom: 8px;">Ludhiana, Punjab, India</p>
-        <p style="font-size: 13px; color: #78716C;">Online orders dispatched across all serviceable PIN codes in India.</p>
+      <!-- Workshop Coordinates -->
+      <div class="p-5 rounded-xl bg-[#FAF9F5] border border-[#E2E8F0] flex flex-col justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-[#D97706] block mb-1">Atelier Location</span>
+          <h3 class="font-display text-base font-bold text-[#0B0F19] mb-2">Ludhiana, Punjab</h3>
+          <p class="text-xs text-[#64748B] mb-4">${STUDIO_DETAILS.address} (PIN: 141001). Dispatch across all Indian states.</p>
+        </div>
+        <span class="text-xs font-semibold text-[#0B0F19]">Hours: Mon–Sat 10am–7pm</span>
       </div>
     </div>
 
-    <div style="text-align: center; margin-top: 24px;">
-      <a href="/custom-order" class="btn-primary" style="min-height: 48px;">
-        Submit a Custom Order Enquiry &rarr;
+    <div class="pt-6 border-t border-[#F1F5F9] text-center">
+      <a href="/custom-order" class="btn btn-primary btn-md">
+        <span>Commission a Custom 3D Sculpture &rarr;</span>
       </a>
     </div>
   `;
 
   return renderBaseLayout({
-    title: 'Contact Us',
+    title: 'Contact Studio',
     description: 'Get in touch with our founding artisans in Ludhiana, Punjab, India. Visit our studio or reach out via WhatsApp and email.',
     canonicalPath: '/contact',
     activeNav: 'contact',
-    content: renderCardShell('Contact Our Studio', 'Ludhiana, Punjab, India', body)
+    content: renderPageContainer('Studio Direct Desk', 'Contact Our Artisans', 'Ludhiana, Punjab, India (PIN 141001)', body)
   });
 }
 
 // 3. /faq
 export function renderFaqPage(): string {
+  const faqs = [
+    {
+      q: 'Are 3D-printed layer lines visible on the finished product?',
+      a: 'No. We print with ultra-fine 0.12mm layer resolutions and subject every piece to progressive multi-stage wet sanding. This eliminates micro-stepping ridges, creating a stone-smooth surface prior to primer application and acrylic hand-painting.'
+    },
+    {
+      q: 'What are the thermal limits and care instructions for PLA creations?',
+      a: 'Our PLA and PLA Pro creations must be kept away from temperatures exceeding 50°C (122°F). Do not display in closed vehicles under direct summer sunlight or place near heat sources. For cleaning, gently wipe with a dry or lightly dampened microfiber cloth. Avoid chemical solvent cleaners.'
+    },
+    {
+      q: 'How long does a custom 3D commission take to sculpt and dispatch?',
+      a: 'Standard custom commissions require 3 to 7 business days to sculpt, print, sand, and paint. Complex architectural models or custom lithophane lamp assemblies typically require 7 to 10 business days. Transparent timelines are provided in our upfront INR quotation.'
+    },
+    {
+      q: 'Do you deliver across India?',
+      a: 'Yes. We ship to over 19,000 serviceable PIN codes across India via insured courier partners (BlueDart, Delhivery, Speed Post) in heavy-duty double-walled corrugated packaging with multi-layer bubble cushioning.'
+    },
+    {
+      q: 'Can I request custom dimensions or a specific color patina?',
+      a: 'Yes. Every model in our catalogue can be scaled to fit your altar, shelf, or plinth, and our painters can apply antique bronze, terracotta wash, stone granite, or custom multi-tone acrylic finishes.'
+    }
+  ];
+
   const body = `
-    <div style="display: flex; flex-direction: column; gap: 24px;">
-      <div>
-        <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin-bottom: 6px;">Are 3D-printed layer lines visible on the finished product?</h3>
-        <p>No. We print with ultra-fine 0.12mm layer resolutions and subject every piece to progressive multi-stage wet sanding. This eliminates micro-stepping ridges, creating a tactile stone-smooth surface prior to primer application and acrylic hand-painting.</p>
-      </div>
-
-      <div style="border-top: 1px solid #F5F5F4; padding-top: 16px;">
-        <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin-bottom: 6px;">What are the thermal limits and care instructions for PLA creations?</h3>
-        <p>Our PLA and PLA Pro creations must be kept away from temperatures exceeding <strong>50°C (122°F)</strong>. Do not display in closed cars under direct summer sunlight or place near heaters. For cleaning, gently wipe with a dry or lightly dampened microfiber cloth. Avoid acetone or chemical solvent cleaners.</p>
-      </div>
-
-      <div style="border-top: 1px solid #F5F5F4; padding-top: 16px;">
-        <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin-bottom: 6px;">How long does a custom 3D order take?</h3>
-        <p>Standard custom orders take <strong>3 to 7 business days</strong> to sculpt, print, sand, and paint. Complex architectural models or custom lithophane lamp assemblies typically require <strong>7 to 10 business days</strong>. Transparent timelines are provided in our upfront INR quote.</p>
-      </div>
-
-      <div style="border-top: 1px solid #F5F5F4; padding-top: 16px;">
-        <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin-bottom: 6px;">Do you deliver across India?</h3>
-        <p>Yes. We ship to over 19,000 serviceable PIN codes across India via insured courier partners (BlueDart, Delhivery, Speed Post) in heavy-duty double-walled corrugated packaging with multi-layer bubble cushioning.</p>
-      </div>
+    <div class="space-y-4">
+      ${faqs
+        .map(
+          (item) => `
+        <details class="group p-5 rounded-xl bg-[#FAF9F5] border border-[#E2E8F0] open:bg-white transition-all cursor-pointer">
+          <summary class="font-display text-base font-bold text-[#0B0F19] list-none flex items-center justify-between gap-4">
+            <span>${item.q}</span>
+            <span class="w-6 h-6 rounded-full bg-[#E2E8F0] group-open:bg-[#2563EB] group-open:text-white text-[#64748B] flex items-center justify-center text-xs shrink-0 transition-all">
+              &darr;
+            </span>
+          </summary>
+          <div class="pt-4 text-sm text-[#475569] leading-relaxed border-t border-[#F1F5F9] mt-3">
+            ${item.a}
+          </div>
+        </details>
+      `
+        )
+        .join('')}
     </div>
   `;
 
@@ -140,161 +187,113 @@ export function renderFaqPage(): string {
     description: 'Frequently asked questions about 3D printing accuracy, hand finishes, PLA care guidelines, and dispatch.',
     canonicalPath: '/faq',
     activeNav: 'faq',
-    content: renderCardShell('Frequently Asked Questions', 'Materials, care guidelines, custom commissions, and transit standards.', body)
+    content: renderPageContainer('Care & Production Guide', 'Frequently Asked Questions', 'Materials, care guidelines, custom commissions, and transit standards.', body)
   });
 }
 
 // 4. /shipping
 export function renderShippingPage(): string {
   const body = `
-    <h2 style="font-family: var(--font-serif); font-size: 22px; color: var(--charcoal); margin-bottom: 14px;">Pan-India Delivery & Packaging Standards</h2>
-    <p style="margin-bottom: 16px;">
-      Because our handcrafted 3D creations contain intricate geometry, we never cut corners on transit safety. Every item is packed with double-walled corrugated boxes with multi-layer bubble cushioning designed specifically for fragile 3D art.
+    <h2 class="font-display text-2xl font-bold text-[#0B0F19] mb-4">Pan-India Delivery & Protective Packaging</h2>
+    <p>
+      Because our handcrafted 3D creations contain intricate geometry, we never compromise on transit safety. Every item is packed with double-walled corrugated boxes with multi-layer bubble cushioning designed specifically for fragile 3D sculptures.
     </p>
 
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">Courier Partners & Coverage</h3>
-    <p style="margin-bottom: 16px;">
+    <h3 class="font-display text-xl font-bold text-[#0B0F19] mt-6 mb-2">Courier Partners & Coverage</h3>
+    <p>
       We partner with leading Indian domestic logistics networks including <strong>BlueDart, Delhivery, and India Post Speed Post</strong> to service all serviceable Indian pin codes.
     </p>
 
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">Shipping Charges & Delivery Timelines</h3>
-    <ul style="padding-left: 20px; margin-bottom: 16px;">
-      <li style="margin-bottom: 8px;"><strong>Ready-Stock Creations:</strong> Dispatched within 24–48 hours from our Ludhiana studio. Transit typically takes 2–4 business days to metro cities and 4–7 business days to regional locations.</li>
-      <li style="margin-bottom: 8px;"><strong>Custom Orders:</strong> Dispatched in 3–7 business days after craft completion.</li>
-      <li style="margin-bottom: 8px;"><strong>Shipping Rates:</strong> Flat ₹99 across India for orders under ₹1,499. Free domestic courier delivery on all orders of ₹1,499 and above.</li>
+    <h3 class="font-display text-xl font-bold text-[#0B0F19] mt-6 mb-2">Shipping Charges & Delivery Timelines</h3>
+    <ul class="list-disc pl-5 space-y-2 mt-2">
+      <li><strong>Standard Orders:</strong> Free insured nationwide shipping on all catalog orders above ₹999.</li>
+      <li><strong>Transit Time:</strong> 2 to 5 business days depending on destination PIN code.</li>
+      <li><strong>Tracking:</strong> Complete real-time tracking link dispatched via WhatsApp/SMS upon package handover.</li>
     </ul>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">Tracking & Insurance</h3>
-    <p>
-      Upon courier pickup, a tracking ID and live tracking link are immediately provided via WhatsApp and email. All dispatches carry transit insurance against loss or catastrophic breakage.
-    </p>
   `;
 
   return renderBaseLayout({
-    title: 'Shipping & Delivery Policy',
-    description: 'Domestic India courier coverage via BlueDart, Delhivery, and Speed Post in reinforced protective packaging.',
+    title: 'Shipping Policy',
+    description: 'BHAIRAVI Creations nationwide shipping policies, packaging standards, and estimated transit times across India.',
     canonicalPath: '/shipping',
-    content: renderCardShell('Shipping and Delivery Policy', 'Pan-India coverage, insured packaging, and transparent timelines.', body)
+    content: renderPageContainer('Logistics Standards', 'Shipping Policy', 'Pan-India insured packaging, carrier networks, and transit times.', body)
   });
 }
 
 // 5. /returns
 export function renderReturnsPage(): string {
   const body = `
-    <h2 style="font-family: var(--font-serif); font-size: 22px; color: var(--charcoal); margin-bottom: 14px;">Clear Distinction Between Ready-Stock & Custom Orders</h2>
-    <p style="margin-bottom: 16px;">
-      At BHAIRAVI Creations, we stand behind our craftsmanship. Because custom creations involve hours of dedicated CAD modeling, 3D printing, and individual hand-finishing, our return policies reflect the nature of artisanal work:
-    </p>
-
-    <div style="background: #FAF9F6; border: 1px solid var(--stone-border); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-      <h3 style="font-size: 16px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px;">1. Ready-Stock Creations (7-Day Replacement for Transit Damage)</h3>
-      <p style="font-size: 14px; color: #57534E;">
-        If a ready-stock item arrives broken or damaged during courier transit, we offer a <strong>7-day replacement</strong>. To process a transit replacement claim, please share an unboxing video recorded at the time of package opening within 48 hours of delivery to our WhatsApp desk. A complimentary replacement will be expedited immediately.
-      </p>
-    </div>
-
-    <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-      <h3 style="font-size: 16px; font-weight: 600; color: #9A3412; margin-bottom: 8px;">2. Custom Orders (Non-Cancellable Once Production Commences)</h3>
-      <p style="font-size: 14px; color: #9A3412;">
-        Custom orders are non-cancellable once 3D printing or hand-painting commences. Before printing, our artisans provide full 3D renders and photos for approval. In the rare event of transit damage to a custom commission, we will repair or re-print the piece at zero additional cost.
-      </p>
-    </div>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">Pre-Dispatch Cancellation</h3>
+    <h2 class="font-display text-2xl font-bold text-[#0B0F19] mb-4">Artisanal Craft Guarantee & Transit Damage Protection</h2>
     <p>
-      For catalogue orders cancelled prior to courier handover, a 100% refund is processed back to the original payment source within 5 to 7 banking days.
+      We take immense pride in every creation that leaves our workbench. If your piece arrives damaged during transit, we provide an immediate, zero-hassle replacement or refund.
     </p>
+
+    <h3 class="font-display text-xl font-bold text-[#0B0F19] mt-6 mb-2">Transit Damage Claims (48-Hour Window)</h3>
+    <p>
+      Inspect your piece upon arrival. If damage occurred during shipping:
+    </p>
+    <ol class="list-decimal pl-5 space-y-2 mt-2">
+      <li>Photograph the outer packaging and damaged areas within 48 hours of delivery.</li>
+      <li>Send the photos to our WhatsApp desk (+91 73472 78010) or email us at <code>contact@bhairavicreations.com</code>.</li>
+      <li>We will fast-track an immediate priority replacement or initiate a full refund.</li>
+    </ol>
   `;
 
   return renderBaseLayout({
-    title: 'Returns & Cancellation Policy',
-    description: '7-day transit damage replacement for ready stock and custom order non-cancellability terms.',
+    title: 'Returns & Refunds',
+    description: 'Learn about our 48-hour transit damage replacement guarantee and return policies for handcrafted 3D creations.',
     canonicalPath: '/returns',
-    content: renderCardShell('Returns & Cancellation', 'Fair, transparent transit replacements and craft integrity guarantees.', body)
+    content: renderPageContainer('Buyer Assurance', 'Returns & Refunds Policy', 'Our 48-hour transit damage replacement guarantee and artisanal commitment.', body)
   });
 }
 
 // 6. /privacy
 export function renderPrivacyPage(): string {
   const body = `
-    <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 16px; margin-bottom: 24px; color: #065F46; font-size: 13px;">
-      <strong>DPDP Act 2023 Compliance:</strong> This policy is authored in strict accordance with the <em>Digital Personal Data Protection Act, 2023</em> of the Republic of India.
-    </div>
-
-    <h2 style="font-family: var(--font-serif); font-size: 22px; color: var(--charcoal); margin-bottom: 14px;">Data Fiduciary Commitment</h2>
-    <p style="margin-bottom: 16px;">
-      <strong>BHAIRAVI Creations</strong> ("we", "our", or "us"), operating out of Ludhiana, Punjab, India, acts as the Data Fiduciary for personal data collected through this digital platform. We are committed to transparency, minimal collection, and zero third-party monetization.
-    </p>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">Anonymous First-Party Telemetry Only</h3>
-    <p style="margin-bottom: 16px;">
-      Our digital storefront tracks product impressions, clicks, and conversion funnels exclusively using privacy-preserving <strong>first-party telemetry</strong>. We do not use third-party advertising cookies, Google Analytics, or covert browser fingerprinting. Telemetry payloads never contain passwords, payment card information, or private WhatsApp message bodies.
-    </p>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">Custom Order Enquiry Data</h3>
-    <p style="margin-bottom: 16px;">
-      When you submit a custom order enquiry, we collect your name, phone number, and optional email solely to provide technical feasibility reviews, CAD assessments, and fixed INR quotations. We do not sell, rent, or trade your contact information to any marketing broker.
-    </p>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">Rights of the Data Principal</h3>
-    <p style="margin-bottom: 16px;">
-      Under the DPDP Act 2023, you hold the right to access, correct, update, and request erasure of your personal data. You may also withdraw consent or opt-out of non-essential analytics at any time.
-    </p>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">Grievance Redressal Officer</h3>
+    <h2 class="font-display text-2xl font-bold text-[#0B0F19] mb-4">Digital Personal Data Protection (DPDP) Act 2023 Compliance</h2>
     <p>
-      For privacy questions or data erasure requests, please contact our designated Grievance Officer at:<br>
-      <strong>Email:</strong> <a href="mailto:grievance@bhairavicreations.com" style="color: var(--terracotta); text-decoration: underline;">grievance@bhairavicreations.com</a><br>
-      <strong>Physical Address:</strong> ${STUDIO_DETAILS.address}
+      BHAIRAVI Creations operates under strict Zero-PII (Personally Identifiable Information) retention standards in full compliance with the Indian Digital Personal Data Protection Act, 2023.
     </p>
+
+    <h3 class="font-display text-xl font-bold text-[#0B0F19] mt-6 mb-2">Data We Collect & How We Use It</h3>
+    <ul class="list-disc pl-5 space-y-2 mt-2">
+      <li><strong>Custom Order Inquiries:</strong> Contact phone numbers and design descriptions are used exclusively to evaluate feasibility and provide INR quotations.</li>
+      <li><strong>IP Anonymization:</strong> IP addresses are hashed using daily cryptographically rotated salts via SHA-256. Raw IP addresses are never persisted.</li>
+      <li><strong>Zero-Tracking Cookies:</strong> We do not deploy invasive third-party cross-site marketing trackers.</li>
+    </ul>
   `;
 
   return renderBaseLayout({
-    title: 'Privacy Policy (DPDP Act 2023)',
-    description: 'Digital Personal Data Protection Act 2023 compliance. First-party anonymous analytics with zero PII harvesting.',
+    title: 'Privacy Policy',
+    description: 'Learn how BHAIRAVI Creations protects your personal data in accordance with the Indian DPDP Act 2023.',
     canonicalPath: '/privacy',
-    content: renderCardShell('Privacy Policy (DPDP Act 2023)', 'Data fiduciary disclosures, anonymous telemetry, and data principal rights.', body)
+    content: renderPageContainer('Data Ethics & Compliance', 'Privacy Policy', 'Zero-PII design and DPDP Act 2023 compliance.', body)
   });
 }
 
 // 7. /terms
 export function renderTermsPage(): string {
   const body = `
-    <h2 style="font-family: var(--font-serif); font-size: 22px; color: var(--charcoal); margin-bottom: 14px;">Terms of Service & Studio Policies</h2>
-    <p style="margin-bottom: 16px;">
-      Welcome to BHAIRAVI Creations. By browsing our digital storefront, purchasing through our verified channels, or commissioning custom 3D prints, you agree to the following terms:
-    </p>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">1. Currency & Pricing</h3>
-    <p style="margin-bottom: 16px;">
-      All prices displayed on this storefront are denominated strictly in <strong>Indian Rupees (INR / ₹)</strong> and are inclusive of applicable Goods and Services Tax (GST) unless explicitly noted otherwise. Prices are subject to dynamic update via our admin system without retroactive effect on accepted orders.
-    </p>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">2. Intellectual Property Rights</h3>
-    <p style="margin-bottom: 16px;">
-      All proprietary 3D digital sculptures, original CAD models, product photographs, artisanal copy, and brand marks are the exclusive intellectual property of BHAIRAVI Creations, protected under Indian Copyright and Trademark laws. Unauthorized redistribution, commercial 3D scanning, or resale of our digital models is strictly prohibited.
-    </p>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">3. Customer CAD & Design Warranties</h3>
-    <p style="margin-bottom: 16px;">
-      When uploading CAD files (.stl) or reference imagery for custom orders, you represent and warrant that you hold the legal copyright, license, or authorization to reproduce the design. BHAIRAVI Creations categorically refuses to print weapons, defamatory content, or designs that infringe third-party intellectual property.
-    </p>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">4. Product Usage & Limitations</h3>
-    <p style="margin-bottom: 16px;">
-      Our 3D creations are intended for indoor decorative and exhibition purposes. Unless specifically manufactured in food-grade or structural engineering resins, creations must not be used for direct food contact or load-bearing automotive applications. Keep PLA pieces away from temperatures exceeding 50°C.
-    </p>
-
-    <h3 style="font-family: var(--font-serif); font-size: 18px; color: var(--charcoal); margin: 24px 0 10px 0;">5. Governing Law & Exclusive Jurisdiction</h3>
+    <h2 class="font-display text-2xl font-bold text-[#0B0F19] mb-4">Terms & Conditions of Service</h2>
     <p>
-      These Terms of Service are governed by and construed in accordance with the substantive laws of the Republic of India. Any disputes arising out of or in connection with this platform shall be subject to the exclusive jurisdiction of the competent courts of <strong>Ludhiana, Punjab, India</strong>.
+      Welcome to BHAIRAVI Creations. By browsing our digital storefront or commissioning custom 3D orders, you agree to these terms.
+    </p>
+
+    <h3 class="font-display text-xl font-bold text-[#0B0F19] mt-6 mb-2">Intellectual Property & Copyright</h3>
+    <p>
+      All sculpts, original 3D models, digital photography, and artisanal finishing methods published on this website are the intellectual property of BHAIRAVI Creations. Unauthorized reproduction or commercial resale of our digital CAD files is strictly prohibited.
+    </p>
+
+    <h3 class="font-display text-xl font-bold text-[#0B0F19] mt-6 mb-2">Governing Jurisdiction</h3>
+    <p>
+      Any disputes arising out of or related to our services shall be subject to the exclusive jurisdiction of the competent courts in Ludhiana, Punjab, India.
     </p>
   `;
 
   return renderBaseLayout({
     title: 'Terms of Service',
-    description: 'Terms of service, INR currency pricing, 3D model copyright protection, and Ludhiana, Punjab jurisdiction.',
+    description: 'Terms and conditions governing the use of BHAIRAVI Creations digital platform and custom 3D printing orders.',
     canonicalPath: '/terms',
-    content: renderCardShell('Terms of Service', 'Commercial terms, copyright protections, and Indian court jurisdiction.', body)
+    content: renderPageContainer('Legal Agreement', 'Terms of Service', 'Platform usage guidelines, intellectual property rights, and governing jurisdiction.', body)
   });
 }

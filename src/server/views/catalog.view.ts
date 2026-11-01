@@ -1,12 +1,12 @@
 /**
  * BHAIRAVI Creations Digital Platform
- * Product Catalogue SSR View (Features F40 & F41 + Reviewer 2 Finding 3)
+ * Premium Editorial Product Catalogue SSR View (Features F40 & F41)
  * Target: src/server/views/catalog.view.ts
  */
 
-import { formatPaiseToInr } from '../../shared/pricing.js';
 import { EMPTY_SEARCH_MESSAGE } from '../../shared/constants.js';
 import { renderBaseLayout, escapeHtml } from './layout.view.js';
+import { renderProductCard } from './components/product_card.component.js';
 
 export interface CatalogPageProps {
   products: any[];
@@ -54,47 +54,44 @@ export function renderCatalogPage(props: CatalogPageProps): string {
   const craftTags = ['handmade finishing', 'customisation', 'multi-colour printing'];
 
   const content = `
-    <div class="container" style="padding-top: 48px; padding-bottom: 80px;">
-      <!-- Page Header -->
-      <div style="margin-bottom: 36px;">
-        <span style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--terracotta);">
-          Artisanal Collection
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <!-- Editorial Page Header -->
+      <header class="mb-10 max-w-3xl">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#2563EB] mb-2">
+          Handcrafted in Ludhiana
         </span>
-        <h1 style="font-family: var(--font-serif); font-size: 38px; font-weight: 700; color: var(--charcoal); margin-top: 6px; letter-spacing: -0.01em;">
-          Product Catalogue
+        <h1 class="font-display text-4xl sm:text-5xl font-black text-[#0B0F19] tracking-tight leading-tight">
+          Artisanal Catalogue
         </h1>
-        <p style="font-size: 15px; color: #78716C; margin-top: 8px; max-width: 680px; line-height: 1.6;">
-          Explore our handcrafted 3D printed creations—each piece precision-formed at 0.12mm layer height and individually painted by hand in our Ludhiana studio.
+        <p class="mt-3 text-base sm:text-lg text-[#475569] leading-relaxed">
+          Explore our collection of precision-sculpted 3D creations—each formed layer-by-layer at 0.12mm precision and finished by hand with artist acrylics and authentic patinas.
         </p>
-      </div>
+      </header>
 
-      <!-- Contemporary Controls Bar: Search, Category Dropdown, Sort & Collapsible Craft Tags -->
-      <div class="catalogue-controls" style="background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 16px; padding: 20px 24px; margin-bottom: 36px; box-shadow: 0 1px 3px rgba(28, 25, 23, 0.04);">
-        <!-- Search and Primary Controls Row -->
-        <div style="display: flex; gap: 16px; justify-content: space-between; flex-wrap: wrap; align-items: center;">
-          
-          <!-- Search Input -->
-          <div style="flex: 2 1 300px; position: relative;">
+      <!-- Bento Filtering & Search Controls Bar -->
+      <div class="bento-card p-5 sm:p-6 mb-10 bg-white border border-[#E2E8F0] rounded-2xl shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+          <!-- Search Input (5 cols on md) -->
+          <div class="md:col-span-5 relative">
+            <label for="catalog-search-input" class="sr-only">Search Catalogue</label>
             <input
               id="catalog-search-input"
               type="search"
               placeholder="Search by title, description, or craft tag..."
               value="${escapeHtml(searchQuery)}"
-              style="width: 100%; padding: 11px 16px 11px 40px; font-size: 14px; border: 1px solid var(--stone-border); border-radius: 10px; background: #FAF9F6; color: var(--charcoal); outline: none; transition: border-color 0.15s ease;"
-              aria-label="Search product catalogue"
+              class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-[#FAF9F5] text-sm text-[#0F172A] placeholder-[#94A3B8] focus:bg-white transition-colors"
             />
-            <svg style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: #A8A29E;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8] pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
 
-          <!-- Category Navigation Dropdown -->
-          <div style="flex: 1 1 200px; display: flex; align-items: center; gap: 8px;">
-            <label for="catalog-category-select" style="font-size: 13px; font-weight: 600; color: #57534E; white-space: nowrap;">Category:</label>
+          <!-- Category Select (3 cols on md) -->
+          <div class="md:col-span-3">
+            <label for="catalog-category-select" class="sr-only">Filter by Category</label>
             <select
               id="catalog-category-select"
-              aria-label="Filter products by category"
-              style="width: 100%; padding: 10px 14px; font-size: 13px; font-weight: 500; border: 1px solid var(--stone-border); border-radius: 10px; background: #FAF9F6; color: var(--charcoal); outline: none; cursor: pointer;">
+              class="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-[#FAF9F5] text-sm font-medium text-[#0F172A] focus:bg-white transition-colors cursor-pointer">
               <option value="all" ${activeCategory === 'all' ? 'selected' : ''}>All Categories</option>
               ${categories
                 .map(
@@ -108,46 +105,50 @@ export function renderCatalogPage(props: CatalogPageProps): string {
             </select>
           </div>
 
-          <!-- Sort Select -->
-          <div style="flex: 1 1 180px; display: flex; align-items: center; gap: 8px;">
-            <label for="catalog-sort-select" style="font-size: 13px; font-weight: 600; color: #57534E; white-space: nowrap;">Sort By:</label>
+          <!-- Sort Select (2 cols on md) -->
+          <div class="md:col-span-2">
+            <label for="catalog-sort-select" class="sr-only">Sort Catalogue</label>
             <select
               id="catalog-sort-select"
-              aria-label="Sort product catalogue"
-              style="width: 100%; padding: 10px 14px; font-size: 13px; font-weight: 500; border: 1px solid var(--stone-border); border-radius: 10px; background: #FAF9F6; color: var(--charcoal); outline: none; cursor: pointer;">
+              class="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-[#FAF9F5] text-sm font-medium text-[#0F172A] focus:bg-white transition-colors cursor-pointer">
               <option value="newest" ${activeSort === 'newest' ? 'selected' : ''}>Newest First</option>
-              <option value="price_asc" ${activeSort === 'price_asc' ? 'selected' : ''}>Price: Low to High</option>
-              <option value="price_desc" ${activeSort === 'price_desc' ? 'selected' : ''}>Price: High to Low</option>
+              <option value="price_asc" ${activeSort === 'price_asc' ? 'selected' : ''}>Price: Low &rarr; High</option>
+              <option value="price_desc" ${activeSort === 'price_desc' ? 'selected' : ''}>Price: High &rarr; Low</option>
               <option value="popularity" ${activeSort === 'popularity' ? 'selected' : ''}>Most Popular</option>
             </select>
           </div>
 
-          <!-- Craft Tags Toggle Button -->
-          <div>
+          <!-- Craft Tags Toggle (2 cols on md) -->
+          <div class="md:col-span-2">
             <button
               id="toggle-craft-tags-btn"
               type="button"
               aria-expanded="false"
               aria-controls="craft-tags-panel"
-              style="padding: 10px 16px; font-size: 13px; font-weight: 600; border-radius: 10px; border: 1px solid var(--stone-border); background: #FAF9F6; color: var(--charcoal); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-              <span>Craft Tags</span>
-              <span style="font-size: 10px; color: #78716C;">&dtrif;</span>
+              class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border border-[#CBD5E1] bg-[#FAF9F5] hover:bg-[#F1F5F9] text-xs font-bold text-[#0F172A] transition-colors">
+              <span>Technique Tags</span>
+              <svg class="w-3.5 h-3.5 text-[#64748B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
             </button>
           </div>
         </div>
 
         <!-- Collapsible Craft Tags Panel -->
-        <div id="craft-tags-panel" style="display: none; padding-top: 16px; margin-top: 16px; border-top: 1px solid var(--stone-border); display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-          <span style="font-size: 12px; font-weight: 600; color: #78716C; margin-right: 4px;">Filter by Technique:</span>
+        <div id="craft-tags-panel" class="hidden pt-4 mt-4 border-t border-[#F1F5F9] flex flex-wrap items-center gap-2">
+          <span class="text-xs font-bold text-[#64748B] mr-2">Filter Technique:</span>
           ${craftTags
             .map(
               (tag) => `
             <button
               type="button"
-              class="tag-pill ${activeTag === tag ? 'bg-[#C2410C] text-white' : 'bg-white text-stone-700'}"
+              class="tag-pill text-xs font-semibold px-3 py-1 rounded-lg border transition-all ${
+                activeTag === tag
+                  ? 'bg-[#2563EB] text-white border-[#2563EB]'
+                  : 'bg-white text-[#475569] border-[#CBD5E1] hover:border-[#2563EB]'
+              }"
               data-tag="${escapeHtml(tag)}"
-              aria-pressed="${activeTag === tag ? 'true' : 'false'}"
-              style="padding: 6px 14px; font-size: 12px; font-weight: 500; border-radius: 8px; border: 1px solid var(--stone-border); cursor: pointer; transition: all 0.15s ease;">
+              aria-pressed="${activeTag === tag ? 'true' : 'false'}">
               # ${escapeHtml(tag)}
             </button>
           `
@@ -156,8 +157,8 @@ export function renderCatalogPage(props: CatalogPageProps): string {
         </div>
       </div>
 
-      <!-- Modern Flexbox Product Cards (Fluid Proportions with Generous Whitespace) -->
-      <div id="product-grid" class="catalog-flex-grid" style="display: flex; flex-wrap: wrap; gap: 28px; justify-content: flex-start;">
+      <!-- Bento Product Grid -->
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         ${products
           .map((product) => {
             const tagsList = Array.isArray(product.tags)
@@ -166,11 +167,10 @@ export function renderCatalogPage(props: CatalogPageProps): string {
               ? JSON.parse(product.tags)
               : [];
             const tagsStr = tagsList.join(', ');
-            const isSoldOut = !product.is_made_to_order && product.inventory_count <= 0;
 
             return `
-            <article
-              class="product-card catalog-card"
+            <div
+              class="product-card"
               data-product-id="${product.id}"
               data-product-slug="${product.slug}"
               data-product-name="${escapeHtml(product.name)}"
@@ -179,122 +179,62 @@ export function renderCatalogPage(props: CatalogPageProps): string {
               data-tags="${escapeHtml(tagsStr)}"
               data-price-paise="${product.base_price_paise}"
               data-created-at="${product.created_at || ''}"
-              data-display-order="${product.display_order || 0}"
-              data-track-impression="product_impression"
-              style="flex: 1 1 320px; max-width: 100%; display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(28, 25, 23, 0.04);">
-              
-              <!-- Image Viewport (Clean, Uncluttered — No Repetitive 'Made to Order' Badge) -->
-              <div class="card-image-wrap" style="aspect-ratio: 4/3; background: #F5F5F4; position: relative; overflow: hidden;">
-                <img
-                  src="${product.primary_image?.public_url || '/assets/images/placeholder_studio_piece.webp'}"
-                  alt="${escapeHtml(product.primary_image?.alt_text || product.name)}"
-                  loading="lazy"
-                  style="width: 100%; height: 100%; object-fit: cover;"
-                  onerror="this.src='/assets/images/placeholder_studio_piece.webp'"
-                />
-                ${
-                  isSoldOut
-                    ? `
-                  <span style="position: absolute; top: 12px; left: 12px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; background: rgba(220, 38, 38, 0.9); color: #FFFFFF;">
-                    Sold Out
-                  </span>
-                `
-                    : ''
-                }
-              </div>
-
-              <!-- Product Details with Generous Whitespace -->
-              <div style="padding: 24px; display: flex; flex-direction: column; flex-grow: 1;">
-                <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: #78716C; margin-bottom: 6px;">
-                  ${escapeHtml(product.category?.name || 'Handcrafted')}
-                </span>
-                <h3 style="font-family: var(--font-serif); font-size: 18px; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; line-height: 1.35;">
-                  <a href="/products/${product.slug}" data-track-click="product_click" style="color: inherit;">
-                    ${escapeHtml(product.name)}
-                  </a>
-                </h3>
-
-                <!-- Craft Tags -->
-                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px;">
-                  ${tagsList
-                    .slice(0, 3)
-                    .map(
-                      (tag: string) => `
-                    <span style="font-size: 11px; font-weight: 500; background: #FAF9F6; border: 1px solid var(--stone-border); padding: 3px 8px; border-radius: 6px; color: #57534E;">
-                      ${escapeHtml(tag)}
-                    </span>
-                  `
-                    )
-                    .join('')}
-                </div>
-
-                <!-- Price & Navigation CTA -->
-                <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid var(--stone-border); display: flex; justify-content: space-between; align-items: center;">
-                  <span style="font-size: 18px; font-weight: 700; color: var(--charcoal); letter-spacing: -0.01em;">
-                    ${formatPaiseToInr(product.base_price_paise)}
-                  </span>
-                  <a href="/products/${product.slug}" style="font-size: 13px; font-weight: 600; color: var(--terracotta); display: inline-flex; align-items: center; gap: 4px;">
-                    View Piece &rarr;
-                  </a>
-                </div>
-              </div>
-            </article>
-          `;
+              data-display-order="${product.display_order || 0}">
+              ${renderProductCard(product)}
+            </div>
+            `;
           })
           .join('')}
       </div>
 
-      <!-- Empty Search State -->
-      <div id="empty-state" class="hidden" style="display: none; text-align: center; padding: 64px 20px; background: #FFFFFF; border: 1px solid var(--stone-border); border-radius: 16px; max-width: 600px; margin: 40px auto 0 auto;">
-        <div style="width: 48px; height: 48px; border-radius: 50%; background: #F5F5F4; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; color: #78716C;">
-          <svg style="width: 24px; height: 24px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <!-- Empty State -->
+      <div id="empty-state" class="hidden text-center py-16 px-6 bg-white border border-[#E2E8F0] rounded-2xl max-w-lg mx-auto my-12">
+        <div class="w-12 h-12 rounded-full bg-[#EFF6FF] text-[#2563EB] flex items-center justify-center mx-auto mb-4">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
-        <h3 style="font-family: var(--font-serif); font-size: 20px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px;">
-          No Handcrafted Creations Found
-        </h3>
-        <p style="font-size: 14px; color: #57534E; line-height: 1.6; margin-bottom: 24px;">
+        <h3 class="font-display text-xl font-bold text-[#0B0F19] mb-2">No Creations Found</h3>
+        <p class="text-sm text-[#475569] leading-relaxed mb-6">
           ${escapeHtml(EMPTY_SEARCH_MESSAGE)}
         </p>
-        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-          <button id="reset-filters-btn" type="button" class="btn-secondary" style="min-height: 44px; padding: 10px 20px;">
+        <div class="flex items-center justify-center gap-3">
+          <button id="reset-filters-btn" type="button" class="btn btn-secondary btn-sm">
             Clear Filters
           </button>
-          <a href="/custom-order" class="btn-primary" style="min-height: 44px; padding: 10px 20px;">
-            Commission a Custom 3D Print
+          <a href="/custom-order" class="btn btn-primary btn-sm">
+            Commission Custom 3D Piece
           </a>
         </div>
       </div>
 
-      <!-- Accessible Pagination Navigation (Reviewer 2 Finding 3) -->
+      <!-- Accessible Pagination Navigation -->
       ${
         pagination && pagination.total_pages > 1
           ? `
-        <nav class="pagination-nav" aria-label="Catalogue pagination navigation" style="margin-top: 56px; display: flex; flex-direction: column; align-items: center; gap: 14px;">
-          <div class="pagination-group" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center;">
+        <nav class="pagination-nav mt-16 flex flex-col items-center gap-4" aria-label="Catalogue pagination navigation">
+          <div class="flex flex-wrap items-center justify-center gap-2">
             <!-- Previous Link -->
             ${
               pagination.page > 1
                 ? `<a href="${buildCatalogUrl({ page: pagination.page - 1, category: activeCategory, tag: activeTag, search: searchQuery, sort: activeSort })}"
-                      class="pagination-btn pagination-prev"
-                      aria-label="Go to previous page (Page ${pagination.page - 1})">
+                      class="btn btn-secondary btn-sm"
+                      aria-label="Previous Page (Page ${pagination.page - 1})">
                       &larr; Previous
                    </a>`
-                : `<span class="pagination-btn pagination-disabled" aria-disabled="true" aria-label="Previous page (disabled)">&larr; Previous</span>`
+                : `<span class="btn btn-secondary btn-sm opacity-40 cursor-not-allowed" aria-disabled="true">&larr; Previous</span>`
             }
 
             <!-- Page Number Links -->
-            <div style="display: flex; gap: 6px; align-items: center;">
+            <div class="flex items-center gap-1.5">
               ${Array.from({ length: pagination.total_pages }, (_, i) => i + 1)
                 .map((p) => {
                   const isCurrent = p === pagination.page;
                   return isCurrent
-                    ? `<span class="pagination-num active" aria-current="page" style="min-width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: var(--charcoal); color: #FFFFFF; border-radius: 8px;">${p}</span>`
+                    ? `<span class="w-9 h-9 flex items-center justify-center rounded-lg bg-[#0B0F19] text-white text-xs font-bold" aria-current="page">${p}</span>`
                     : `<a href="${buildCatalogUrl({ page: p, category: activeCategory, tag: activeTag, search: searchQuery, sort: activeSort })}"
-                          class="pagination-num"
-                          aria-label="Go to page ${p}"
-                          style="min-width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; background: #FFFFFF; color: var(--charcoal); border: 1px solid var(--stone-border); border-radius: 8px; text-decoration: none;">
+                          class="w-9 h-9 flex items-center justify-center rounded-lg border border-[#CBD5E1] bg-white hover:bg-[#F1F5F9] text-xs font-medium text-[#0F172A]"
+                          aria-label="Go to page ${p}">
                           ${p}
                        </a>`;
                 })
@@ -305,16 +245,15 @@ export function renderCatalogPage(props: CatalogPageProps): string {
             ${
               pagination.page < pagination.total_pages
                 ? `<a href="${buildCatalogUrl({ page: pagination.page + 1, category: activeCategory, tag: activeTag, search: searchQuery, sort: activeSort })}"
-                      class="pagination-btn pagination-next"
-                      aria-label="Go to next page (Page ${pagination.page + 1})">
+                      class="btn btn-secondary btn-sm"
+                      aria-label="Next Page (Page ${pagination.page + 1})">
                       Next &rarr;
                    </a>`
-                : `<span class="pagination-btn pagination-disabled" aria-disabled="true" aria-label="Next page (disabled)">Next &rarr;</span>`
+                : `<span class="btn btn-secondary btn-sm opacity-40 cursor-not-allowed" aria-disabled="true">Next &rarr;</span>`
             }
           </div>
 
-          <!-- Pagination Summary Text -->
-          <div class="pagination-summary" style="font-size: 13px; color: #78716C; text-align: center;">
+          <div class="text-xs text-[#64748B]">
             Showing <strong>${(pagination.page - 1) * pagination.limit + 1}</strong>&ndash;<strong>${Math.min(
               pagination.page * pagination.limit,
               pagination.total_items
@@ -347,12 +286,18 @@ export function renderCatalogPage(props: CatalogPageProps): string {
           sort: ${JSON.stringify(activeSort)}
         };
 
-        // Collapsible craft tags panel
         if (toggleTagsBtn && craftTagsPanel) {
           toggleTagsBtn.addEventListener('click', function() {
-            var isHidden = craftTagsPanel.style.display === 'none';
-            craftTagsPanel.style.display = isHidden ? 'flex' : 'none';
-            toggleTagsBtn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+            var isHidden = craftTagsPanel.classList.contains('hidden');
+            if (isHidden) {
+              craftTagsPanel.classList.remove('hidden');
+              craftTagsPanel.classList.add('flex');
+              toggleTagsBtn.setAttribute('aria-expanded', 'true');
+            } else {
+              craftTagsPanel.classList.add('hidden');
+              craftTagsPanel.classList.remove('flex');
+              toggleTagsBtn.setAttribute('aria-expanded', 'false');
+            }
           });
         }
 
@@ -373,59 +318,31 @@ export function renderCatalogPage(props: CatalogPageProps): string {
             var matchesTag = state.tag === 'all' || tags.indexOf(state.tag.toLowerCase()) !== -1;
 
             if (matchesQ && matchesCat && matchesTag) {
-              card.style.display = 'flex';
+              card.style.display = 'block';
               visible++;
             } else {
               card.style.display = 'none';
             }
           });
 
-          cards.sort(function(a, b) {
-            var pA = parseInt(a.getAttribute('data-price-paise') || '0', 10);
-            var pB = parseInt(b.getAttribute('data-price-paise') || '0', 10);
-            var oA = parseInt(a.getAttribute('data-display-order') || '0', 10);
-            var oB = parseInt(b.getAttribute('data-display-order') || '0', 10);
-            var cA = a.getAttribute('data-created-at') || '';
-            var cB = b.getAttribute('data-created-at') || '';
-            var idA = a.getAttribute('data-product-id') || '';
-            var idB = b.getAttribute('data-product-id') || '';
-
-            if (state.sort === 'price_asc') return (pA - pB) || (oA - oB) || idA.localeCompare(idB);
-            if (state.sort === 'price_desc') return (pB - pA) || (oA - oB) || idA.localeCompare(idB);
-            if (state.sort === 'newest') return (cB.localeCompare(cA)) || (oA - oB) || idA.localeCompare(idB);
-            return (oA - oB) || idA.localeCompare(idB);
-          });
-
-          cards.forEach(function(c) { grid.appendChild(c); });
-
           if (emptyState) {
-            emptyState.style.display = visible === 0 ? 'block' : 'none';
+            if (visible === 0) {
+              emptyState.classList.remove('hidden');
+              grid.classList.add('hidden');
+            } else {
+              emptyState.classList.add('hidden');
+              grid.classList.remove('hidden');
+            }
           }
         }
 
-        // Search Input with Debounce & Enter navigation
         if (searchInput) {
-          var timer = null;
           searchInput.addEventListener('input', function(e) {
-            clearTimeout(timer);
-            timer = setTimeout(function() {
-              state.searchQuery = e.target.value;
-              filterAndSort();
-            }, 250);
-          });
-
-          searchInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-              var q = encodeURIComponent(searchInput.value.trim());
-              var url = '/products?search=' + q;
-              if (state.category !== 'all') url += '&category=' + encodeURIComponent(state.category);
-              if (state.sort !== 'newest') url += '&sort=' + encodeURIComponent(state.sort);
-              window.location.href = url;
-            }
+            state.searchQuery = e.target.value;
+            filterAndSort();
           });
         }
 
-        // Category dropdown change
         if (categorySelect) {
           categorySelect.addEventListener('change', function(e) {
             state.category = e.target.value;
@@ -433,52 +350,55 @@ export function renderCatalogPage(props: CatalogPageProps): string {
           });
         }
 
-        // Sort select change
         if (sortSelect) {
           sortSelect.addEventListener('change', function(e) {
             state.sort = e.target.value;
-            filterAndSort();
+            // Sorting implementation
+            if (!grid) return;
+            var cards = Array.from(grid.querySelectorAll('.product-card'));
+            cards.sort(function(a, b) {
+              var priceA = Number(a.getAttribute('data-price-paise') || 0);
+              var priceB = Number(b.getAttribute('data-price-paise') || 0);
+              var orderA = Number(a.getAttribute('data-display-order') || 0);
+              var orderB = Number(b.getAttribute('data-display-order') || 0);
+
+              if (state.sort === 'price_asc') return priceA - priceB;
+              if (state.sort === 'price_desc') return priceB - priceA;
+              return orderA - orderB;
+            });
+            cards.forEach(function(c) { grid.appendChild(c); });
           });
         }
 
-        // Craft tag pills
-        tagPills.forEach(function(btn) {
-          btn.addEventListener('click', function() {
-            var tag = btn.getAttribute('data-tag') || 'all';
+        tagPills.forEach(function(pill) {
+          pill.addEventListener('click', function() {
+            var tag = pill.getAttribute('data-tag');
             if (state.tag === tag) {
               state.tag = 'all';
-              btn.classList.remove('bg-[#C2410C]', 'text-white');
-              btn.classList.add('bg-white', 'text-stone-700');
-              btn.setAttribute('aria-pressed', 'false');
+              pill.classList.remove('bg-[#2563EB]', 'text-white', 'border-[#2563EB]');
+              pill.classList.add('bg-white', 'text-[#475569]', 'border-[#CBD5E1]');
             } else {
-              tagPills.forEach(function(b) {
-                b.classList.remove('bg-[#C2410C]', 'text-white');
-                b.classList.add('bg-white', 'text-stone-700');
-                b.setAttribute('aria-pressed', 'false');
-              });
-              btn.classList.add('bg-[#C2410C]', 'text-white');
-              btn.classList.remove('bg-white', 'text-stone-700');
-              btn.setAttribute('aria-pressed', 'true');
               state.tag = tag;
+              tagPills.forEach(function(p) {
+                p.classList.remove('bg-[#2563EB]', 'text-white', 'border-[#2563EB]');
+                p.classList.add('bg-white', 'text-[#475569]', 'border-[#CBD5E1]');
+              });
+              pill.classList.add('bg-[#2563EB]', 'text-white', 'border-[#2563EB]');
+              pill.classList.remove('bg-white', 'text-[#475569]', 'border-[#CBD5E1]');
             }
             filterAndSort();
           });
         });
 
-        // Reset button
         if (resetBtn) {
           resetBtn.addEventListener('click', function() {
-            state.searchQuery = '';
-            state.category = 'all';
-            state.tag = 'all';
-            state.sort = 'newest';
+            state = { searchQuery: '', category: 'all', tag: 'all', sort: 'newest' };
             if (searchInput) searchInput.value = '';
             if (categorySelect) categorySelect.value = 'all';
             if (sortSelect) sortSelect.value = 'newest';
-            tagPills.forEach(function(b) {
-              b.classList.remove('bg-[#C2410C]', 'text-white');
-              b.classList.add('bg-white', 'text-stone-700');
-              b.setAttribute('aria-pressed', 'false');
+            tagPills.forEach(function(p) {
+              p.classList.remove('bg-[#2563EB]', 'text-white', 'border-[#2563EB]');
+              p.classList.add('bg-white', 'text-[#475569]', 'border-[#CBD5E1]');
             });
             filterAndSort();
           });
@@ -488,8 +408,8 @@ export function renderCatalogPage(props: CatalogPageProps): string {
   `;
 
   return renderBaseLayout({
-    title: 'Product Catalogue',
-    description: 'Browse our complete catalogue of handcrafted 3D printed sculptures, decor, and models.',
+    title: 'Artisanal 3D Catalogue',
+    description: 'Browse our collection of handcrafted 3D printed creations precision-formed in Ludhiana, Punjab.',
     canonicalPath: '/products',
     activeNav: 'products',
     content,
