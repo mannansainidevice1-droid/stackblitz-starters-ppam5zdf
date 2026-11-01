@@ -20,7 +20,7 @@ export function renderNotFoundPage(message: string = 'The requested creation or 
       </p>
       <div class="flex items-center justify-center gap-4 flex-wrap">
         <a href="/" class="btn btn-primary btn-md">
-          Return to Atelier Home
+          Return to Studio Home
         </a>
         <a href="/products" class="btn btn-secondary btn-md">
           Explore Catalogue

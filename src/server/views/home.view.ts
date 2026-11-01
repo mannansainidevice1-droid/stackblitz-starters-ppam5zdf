@@ -168,7 +168,7 @@ export function renderHomePage(props: HomePageProps = {}): string {
                   <strong id="detail-stage-tool" class="text-[#0B0F19]">Parametric CAD &amp; Blender</strong>
                 </div>
                 <div>
-                  <span class="text-[#94A3B8] font-bold text-[10px] uppercase block">Atelier Standard</span>
+                  <span class="text-[#94A3B8] font-bold text-[10px] uppercase block">Studio Standard</span>
                   <strong id="detail-stage-standard" class="text-[#0B0F19]">Manifold Watertight Mesh</strong>
                 </div>
                 <div>
@@ -180,7 +180,7 @@ export function renderHomePage(props: HomePageProps = {}): string {
 
             <!-- Visual Stage Badge Preview -->
             <div class="p-6 rounded-2xl bg-[#FAF9F5] border border-[#CBD5E1] text-center space-y-2">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-[#64748B]">Atelier Workmanship</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-[#64748B]">Studio Workmanship</span>
               <div class="font-display text-3xl font-black text-[#0B0F19]">100%</div>
               <p class="text-xs text-[#64748B]">Individually sculpted and hand-finished in Ludhiana, Punjab.</p>
               <a href="/custom-order" class="btn btn-primary btn-sm w-full mt-3">Start Custom Project &rarr;</a>
@@ -198,7 +198,7 @@ export function renderHomePage(props: HomePageProps = {}): string {
           <div class="lg:col-span-7 space-y-6">
             <span class="text-xs font-bold uppercase tracking-widest text-[#2563EB] block">Founded in Ludhiana, Punjab</span>
             <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-black text-[#0B0F19] leading-tight">
-              A Family Atelier Dedicated to Additive Artistry
+              A Family Studio Dedicated to Additive Artistry
             </h2>
             <p class="text-base sm:text-lg text-[#475569] leading-relaxed">
               BHAIRAVI Creations was born in Ludhiana out of a profound passion for sculpture and digital craft. Rather than treating 3D printing as mass production, we approach each machine as a modern sculptor's chisel.
@@ -223,7 +223,7 @@ export function renderHomePage(props: HomePageProps = {}): string {
               <p class="text-xs text-[#475569]">GSTIN: ${escapeHtml(STUDIO_DETAILS.gstin)} (State Code 03 Punjab)</p>
             </div>
             <div class="bento-card bg-[#F8FAFC]">
-              <span class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1">Standard Atelier Dispatch</span>
+              <span class="block text-xs font-bold uppercase tracking-wider text-[#64748B] mb-1">Standard Studio Dispatch</span>
               <h4 class="font-display text-lg font-bold text-[#0B0F19] mb-2">3 to 7 Business Days</h4>
               <p class="text-xs text-[#475569]">Individually made to order. Carefully inspected and securely packaged in shock-absorbent eco-padding.</p>
             </div>
@@ -324,7 +324,7 @@ export function renderHomePage(props: HomePageProps = {}): string {
           {
             pill: 'Stage 01 • Digital Phase',
             title: 'Digital Sculpting & Parametric Design',
-            desc: 'Every creation originates as bespoke CAD geometry or high-definition digital sculpture, optimized for structural integrity and mathematical harmony.',
+            desc: 'Every creation originates as precision CAD geometry or high-definition digital sculpture, optimized for structural integrity and mathematical harmony.',
             tool: 'Parametric CAD & Blender',
             standard: 'Manifold Watertight Mesh',
             gate: 'Structural Honeycomb Check'

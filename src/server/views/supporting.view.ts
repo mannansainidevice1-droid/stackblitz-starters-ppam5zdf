@@ -55,7 +55,7 @@ export function renderAboutPage(): string {
       <div class="p-5 rounded-xl bg-[#FAF9F5] border border-[#E2E8F0]">
         <h3 class="font-display text-base font-bold text-[#0B0F19] mb-2">Zero Drop-Shipping Honesty</h3>
         <p class="text-xs text-[#64748B] leading-relaxed">
-          We never drop-ship mass-manufactured imports or present generic AI mockups as real products. Every piece is made in our Ludhiana atelier.
+          We never drop-ship mass-manufactured imports or present generic AI mockups as real products. Every piece is made in our Ludhiana studio.
         </p>
       </div>
     </div>
@@ -111,7 +111,7 @@ export function renderContactPage(): string {
       <!-- Workshop Coordinates -->
       <div class="p-5 rounded-xl bg-[#FAF9F5] border border-[#E2E8F0] flex flex-col justify-between">
         <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-[#D97706] block mb-1">Atelier Location</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-[#D97706] block mb-1">Studio Location</span>
           <h3 class="font-display text-base font-bold text-[#0B0F19] mb-2">Ludhiana, Punjab</h3>
           <p class="text-xs text-[#64748B] mb-4">${STUDIO_DETAILS.address} (PIN: 141001). Dispatch across all Indian states.</p>
         </div>

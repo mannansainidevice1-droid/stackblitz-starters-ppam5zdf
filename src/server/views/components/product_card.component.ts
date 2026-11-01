@@ -15,12 +15,18 @@ export interface ProductCardProps {
   base_price_paise?: number;
   category_name?: string;
   category?: { name: string; slug: string };
+  category_slug?: string;
+  primary_image?: { public_url?: string; alt_text?: string };
   primary_image_url?: string;
-  images?: Array<{ url: string; is_primary?: boolean }>;
+  images?: Array<{ url?: string; public_url?: string; is_primary?: boolean; alt_text?: string }>;
   is_customizable?: boolean | number;
   stock_status?: string;
   amazon_url?: string;
   short_description?: string;
+  description?: string;
+  tags?: string | string[];
+  display_order?: number;
+  created_at?: string;
 }
 
 export function renderProductCard(product: ProductCardProps): string {
@@ -28,13 +34,36 @@ export function renderProductCard(product: ProductCardProps): string {
   const formattedPrice = formatINR(price);
 
   const categoryTitle = product.category?.name || product.category_name || 'Artisanal Piece';
-  const imageUrl = product.primary_image_url || product.images?.find((img) => img.is_primary)?.url || product.images?.[0]?.url || '/placeholder.svg';
+  const categorySlug = product.category?.slug || product.category_slug || '';
+  const imageUrl =
+    product.primary_image?.public_url ||
+    product.primary_image_url ||
+    product.images?.find((img) => img.is_primary)?.public_url ||
+    product.images?.find((img) => img.is_primary)?.url ||
+    product.images?.[0]?.public_url ||
+    product.images?.[0]?.url ||
+    (product.slug ? `/uploads/products/${product.slug}_front.webp` : '/placeholder.svg');
 
   const isLowStock = product.stock_status === 'low_stock';
   const isOutOfStock = product.stock_status === 'out_of_stock';
+  const tagsList = Array.isArray(product.tags)
+    ? product.tags
+    : typeof product.tags === 'string'
+    ? (() => { try { return JSON.parse(product.tags); } catch { return [product.tags]; } })()
+    : [];
+  const tagsStr = tagsList.join(', ');
 
   return `
-  <article class="bento-product-card group relative flex flex-col bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#CBD5E1] hover:-translate-y-1" data-product-id="${escapeHtml(product.id)}">
+  <article class="product-card bento-product-card group relative flex flex-col bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#CBD5E1] hover:-translate-y-1"
+           data-product-id="${escapeHtml(product.id)}"
+           data-product-slug="${escapeHtml(product.slug)}"
+           data-product-name="${escapeHtml(product.name)}"
+           data-product-desc="${escapeHtml(product.short_description || product.description || '')}"
+           data-category-slug="${escapeHtml(categorySlug)}"
+           data-tags="${escapeHtml(tagsStr)}"
+           data-price-paise="${price}"
+           data-created-at="${escapeHtml(product.created_at || '')}"
+           data-display-order="${product.display_order ?? 0}">
     <!-- Image Wrap with Micro-Zoom -->
     <a href="/products/${escapeHtml(product.slug)}" class="card-img-link block relative aspect-[4/3] bg-[#F8FAFC] overflow-hidden" aria-label="View details for ${escapeHtml(product.name)}">
       <img src="${escapeHtml(imageUrl)}"

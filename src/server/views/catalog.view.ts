@@ -159,32 +159,7 @@ export function renderCatalogPage(props: CatalogPageProps): string {
 
       <!-- Bento Product Grid -->
       <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        ${products
-          .map((product) => {
-            const tagsList = Array.isArray(product.tags)
-              ? product.tags
-              : typeof product.tags === 'string'
-              ? JSON.parse(product.tags)
-              : [];
-            const tagsStr = tagsList.join(', ');
-
-            return `
-            <div
-              class="product-card"
-              data-product-id="${product.id}"
-              data-product-slug="${product.slug}"
-              data-product-name="${escapeHtml(product.name)}"
-              data-product-desc="${escapeHtml(product.description || '')}"
-              data-category-slug="${escapeHtml(product.category?.slug || '')}"
-              data-tags="${escapeHtml(tagsStr)}"
-              data-price-paise="${product.base_price_paise}"
-              data-created-at="${product.created_at || ''}"
-              data-display-order="${product.display_order || 0}">
-              ${renderProductCard(product)}
-            </div>
-            `;
-          })
-          .join('')}
+        ${products.map((product) => renderProductCard(product)).join('')}
       </div>
 
       <!-- Empty State -->
@@ -359,11 +334,14 @@ export function renderCatalogPage(props: CatalogPageProps): string {
             cards.sort(function(a, b) {
               var priceA = Number(a.getAttribute('data-price-paise') || 0);
               var priceB = Number(b.getAttribute('data-price-paise') || 0);
+              var dateA = new Date(a.getAttribute('data-created-at') || 0).getTime();
+              var dateB = new Date(b.getAttribute('data-created-at') || 0).getTime();
               var orderA = Number(a.getAttribute('data-display-order') || 0);
               var orderB = Number(b.getAttribute('data-display-order') || 0);
 
               if (state.sort === 'price_asc') return priceA - priceB;
               if (state.sort === 'price_desc') return priceB - priceA;
+              if (state.sort === 'newest') return (dateB - dateA) || (orderA - orderB);
               return orderA - orderB;
             });
             cards.forEach(function(c) { grid.appendChild(c); });

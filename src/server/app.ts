@@ -768,7 +768,7 @@ export function createApp(database?: Database.Database) {
       }
 
       // GET /admin — Administrative Portal & Dashboard UI (Feature R3)
-      if ((method === 'GET' || method === 'HEAD') && (pathname === '/admin' || pathname === '/admin/')) {
+      if ((method === 'GET' || method === 'HEAD') && (pathname === '/admin' || pathname === '/admin/' || pathname === '/admin/login')) {
         let categories: any[] = [];
         try {
           categories = db.prepare('SELECT id, slug, name, display_order FROM categories WHERE is_active = 1 ORDER BY display_order ASC').all();
@@ -848,8 +848,8 @@ export function createApp(database?: Database.Database) {
       // ADMIN AUTHENTICATION ROUTES
       // ========================================================================
 
-      // POST /api/admin/auth/login
-      if (method === 'POST' && pathname === '/api/admin/auth/login') {
+      // POST /api/admin/auth/login or /admin/login
+      if (method === 'POST' && (pathname === '/api/admin/auth/login' || pathname === '/admin/login')) {
         const body = req.parsedBody || {};
         const username = (body.username || '').trim();
         const password = body.password || '';
@@ -906,10 +906,16 @@ export function createApp(database?: Database.Database) {
         });
         setSessionCookie(res, rawToken, expiresAt);
 
+        if (req.headers['accept']?.includes('text/html') && !req.headers['content-type']?.includes('application/json')) {
+          res.writeHead(302, { Location: '/admin' });
+          res.end();
+          return;
+        }
+
         sendJson(res, 200, {
           success: true,
           token: rawToken,
-          cookie: `bhr_session=${rawToken}; HttpOnly; SameSite=Strict; Secure; Path=/`,
+          cookie: `bhr_session=${rawToken}; HttpOnly; SameSite=Lax; Path=/`,
           user: {
             id: user.id,
             username: user.username,

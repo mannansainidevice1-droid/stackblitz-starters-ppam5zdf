@@ -23,7 +23,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
         <div class="w-full max-w-md bg-white border border-[#E2E8F0] rounded-2xl p-8 sm:p-10 shadow-sm">
           <div class="text-center mb-8">
             <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest text-[#2563EB] bg-[#EFF6FF] border border-[#BFDBFE] mb-3">
-              Internal Atelier Access Only
+              Internal Studio Access Only
             </span>
             <h1 class="font-display text-3xl font-black text-[#0B0F19] tracking-tight">
               Admin Portal
@@ -140,7 +140,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
             <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#0B0F19] text-white">
               Studio Portal
             </span>
-            <span class="text-xs font-semibold text-[#64748B]">Ludhiana, Punjab Atelier</span>
+            <span class="text-xs font-semibold text-[#64748B]">Ludhiana, Punjab Studio</span>
           </div>
           <h1 class="font-display text-2xl sm:text-3xl font-black text-[#0B0F19] mt-1.5 tracking-tight">
             Administrative Operations
@@ -529,7 +529,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
 
           <!-- Internal Atelier Notes & Timeline -->
           <div class="border-t border-[#F1F5F9] pt-4">
-            <h4 class="font-bold text-xs uppercase tracking-wider text-[#0B0F19] mb-3">Atelier Timeline &amp; Notes</h4>
+            <h4 class="font-bold text-xs uppercase tracking-wider text-[#0B0F19] mb-3">Studio Timeline &amp; Notes</h4>
             <div id="enq-notes-list" class="space-y-2 mb-4"></div>
 
             <form id="enq-notes-form" class="flex gap-2">
@@ -550,7 +550,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
         lithophane: 'Custom Lithophane / Lamp',
         corporate_gifting: 'Corporate / Event Gifting',
         replacement_part: 'Precision Replacement Part',
-        other: 'Other Bespoke Creation'
+        other: 'Other Custom Creation'
       };
 
       var activeEnquiryId = null;
@@ -1064,7 +1064,7 @@ export function renderAdminPage(props: AdminPageProps = {}): string {
   `;
 
   return renderBaseLayout({
-    title: 'Atelier Admin Portal',
+    title: 'Studio Admin Portal',
     description: 'BHAIRAVI Creations Administrative Dashboard & Studio Operations.',
     canonicalPath: '/admin',
     content: dashboardHtml

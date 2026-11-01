@@ -24,13 +24,13 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
       <!-- Editorial Page Header -->
       <div class="text-center mb-10">
         <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#2563EB] mb-2">
-          Atelier Commissions • Ludhiana, Punjab
+          Studio Commissions • Ludhiana, Punjab
         </span>
         <h1 class="font-display text-4xl sm:text-5xl font-black text-[#0B0F19] tracking-tight leading-tight">
           Custom Order Enquiry
         </h1>
         <p class="mt-3 text-base text-[#475569] leading-relaxed max-w-xl mx-auto">
-          Commission a bespoke 3D-printed and hand-finished piece. From sacred idols and architectural heritage models to corporate gifting—our artisans transform your vision into reality.
+          Commission a custom 3D-printed and hand-finished piece. From sacred idols and architectural heritage models to corporate gifting—our artisans transform your vision into reality.
         </p>
       </div>
 
@@ -220,7 +220,7 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
                 <option value="lithophane">Custom Lithophane / Lamp</option>
                 <option value="corporate_gifting">Corporate / Event Gifting</option>
                 <option value="replacement_part">Precision Replacement Part</option>
-                <option value="other">Other Bespoke Creation</option>
+                <option value="other">Other Custom Creation</option>
               </select>
             </div>
 
@@ -457,7 +457,7 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
 
           if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Transmitting to Ludhiana Atelier...';
+            submitBtn.textContent = 'Submitting to Ludhiana Studio...';
           }
 
           var elapsed = Date.now() - renderedAt;
@@ -490,13 +490,13 @@ export function renderCustomOrderPage(props: CustomOrderPageProps = {}): string 
                 '<div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200">',
                   '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>',
                 '</div>',
-                '<h2 class="font-display text-2xl font-black text-[#0B0F19] mb-2">Enquiry Received at Ludhiana Atelier</h2>',
+                '<h2 class="font-display text-2xl font-black text-[#0B0F19] mb-2">Enquiry Received at Ludhiana Studio</h2>',
                 '<p class="text-sm text-[#475569] max-w-md mx-auto mb-6">',
                   'Thank you, ' + name + '. Your commission enquiry has been registered under reference: <strong class="text-[#0B0F19] font-mono">' + refId + '</strong>.',
                 '</p>',
                 '<div class="p-5 rounded-2xl bg-[#FAF9F5] border border-[#E2E8F0] max-w-md mx-auto text-left mb-6 text-xs text-[#475569] space-y-2">',
                   '<div><strong>Response Window:</strong> Within 24 business hours</div>',
-                  '<div><strong>Atelier Location:</strong> Ludhiana, Punjab (PIN 141001)</div>',
+                  '<div><strong>Studio Location:</strong> Ludhiana, Punjab (PIN 141001)</div>',
                   '<div><strong>Direct Support:</strong> +91 73472 78010</div>',
                 '</div>',
                 '<a href="' + waChatUrl + '" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">',

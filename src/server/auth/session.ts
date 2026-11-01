@@ -17,14 +17,18 @@ export const SESSION_DURATION_HOURS = 8;
  */
 export function serializeSessionCookie(rawToken: string, expiresAt: Date): string {
   const maxAgeSeconds = Math.max(0, Math.floor((expiresAt.getTime() - Date.now()) / 1000));
-  return `${SESSION_COOKIE_NAME}=${rawToken}; HttpOnly; SameSite=Strict; Secure; Path=/; Max-Age=${maxAgeSeconds}; Expires=${expiresAt.toUTCString()}`;
+  const isSecure = process.env.COOKIE_SECURE === 'true' || (process.env.NODE_ENV === 'production' && process.env.COOKIE_SECURE !== 'false');
+  const secureFlag = isSecure ? '; Secure' : '';
+  return `${SESSION_COOKIE_NAME}=${rawToken}; HttpOnly; SameSite=Lax${secureFlag}; Path=/; Max-Age=${maxAgeSeconds}; Expires=${expiresAt.toUTCString()}`;
 }
 
 /**
  * Serializes the Set-Cookie header to clear the session cookie.
  */
 export function serializeClearCookie(): string {
-  return `${SESSION_COOKIE_NAME}=; HttpOnly; SameSite=Strict; Secure; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0`;
+  const isSecure = process.env.COOKIE_SECURE === 'true' || (process.env.NODE_ENV === 'production' && process.env.COOKIE_SECURE !== 'false');
+  const secureFlag = isSecure ? '; Secure' : '';
+  return `${SESSION_COOKIE_NAME}=; HttpOnly; SameSite=Lax${secureFlag}; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0`;
 }
 
 /**

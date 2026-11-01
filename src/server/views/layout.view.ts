@@ -124,7 +124,7 @@ export function renderBaseLayout(opts: LayoutOptions): string {
         <span id="quote-drawer-total" class="font-display text-xl font-black text-[#0B0F19]">₹0</span>
       </div>
       <p class="text-[11px] text-[#64748B] leading-tight">
-        Free nationwide express dispatch from Ludhiana atelier included with orders.
+        Free nationwide express dispatch from Ludhiana studio included with orders.
       </p>
       <button id="quote-drawer-send-btn" type="button" class="btn btn-whatsapp btn-lg w-full shadow-sm">
         <span>Request Quote on WhatsApp &rarr;</span>
@@ -166,6 +166,11 @@ export function renderBaseLayout(opts: LayoutOptions): string {
       if (menuBtn) menuBtn.addEventListener('click', openDrawer);
       if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
       if (backdrop) backdrop.addEventListener('click', closeDrawer);
+      if (drawer) {
+        drawer.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', closeDrawer);
+        });
+      }
 
       // 2. WhatsApp Quote Bag Drawer Controller
       const qOpenBtn = document.getElementById('quote-drawer-open-btn');

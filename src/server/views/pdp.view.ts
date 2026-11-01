@@ -222,7 +222,7 @@ export function renderProductDetailPage(props: PdpPageProps): string {
             `
                 : `
               <p class="text-sm text-[#64748B]">
-                Standard atelier edition. Bespoke sizing and custom patinas available through our custom commission portal.
+                Standard studio edition. Custom sizing and patinas available through our custom commission portal.
               </p>
             `
             }
@@ -421,6 +421,15 @@ export function renderProductDetailPage(props: PdpPageProps): string {
             btn.classList.add('border-[#2563EB]', 'bg-[#EFF6FF]');
             btn.classList.remove('border-[#CBD5E1]', 'bg-white');
             btn.setAttribute('aria-pressed', 'true');
+
+            var directWaBtn = document.getElementById('pdp-direct-wa-btn');
+            if (directWaBtn) {
+              var waPhone = container.getAttribute('data-studio-phone') || '917347278010';
+              var vName = btn.getAttribute('data-variant-name') || '';
+              var pName = container.getAttribute('data-product-name') || '';
+              var newWaMsg = 'Hello BHAIRAVI Creations! Inquiring about ' + pName + (vName ? ' (' + vName + ' - ' + formatted + ')' : '') + '.';
+              directWaBtn.href = 'https://wa.me/' + waPhone + '?text=' + encodeURIComponent(newWaMsg);
+            }
           });
         });
 
