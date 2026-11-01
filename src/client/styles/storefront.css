@@ -4,7 +4,7 @@
  * Target: src/client/styles/storefront.css
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
   /* Minimalist Luxury & High-Contrast Palette */
@@ -34,10 +34,9 @@
   --text-secondary: #475569;       /* Slate 600 Supportive Copy */
   --text-muted: #64748B;           /* Slate 500 Subdued / Metadata */
 
-  /* Editorial Typography Stacks */
-  --font-display: "Syne", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-serif: "Instrument Serif", Georgia, Cambria, serif;
-  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Clean Neo-Grotesque Typography Stacks */
+  --font-display: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Inter", "Geist", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", "SF Mono", Menlo, Monaco, monospace;
 
   /* Dimensions & Spacing System */

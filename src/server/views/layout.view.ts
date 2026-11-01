@@ -42,10 +42,10 @@ export function renderBaseLayout(opts: LayoutOptions): string {
   <meta property="og:site_name" content="BHAIRAVI Creations">
   <meta property="og:locale" content="en_IN">
 
-  <!-- Editorial Typography & Fonts (Syne, Instrument Serif, Plus Jakarta Sans) -->
+  <!-- Clean Neo-Grotesque Typography & Fonts (Geist & Inter) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Core Storefront Stylesheet -->
   <link rel="stylesheet" href="/styles/storefront.css">
@@ -57,9 +57,8 @@ export function renderBaseLayout(opts: LayoutOptions): string {
       theme: {
         extend: {
           fontFamily: {
-            display: ['Syne', 'sans-serif'],
-            serif: ['Instrument Serif', 'Georgia', 'serif'],
-            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif']
+            display: ['Geist', 'Inter', 'sans-serif'],
+            sans: ['Inter', 'Geist', 'sans-serif']
           },
           colors: {
             canvas: '#FAF9F5',
